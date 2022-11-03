@@ -3,14 +3,91 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "首页",
+				"navigationStyle": "custom"
 			}
+		}, {
+			"path": "pages/my/my",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+
+		}, {
+			"path": "pages/motor/motor",
+			"style": {
+				"navigationBarTitleText": "摩托车",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+
+		}, {
+			"path": "pages/car/car",
+			"style": {
+				"navigationBarTitleText": "二手车",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+
+		}, {
+			"path": "pages/vip/vip",
+			"style": {
+				"navigationBarTitleText": "会员",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FF9E54",
+				"navigationBarTextStyle": "white"
+			}
+
 		}
 	],
+	"subPackages": [{
+		"root": "pagesA",
+		"pages": []
+	}, {
+		"root": "pages_my",
+		"pages": []
+	}],
+	"tabBar": {
+		"color": "#BBBBBB",
+		"selectedColor": "#333333",
+		"borderStyle": "white",
+		"backgroundColor": "#ffffff",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/images/tab/tab1.png",
+				"selectedIconPath": "static/images/tab/tab12.png",
+				"text": "首页"
+			},{
+				"pagePath": "pages/motor/motor",
+				"iconPath": "static/images/tab/tab2.png",
+				"selectedIconPath": "static/images/tab/tab22.png",
+				"text": "摩托车"
+			},
+			{
+				"pagePath": "pages/car/car",
+				"iconPath": "static/images/tab/tab3.png",
+				"selectedIconPath": "static/images/tab/tab32.png",
+				"text": "二手车"
+			},
+			{
+				"pagePath": "pages/vip/vip",
+				"iconPath": "static/images/tab/tab4.png",
+				"selectedIconPath": "static/images/tab/tab42.png",
+				"text": "会员"
+			},
+			{
+				"pagePath": "pages/my/my",
+				"iconPath": "static/images/tab/tab5.png",
+				"selectedIconPath": "static/images/tab/tab52.png",
+				"text": "我的"
+			}
+		]
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
+		"navigationBarTitleText": "车圈",
+		"navigationBarBackgroundColor": "#ffffff",
 		"backgroundColor": "#F8F8F8"
 	},
 	"uniIdRouter": {}
