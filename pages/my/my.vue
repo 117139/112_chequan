@@ -9,7 +9,7 @@
 				<image src="/static/images/user_vip.png" mode="heightFix"></image>
 				<image src="/static/images/shop_vip.png" mode="heightFix"></image>
 			</view>
-			<text class="iconfont icon-shezhi my_shehzi"></text>
+			<text @click="$service.jump" data-url="/pages_my/my_msg/my_msg" class="iconfont icon-shezhi my_shehzi"></text>
 		</view>
 		<view class="shop_vip_box">
 			<image class="shop_vip_bg" src="/static/images/shopvurl.png" mode="aspectFill"></image>
@@ -20,27 +20,27 @@
 			<view class="shop_vip_btn">立即开通</view>
 		</view>
 		<!-- 订单 -->
-		<view class="order_box" v-if="!hasLogin">
+		<view class="order_box" v-if="hasLogin">
 			<view class="order_top dis_flex aic ju_b">
 				<view>我的订单</view>
-				<view class="go_more dis_flex aic"  @tap="$service.jump" :data-url="'/pagesA/OrderList/OrderList?type='+0">
+				<view class="go_more dis_flex aic"  @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+0">
 					全部订单<text class="iconfont icon-next"></text>
 				</view>
 			</view>
 			<view class="order_urls dis_flex aic ju_a">
-				<view class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pagesA/OrderList/OrderList?type='+1">
+				<view class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+0">
 					<image src="/static/images/iti3.png" mode="aspectFit"></image>
 					<text>人工查状态</text>
 				</view>
-				<view class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pagesA/OrderList/OrderList?type='+2">
+				<view class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+1">
 					<image  src="/static/images/iti4.png" mode="aspectFit"></image>
 					<text>急速年检</text>
 				</view>
-				<view class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pagesA/OrderList/OrderList?type='+3">
+				<view class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+2">
 					<image  src="/static/images/iti6.png" mode="aspectFit"></image>
 					<text>车型识别</text>
 				</view>
-				<view class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pagesA/OrderList/OrderList?type='+4">
+				<view class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+3">
 					<image  src="/static/images/iti7.png" mode="aspectFit"></image>
 					<text>人工查违章</text>
 				</view>
@@ -51,37 +51,37 @@
 			<!-- <view class="fw_zzc" v-if="appstatus!=1"></view> -->
 			<view class="fuwu_tit">我的服务</view>
 			<view class="fuwu_list">
-				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pagesA/vip_home/vip_home" >
+				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/my_fabu/my_fabu" >
 					<!-- <image  src="/static/images/iti3.png" mode="aspectFit"></image> -->
 					<image src="/static/images/icon_publish.png" mode="aspectFit"></image>
 					<text>我的发布</text>
 				</view>
-				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pagesA/vip_home/vip_home" >
+				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/my_luxian/my_luxian" >
 					<!-- <image  src="/static/images/iti3.png" mode="aspectFit"></image> -->
 					<image src="/static/images/icon_roadshare.png" mode="aspectFit"></image>
 					<text>路线分享</text>
 				</view>
-				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pagesA/vip_home/vip_home" >
+				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/my_zan/my_zan" >
 					<!-- <image  src="/static/images/iti3.png" mode="aspectFit"></image> -->
 					<image src="/static/images/icon_mylike.png" mode="aspectFit"></image>
 					<text>我的点赞</text>
 				</view>
-				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pagesA/vip_home/vip_home" >
+				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/my_sc/my_sc" >
 					<!-- <image  src="/static/images/iti3.png" mode="aspectFit"></image> -->
 					<image src="/static/images/icon_mycollect.png" mode="aspectFit"></image>
 					<text>我的收藏</text>
 				</view>
-				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pagesA/vip_home/vip_home" >
+				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/vip_home/vip_home" >
 					<!-- <image  src="/static/images/iti3.png" mode="aspectFit"></image> -->
 					<image src="/static/images/icon_enter.png" mode="aspectFit"></image>
 					<text>商家入驻</text>
 				</view>
-				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pagesA/vip_home/vip_home" >
+				<view class="fuwu_li dis_flex_c aic ju_c"  @click="kf_open" >
 					<!-- <image  src="/static/images/iti3.png" mode="aspectFit"></image> -->
 					<image src="/static/images/icon_mykefu.png" mode="aspectFit"></image>
 					<text>我的客服</text>
 				</view>
-				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pagesA/vip_home/vip_home" >
+				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/vip_home/vip_home" >
 					<!-- <image  src="/static/images/iti3.png" mode="aspectFit"></image> -->
 					<image src="/static/images/icon_share.png" mode="aspectFit"></image>
 					<text>分享转发</text>
@@ -98,6 +98,9 @@
 			</view>
 		</view>
 		
+		<uni-popup ref="popup" type="center" background-color="#fff" border-radius="14">
+			<kfewm></kfewm>
+		</uni-popup>
 		<!-- 阻止滑动 -->
 		<!-- <view @touchmove.stop.prevent='test'></view> -->
 	</view>
@@ -138,6 +141,9 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			kf_open() { //筛选 弹窗
+				this.$refs.popup.open('center')
+			},
 			onRetry(){
 				that.page=1
 				that.datas=[]
@@ -481,5 +487,8 @@ page{
 		right: 0;
 		bottom: 0;
 		background: #F8F8F8;
+	}
+	::v-deep .uni-popup__wrapper{
+		border-radius: 20rpx;
 	}
 </style>

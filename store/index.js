@@ -7,7 +7,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
 	state: {
 		loginDatas:'',//登录返回信息
-		hasLogin:false,
+		hasLogin:true,
 		loginDatas_user:'', //系统用户信息
 		token:'',
 		loginPage:'',

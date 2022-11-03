@@ -3,8 +3,8 @@
 		<topbar>
 			<view class="my_header dis_flex aic">
 				<image class="h_add" src="/static/images/icon_address.png" mode="aspectFit"></image>
-				<view class="flex_1 h_add_text">北京</view>
-				<image class="h_iconr" src="/static/images/icon_find.png" mode="aspectFit"></image>
+				<view class="flex_1 h_add_text" >北京1</view>
+				<image  @tap="$service.jump" data-url="/pagesA/search/search" class="h_iconr" src="/static/images/icon_find.png" mode="aspectFit"></image>
 				<image class="h_iconr" src="/static/images/icon_kefu.png" mode="aspectFit"></image>
 			</view>
 		</topbar>
@@ -129,6 +129,8 @@
 		width: 100%;
 		// justify-content: space-between;
 		padding: 0 15rpx;
+		position: relative;
+		z-index: 999;
 		.h_add{
 			width: 30rpx;
 			height: 30rpx;
@@ -152,6 +154,7 @@
 		height: 180rpx;
 		margin-bottom: 150rpx;
 		position: relative;
+		z-index: 1;
 	}
 	.banner_box {
 		width: 100%;

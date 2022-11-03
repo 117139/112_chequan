@@ -4,13 +4,14 @@ import store from '../store/index.js'
 const USERS_KEY = 'USERS_KEY';
 const STATE_KEY = 'STATE_KEY';
 const map_key = "7FEBZ-WLWK2-PMGUE-C4BFT-EKXB6-BFFNR"
-const appVN=1
+const appVN=0
 const baseurl = "https://bhqh.htbg2008.com/"
 // const baseurl = "http://192.168.0.119:8000/"
 // var jkurl_type=uni.getStorageSync('jkurl_type')
 var ck_url=uni.getStorageSync('jkurl')
 
-let imgurl = baseurl
+// let imgurl = baseurl
+let imgurl = ''
 var  IPurl = baseurl + 'api/'
 if(ck_url){
 	IPurl=ck_url
@@ -279,10 +280,9 @@ const wxlogin = function(num) {
 	if (num == 'token') {
 		if(appVN==0){
 			var datas={
-				token:'1',
-				nick:'A135****356',
-				img:'/static/images/tx.png',
-				
+				tkoen:'1',
+				img:'/static/images/pic_head.png',
+				nick:'昵称'
 			}
 			uni.setStorageSync('token', datas.token)
 						

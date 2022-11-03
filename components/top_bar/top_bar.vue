@@ -34,6 +34,11 @@
 				StatusBar: this.StatusBar,
 				CustomBar: this.CustomBar,
 			};
+		},
+		methods:{
+			setcur(){
+				console.log(1)
+			}
 		}
 	}
 </script>
@@ -56,6 +61,7 @@
 	.dh_top1{
 		opacity: 0;
 		position: relative;
+		z-index: 1;
 	}
 	.dh_top>.nav_bar_img{
 		position: absolute;

@@ -43,10 +43,69 @@
 	],
 	"subPackages": [{
 		"root": "pagesA",
-		"pages": []
+		"pages": [{
+			"path": "search/search",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+
+		}]
 	}, {
 		"root": "pages_my",
-		"pages": []
+		"pages": [{
+			"path": "my_msg/my_msg",
+			"style": {
+				"navigationBarTitleText": "资料设置",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "order_list/order_list",
+			"style": {
+				"navigationBarTitleText": "我的订单",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "my_zan/my_zan",
+			"style": {
+				"navigationBarTitleText": "我的点赞",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "my_sc/my_sc",
+			"style": {
+				"navigationBarTitleText": "我的收藏",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "my_fabu/my_fabu",
+			"style": {
+				"navigationBarTitleText": "我的发布",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pay_ok/pay_ok",
+			"style": {
+				"navigationBarTitleText": "支付",
+				"enablePullDownRefresh": false
+			}
+
+		}    ,{
+                    "path" : "my_luxian/my_luxian",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "路线分享",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 	}],
 	"tabBar": {
 		"color": "#BBBBBB",
@@ -58,7 +117,7 @@
 				"iconPath": "static/images/tab/tab1.png",
 				"selectedIconPath": "static/images/tab/tab12.png",
 				"text": "首页"
-			},{
+			}, {
 				"pagePath": "pages/motor/motor",
 				"iconPath": "static/images/tab/tab2.png",
 				"selectedIconPath": "static/images/tab/tab22.png",

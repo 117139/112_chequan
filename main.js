@@ -23,6 +23,8 @@ import topbar from "./components/top_bar/top_bar.vue";
 Vue.component('topbar',topbar)
 
 
+import kfewm from './components/kf_ewm/kf_ewm.vue'
+Vue.component('kfewm',kfewm)
 
 // #ifndef VUE3
 Vue.config.productionTip = false
