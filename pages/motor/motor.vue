@@ -69,7 +69,7 @@
 					<image class="car_li_img" src="/static/images/motor.jpg" mode="aspectFit"></image>
 					<view class="car_li_msg">
 						<view class="car_li_tit oh2">QJMOTOR 壹米150国 潮探班复古水冷摩托</view>
-						<view class="car_li_jl">官方指导价：2.9万</view>
+						<view class="car_li_jl oh1">官方指导价：2.9万</view>
 						<view class="car_li_num">1.66万</view>
 					</view>
 				</view>
@@ -535,6 +535,8 @@
 					font-weight: 400;
 					color: #999999;
 					margin-bottom: 8rpx;
+					line-height: 30rpx;
+					height: 30rpx;
 				}
 				.car_li_num{
 					font-size: 28rpx;

@@ -5,13 +5,13 @@
 		</view>
 		<!-- 金刚区 -->
 		<view class="index_tui_list dis_flex fww">
-			<view class="index_tui_li">
+			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/jyz_list/jyz_list">
 				<view class="index_tui_li_img">
 					<image src="/static/images/iti1.png" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">加油站</view>
 			</view>
-			<view class="index_tui_li">
+			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/qcmr_list/qcmr_list">
 				<view class="index_tui_li_img">
 					<image src="/static/images/iti2.png" mode="aspectFill"></image>
 				</view>
@@ -169,7 +169,7 @@
 					<image class="car_li_img" src="/static/images/car.jpg" mode="aspectFill"></image>
 					<view class="car_li_msg">
 						<view class="car_li_tit oh2">大众ID.4 X 2021款 Pure+ 纯净长续航版</view>
-						<view class="car_li_jl">2021年/0.80万公里</view>
+						<view class="car_li_jl oh1">2021年/0.80万公里</view>
 						<view class="car_li_num">17.66万</view>
 					</view>
 				</view>
@@ -638,6 +638,8 @@
 					font-weight: 400;
 					color: #999999;
 					margin-bottom: 8rpx;
+					line-height: 30rpx;
+					height: 30rpx;
 				}
 				.car_li_num{
 					font-size: 28rpx;

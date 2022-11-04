@@ -3,7 +3,7 @@
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
 		<topbar bg_img="/static/images/bg_shangjiaruzhu.png">
 			<view class="bus_head dis_flex aic">
-				<text class="iconfont icon-back"></text>
+				<text class="iconfont icon-back" @click="$service.back"></text>
 			</view>
 		</topbar>
 		<view class="main_box">
@@ -21,8 +21,92 @@
 					<view class="bus_add">
 						北京朝阳区来广营乡北园东路顾家庄桥北 300米路西
 					</view>
+					<view class="bus_bb" @click="go_add">
+						<image src="/static/images/bus_dh.png" mode="aspectFit"></image>
+						<view>导航</view>
+					</view>
+					<view class="bus_bb">
+						<image src="/static/images/bus_tel.png" mode="aspectFit"></image>
+						<view>电话</view>
+					</view>
+				</view>
+				<view class="bus_btit">
+					<view class="bus_btit_l">
+						门店照片
+					</view>
+				</view>
+				<swiper class="bus_swi" circular :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" 
+								indicator-color="rgba(255, 255, 255, .51)" 
+								indicator-active-color="#ffffff" 
+								:duration="duration">
+					<swiper-item v-for="(item,index) in list1">
+						<image :src="item" mode="aspectFill"></image>
+					</swiper-item>
+				</swiper>
+				<picker @change="confirm" :value="active" :range="columns" range-key="title">
+					<view class="bus_btit bus_btit1">
+						<view class="bus_btit_l">
+							门店照片
+						</view>
+						<view class="bus_btit_r">
+							{{columns[active].title}}
+							<image src="/static/images/bus_lx.png" mode="aspectFit"></image>
+						</view>
+					</view>
+				</picker>
+			</view>
+			
+			<view  v-if="active==0" class="car_list dis_flex fww">
+				<view class="car_li" v-for="(item,index) in 20">
+					<view class="car_li_box">
+						<image class="car_li_img" src="/static/images/car1.png" mode="aspectFit"></image>
+						<view class="car_li_msg">
+							<view class="car_li_tit oh2">标准洗车-五座汽车 整车清洁</view>
+							<view class="car_li_jl oh1">整车泡沫冲洗擦干、轮胎轮</view>
+							<view class="car_li_num">43元</view>
+						</view>
+					</view>
 				</view>
 			</view>
+			<view  v-if="active==1" class="car_list dis_flex fww">
+				<view class="car_li" v-for="(item,index) in 20">
+					<view class="car_li_box">
+						<image class="car_li_img" src="/static/images/motor1.png" mode="aspectFit"></image>
+						<view class="car_li_msg">
+							<view class="car_li_tit oh2">QJMOTOR 壹米150国 潮探班复古水冷摩托</view>
+							<view class="car_li_jl oh1">整车泡沫冲洗擦干、轮胎轮</view>
+							<view class="car_li_num">43元</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view  v-if="active==2" class="car_list dis_flex fww">
+				<view class="car_li" v-for="(item,index) in 20">
+					<view class="car_li_box">
+						<image class="car_li_img" src="/static/images/car1.png" mode="aspectFit"></image>
+						<view class="car_li_msg">
+							<view class="car_li_tit oh2">标准洗车-五座汽车 整车清洁</view>
+							<view class="car_li_jl oh1">整车泡沫冲洗擦干、轮胎轮</view>
+							<view class="car_li_num">43元</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view v-if="active==3" class="car_list dis_flex fww">
+				<view class="car_li" v-for="(item,index) in 20">
+					<view class="car_li_box">
+						<image class="car_li_img" src="/static/images/car.jpg" mode="aspectFit"></image>
+						<view class="car_li_msg">
+							<view class="car_li_tit oh2">中石化#93号汽油</view>
+							<view class="car_li_jl oh1">中石化高清洁汽油</view>
+							<view class="car_li_num">5.62元</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="b_box">
+			<view class="b_box_btn">联系商家</view>
 		</view>
 		<!-- 阻止滑动 -->
 		<!-- <view @touchmove.stop.prevent='test'></view> -->
@@ -41,7 +125,31 @@
 			return {
 				options:'',
 				datas:'',
-				page:1
+				page:1,
+				indicatorDots: true,
+				autoplay: true,
+				interval: 4000,
+				duration: 500,
+				list1: [
+						'/static/images/car2.png',
+						'/static/images/car2.png',
+						'/static/images/car2.png',
+				],
+				columns:[
+					{
+						title:' 汽车美容',
+					},
+					{
+						title:'摩托车',
+					},
+					{
+						title:'二手车',
+					},
+					{
+						title:'加油站',
+					},
+				],
+				active:0
 			}
 		},
 		computed: {
@@ -64,6 +172,31 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			confirm(e) { //选择性别 确定
+				console.log(e)
+				this.active =e.detail.value
+			},
+			go_add(){
+				// const latitude = Number(that.datas.list.lat); //纬度
+				// const longitude = Number(that.datas.list.lng); //经度
+				var latitude=39.920243
+				var longitude=116.460634
+				uni.openLocation({
+					latitude: latitude,
+					longitude: longitude,
+					scale: 15,
+					// name: that.datas.list.name,
+					// address: that.datas.list.address,
+					success: function (res) {
+						console.log('success');
+						console.log(res);
+					},
+					fail: function (err) {
+						console.log('err');
+						console.log(err);
+					}
+				});
+			},
 			onRetry(){
 				that.page=1
 				that.datas=[]
@@ -214,6 +347,7 @@ page{
 	background-position: top;
 	// padding: 140rpx 28rpx 20rpx; 
 	background-color: #f8f8f8;
+	padding-bottom: 150rpx;
 }
 .main_box{
 	padding-top: 100rpx;
@@ -260,7 +394,148 @@ page{
 		}
 		.bus_tbox{
 			width: 100%;
+			.bus_add{
+				width: 550rpx;
+				font-size: 26rpx;
+				font-family: Microsoft YaHei;
+				font-weight: 400;
+				color: #666666;
+				padding-right: 50rpx;
+			}
+			.bus_bb{
+				font-size: 24rpx;
+				font-family: Microsoft YaHei;
+				font-weight: 400;
+				color: #4680E6;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				image{
+					width: 38rpx;
+					height: 38rpx;
+					margin-bottom: 15rpx;
+				}
+			}
+		}
+		.bus_btit{
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			height: 90rpx;
+			&.bus_btit1{
+				margin-top: 15rpx;
+			}
+			.bus_btit_l{
+				font-size: 32rpx;
+				font-family: Microsoft YaHei;
+				font-weight: 400;
+				color: #333333;
+			}
+			.bus_btit_r{
+				display: flex;
+				align-items: center;
+				font-size: 28rpx;
+				font-family: Microsoft YaHei;
+				font-weight: 400;
+				color: #333333;
+				image{
+					width: 18rpx;
+					height: 9rpx;
+					margin-left: 20rpx;
+				}
+			}
+		}
+		.bus_swi{
+			width: 100%;
+			height: 336rpx;
+			border-radius: 10rpx;
+			image{
+					width: 100%;
+					height: 336rpx;
+					border-radius: 10rpx;
+			}
 		}
 	}
 }
+.car_list{
+		width: 100%;
+		padding: 0 20rpx;
+		.car_li{
+			width: 50%;
+			padding:11rpx 8rpx;
+			.car_li_box{
+				width: 100%;
+				height: 428rpx;
+				background: #FFFFFF;
+				border-radius: 10rpx;
+				.car_li_img{
+					width: 100%;
+					height: 224rpx;
+					border-radius: 10rpx 10rpx 0rpx 0rpx;
+				}
+				.car_li_msg{
+					width: 100%;
+					padding: 12rpx 20rpx 0; 
+				}
+				.car_li_tit{
+					font-size: 30rpx;
+					font-family: Microsoft YaHei;
+					font-weight: 400;
+					color: #323233;
+					line-height: 42rpx;
+					height: 84rpx;
+					margin-bottom: 8rpx;
+				}
+				.car_li_jl{
+					font-size: 24rpx;
+					font-family: Arial;
+					font-weight: 400;
+					color: #999999;
+					margin-bottom: 8rpx;
+					line-height: 30rpx;
+					height: 30rpx;
+				}
+				.car_li_num{
+					font-size: 28rpx;
+					font-family: Arial;
+					font-weight: 400;
+					color: #E2382F;
+				}
+				.car_li_sc{
+					margin-top: 40rpx;
+					font-size: 28rpx;
+					font-family: Arial;
+					font-weight: 400;
+					color: #999999;
+					text{
+						margin-right: 15rpx;
+					}
+					&.car_li_sc1{
+						color: #E2382F;
+					}
+				}
+			}
+		}
+	}
+	.b_box{
+		width: 100%;
+		padding: 20rpx 30rpx;
+		background: #fff;
+		position: fixed;
+		bottom: 0;
+		z-index: 900;
+			.b_box_btn{
+				width: 100%;
+				height: 90rpx;
+				background: #4680E6;
+				border-radius: 10rpx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 32rpx;
+				font-family: Microsoft YaHei;
+				font-weight: 400;
+				color: #F5F5F5;
+			}
+	}
 </style>

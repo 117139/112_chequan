@@ -115,7 +115,7 @@
 					<image class="car_li_img" src="/static/images/car.jpg" mode="aspectFill"></image>
 					<view class="car_li_msg">
 						<view class="car_li_tit oh2">大众ID.4 X 2021款 Pure+ 纯净长续航版</view>
-						<view class="car_li_jl">2021年/0.80万公里</view>
+						<view class="car_li_jl oh1">2021年/0.80万公里</view>
 						<view class="car_li_num">17.66万</view>
 					</view>
 				</view>
@@ -562,6 +562,8 @@
 					font-weight: 400;
 					color: #999999;
 					margin-bottom: 8rpx;
+					line-height: 30rpx;
+					height: 30rpx;
 				}
 				.car_li_num{
 					font-size: 28rpx;

@@ -1,89 +1,101 @@
 <template>
-	<view class="openMembership">
-		<!-- 开通会员 -->
-		<view class="header_user_wrap area">
-			<image class="image_bg" src="/static/images/kthy.png" mode="widthFix"></image>
-			<view class="header_user_content area dis_flex aic">
-				<view class="header_img_wrap flex_cen">
-					<view class="header_img_box">
-						<image v-if="hasLogin" :src="loginDatas.headImgURL" mode="aspectFill"></image>
-						<image v-else src="/static/images/tx.png" mode="aspectFill"></image>
-					</view>
-				</view>
-				<view class="header_words_wrap">
-					<view class=" dis_flex aic">
-						<view class="">
-							{{loginDatas.nickname||'昵称'}}
-						</view>
-						<!-- <image src="../../static/images/hy.png" mode="aspectFit" ></image> -->
-					</view>
-					<!-- <view class="expiration_time">
-						会员到期时间：{{$service.gettime(vipDatas.expireTime*1000)}}
-					</view> -->
-					<view class="expiration_time" v-if="hasLogin">
-						会员到期时间：{{$service.gettime(vipDatas.expireTime*1000)}}
-					</view>
-					<view class="expiration_time" v-else>
-						未开通会员
-					</view>
-				</view>
+	<view>
+		<topbar :bg_color="bg_color">
+			<view class="bus_head dis_flex aic ju_b">
+				<text class="iconfont icon-back" @click="$service.back"></text>
+				<text >开通会员</text>
+				<text class="iconfont icon-back" style="opacity: 0;"></text>
 			</view>
-		</view>
-
-		<!-- 主题内容 -->
-		<view class="content_big_box area">
-			<view class="content_tit">
-				<view :class="{active:cur==0}" @click="setcur(0)">用户会员套餐</view>
-				<view :class="{active:cur==1}" @click="setcur(1)">商户会员套餐</view>
-			</view>
-			<view class="package_wrap flex">
-				<view :class="current==index?'list_active':'list_item'" v-for="(item,index) in list" :key="index"
-					@tap="current=index">
-					<image class="package_img_bg" :src="current==index?'/static/images/hytc2.png':'/static/images/hytc.png'"
-						mode="aspectFit"></image>
-					<view class="package_news">
-						<view class=" dis_flex aic" style="margin-bottom: 16rpx;">
-							<image class="news_img" :src="current==index?'/static/images/hyv.png':'/static/images/hy2.png'"
-								mode="aspectFit"></image>
-							{{item.quarter}}
+		</topbar>
+		<view class="openMembership">
+			
+			<!-- 开通会员 -->
+			<view class="header_user_wrap area">
+				<image v-if="cur==0" class="image_bg" src="/static/images/kthy.png" mode="widthFix"></image>
+				<image v-else class="image_bg" src="/static/images/bg_vip_business.png" mode="widthFix"></image>
+				<view class="header_user_content area dis_flex aic">
+					<view class="header_img_wrap flex_cen">
+						<view class="header_img_box">
+							<image v-if="hasLogin" :src="loginDatas.headImgURL" mode="aspectFill"></image>
+							<image v-else src="/static/images/tx.png" mode="aspectFill"></image>
 						</view>
-						<view class="one_month">
-							{{item.some}} <text>￥{{item.price}}</text>
-							<!-- {{item.title}}<text>￥{{item.originPrice}}</text> -->
+					</view>
+					<view class="header_words_wrap">
+						<view class=" dis_flex aic">
+							<view class="">
+								{{loginDatas.nickname||'昵称'}}
+							</view>
+							<!-- <image src="../../static/images/hy.png" mode="aspectFit" ></image> -->
 						</view>
-						<view class="one_month">
-							<!-- 每日{{item.num}}元 -->{{item.description}}
+						<!-- <view class="expiration_time">
+							会员到期时间：{{$service.gettime(vipDatas.expireTime*1000)}}
+						</view> -->
+						<view class="expiration_time" v-if="hasLogin">
+						<!-- 	会员到期时间：{{$service.gettime(vipDatas.expireTime*1000)}}
 						</view>
-						<view class="money_price">
-							￥<text>{{item.price}}</text>
+						<view class="expiration_time" v-else> -->
+							未开通会员
 						</view>
 					</view>
 				</view>
 			</view>
-			<view class="agree_wrap dis_flex aic" @tap="sele=!sele">
-				<view :class="sele?'icon icon-duigou1 active_big':'big'"></view>
-				阅读并同意 
-				<text @click="$service.jump" data-url="/pagesMy/webview/webview?type=vipxy">《会员服务协议》</text>
-				<text @click="$service.jump" data-url="/pagesMy/webview/webview?type=ysxy">《隐私协议》</text>
-			</view>
-			<view class="btn_wrap" v-if="isShow">
-				立即续费
-			</view>
-			<view class="btn_wrap" v-else @tap="isShow=!isShow">
-				立即开通
-			</view>
-			<!-- 会员特权 -->
-			<view class="viptq_box">
-				<view class="privilege_img area2">
-					<image v-if="cur==0" src="@/static/images/hytq.png" mode="aspectFit"></image>
-					<image v-else src="@/static/images/pic_vip_rights_b.png" mode="aspectFit"></image>
-					<view class="privilege_box dis_flex aic ju_c">
-						会员特权
+		
+			<!-- 主题内容 -->
+			<view class="content_big_box area">
+				<view class="content_tit">
+					<view :class="{active:cur==0}" @click="setcur(0)">用户会员套餐</view>
+					<view :class="{active:cur==1}" @click="setcur(1)">商户会员套餐</view>
+				</view>
+				<view class="package_wrap flex">
+					<view :class="current==index?'list_active':'list_item'" v-for="(item,index) in list" :key="index"
+						@tap="current=index">
+						<image class="package_img_bg" :src="current==index?'/static/images/hytc2.png':'/static/images/hytc.png'"
+							mode="aspectFit"></image>
+						<view class="package_news">
+							<view class=" dis_flex aic" style="margin-bottom: 16rpx;">
+								<image class="news_img" :src="current==index?'/static/images/hyv.png':'/static/images/hy2.png'"
+									mode="aspectFit"></image>
+								{{item.quarter}}
+								<image v-if="index==3" class="news_img_tj" src="/static/images/pic_vip_recommend.png" mode="aspectFit"></image>
+							</view>
+							<view class="one_month">
+								{{item.some}} <text>￥{{item.price}}</text>
+								<!-- {{item.title}}<text>￥{{item.originPrice}}</text> -->
+							</view>
+							<view class="one_month">
+								<!-- 每日{{item.num}}元 -->{{item.description}}
+							</view>
+							<view class="money_price">
+								￥<text>{{item.price}}</text>
+							</view>
+						</view>
 					</view>
 				</view>
-				<view class="card_stream flex">
-					<image v-if="cur==0" class="card_stream_img" src="/static/images/pic_vip_content_u.png" mode="widthFix"></image>
-					<image v-else class="card_stream_img" src="/static/images/pic_vip_content_b.png" mode="widthFix"></image>
+				<view class="agree_wrap dis_flex aic" @tap="sele=!sele">
+					<view :class="sele?'icon icon-duigou1 active_big':'big'"></view>
+					阅读并同意 
+					<text @click="$service.jump" data-url="/pagesMy/webview/webview?type=vipxy">《会员服务协议》</text>
+					<text @click="$service.jump" data-url="/pagesMy/webview/webview?type=ysxy">《隐私协议》</text>
+				</view>
+				<view class="btn_wrap" v-if="isShow">
+					立即续费
+				</view>
+				<view class="btn_wrap" v-else @tap="isShow=!isShow">
+					立即开通
+				</view>
+				<!-- 会员特权 -->
+				<view class="viptq_box">
+					<view class="privilege_img area2">
+						<image v-if="cur==0" src="@/static/images/hytq.png" mode="aspectFit"></image>
+						<image v-else src="@/static/images/pic_vip_rights_b.png" mode="aspectFit"></image>
+						<view class="privilege_box dis_flex aic ju_c">
+							会员特权
+						</view>
+					</view>
+					<view class="card_stream flex">
+						<image v-if="cur==0" class="card_stream_img" src="/static/images/pic_vip_content_u.png" mode="widthFix"></image>
+						<image v-else class="card_stream_img" src="/static/images/pic_vip_content_b.png" mode="widthFix"></image>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -142,6 +154,7 @@
 				sele: false, //阅读并同意
 				
 				cur:0,
+				bg_color:'#FF9E54'
 			}
 		},
 		computed: {
@@ -154,6 +167,11 @@
 		methods: {
 			setcur(index){
 				that.cur=index
+				if(index==1){
+					that.bg_color='#282A4F'
+				}else{
+					that.bg_color='#FF9E54'
+				}
 			}
 			// getviplist(){
 			// 	var datas={
@@ -177,12 +195,22 @@
 	    width: 100%;
 	    padding: 0 0.875rem;
 	}
+	.bus_head{
+		width: 100%;
+		height: 100%;
+		// padding: 0 14rpx;
+		text{
+			font-size: 30rpx;
+			color: #fff;
+		}
+	}
 	.openMembership {
 		width: 100%;
 		height: 100%;
 		background-color: #fff;
 		// padding-top: 98rpx;
 		padding-top: 220rpx;
+		position: relative;
 		// 头部用户信息
 		.header_user_wrap {
 			height: 298rpx;
@@ -396,6 +424,10 @@
 				width: 38rpx;
 				height: 34rpx;
 				margin-right: 12rpx;
+			}
+			.news_img_tj{
+				width: 70rpx;
+				height: 32rpx;
 			}
 			.one_month{
 				line-height: 40rpx;

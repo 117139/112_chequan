@@ -36,7 +36,8 @@
 				"navigationBarTitleText": "会员",
 				"enablePullDownRefresh": false,
 				"navigationBarBackgroundColor": "#FF9E54",
-				"navigationBarTextStyle": "white"
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
 			}
 
 		}, {
@@ -62,6 +63,22 @@
 			"path": "search/search",
 			"style": {
 				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+
+		}, {
+			"path": "jyz_list/jyz_list",
+			"style": {
+				"navigationBarTitleText": "加油站",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+
+		}, {
+			"path": "qcmr_list/qcmr_list",
+			"style": {
+				"navigationBarTitleText": "汽车美容",
 				"enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 			}
