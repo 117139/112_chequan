@@ -9,7 +9,7 @@
 		</view>
 		</u-sticky>
 		<view class="zan_list" v-if="active==0">
-			<view class="zan_li" v-for="(item,index) in 10">
+			<view class="zan_li" v-for="(item,index) in 10" @click="$service.jump" :data-url="'/pages/lx_details/lx_details?id='+1">
 				<image class="zan_img" src="/static/images/car1.png" mode="aspectFill"></image>
 				<view class="zan_msg">
 					 <view class="zan_tit">入驻泉州最著名的西街旁 | 安 静清幽的小阁楼</view>
@@ -29,7 +29,18 @@
 			</view>
 		</view>
 		<view class="fb_box" v-if="active==1">
-			<view class="fb_imgs"></view>
+			<view class="fb_imgs"  @click="upimg_fuc" data-type="2"  data-idx="0">
+				<image class="fb_imgs_i" src="/static/images/icon_upimg.png" mode="aspectFit"></image>
+				<view class="fb_imgs_t">添加图片</view>
+			</view>
+			<view class="fb_img_box dis_flex fww">
+				<view class="fb_img_li" v-for="(item,index) in real_work">
+					<image class="fb_img_p" :src="$service.getimg(item)" mode="aspectFill"></image>
+					<view class="fb_img_i "  @click="delimg_fuc"  data-type="2" :data-idx="index">
+						<text class="iconfont icon-shanchu1"></text>
+					</view>
+				</view>
+			</view>
 			<view class="fb_list">
 				<view class="fb_li">
 					<view class="fb_li_l">
@@ -41,7 +52,7 @@
 					<view class="fb_li_l">
 						<text>*</text>地址
 					</view>
-					<view class="fb_li_r">请选择地址<text class="iconfont icon-next"></text></view>
+					<view class="fb_li_r">{{fb_add||'请选择地址'}}<text class="iconfont icon-next"></text></view>
 				</view>
 				<view class="fb_li">
 					<view class="fb_li_l">
@@ -49,6 +60,8 @@
 					</view>
 					<textarea class="fb_li_area" v-model="fb_content" placeholder="请填写内容描述"></textarea>
 				</view>
+				
+				<view class="fb_btn">确认发布</view>
 			</view>
 		</view>
 		<!-- 阻止滑动 -->
@@ -80,6 +93,8 @@
 				active:0,
 				fb_tit:'',
 				fb_content:'',
+				fb_add:'',
+				real_work:[],   ///照片
 			}
 		},
 		computed: {
@@ -112,6 +127,7 @@
 						that.address=res.address//地址
 						that.lng=res.longitude//经度  
 						that.lat=res.latitude//纬度  
+						that.fb_add=res.name
 					},fail(err) {
 						console.log(err);
 					}
@@ -134,6 +150,114 @@
 				    }
 				});
 			},
+			upimg_fuc(e){
+				uni.showActionSheet({
+					itemList: ['拍照', '相册选择'],
+					success: function(res) {
+						console.log('选中了第' + (res.tapIndex + 1) + '个按钮');
+						var sourceType = ['camera', 'album']
+						if (res.tapIndex == 0) {
+							sourceType = ['camera']
+						} else {
+							sourceType = ['album']
+						}
+						// var len=that.img_arr
+						uni.chooseImage({
+							count: 9,
+							sizeType: ['original', 'compressed'],
+							sourceType: sourceType,
+							success: function(res) {
+								console.log(res)
+								const tempFilePaths = res.tempFilePaths
+								
+								// const imglen = that.img_list.length
+								
+								that.upimg(tempFilePaths, 0,e)
+								
+							}
+						});
+					},
+					fail: function(res) {
+						console.log(res.errMsg);
+					}
+				});
+			},
+			upimg(imgs, i,e) {
+				var edatas=e.currentTarget.dataset
+			  if(that.$service.appVN==0){
+					var datas=imgs[i]
+					if(edatas.type==2){ //持有证书和荣誉
+						 that.real_work.push(datas)
+					}
+					if (i<imgs.length-1) {
+						i++
+						that.upimg(imgs, i,e)
+					}
+					return
+					// }
+				}
+				
+				that.$service.wx_upload(imgs[i]).then(res => {
+							
+					that.btn_kg = 0
+					console.log(res)
+					if (res.code == 1) {
+						var datas = res.data
+						console.log(i)
+						// that.img_arr.push(datas)
+						
+						if(edatas.type==2){ //持有证书和荣誉
+							 that.real_work.push(datas)
+						}
+						if (i<imgs.length-1) {
+							i++
+							that.upimg(imgs, i,e)
+						}
+						// }
+						
+					} else {
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: "none",
+								title: "上传失败"
+							})
+						}
+					}
+				}).catch(e => {
+					that.btn_kg = 0
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '操作失败'
+					})
+				})
+				
+			},
+			delimg_fuc(e){
+				console.log(e.currentTarget.dataset.idx)
+				var datas=e.currentTarget.dataset
+				wx.showModal({
+					title: '提示',
+					content: '确定要删除这张图片吗',
+					success (res) {
+						if (res.confirm) {
+							console.log('用户点击确定')
+							if(datas.type==2){
+								that.real_work.splice(datas.idx,1)
+							}
+						} else if (res.cancel) {
+							console.log('用户点击取消')
+						}
+					}
+				})
+			},
+			
+			
 			setcur(index){
 				that.active=index
 			},
@@ -372,10 +496,55 @@ page{
 		width: 100%;
 		height: 364rpx;
 		background: #F8F8F8;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		.fb_imgs_i{
+			width: 51rpx;
+			height: 41rpx;
+			margin-bottom: 25rpx;
+		}
+		.fb_imgs_t{
+			font-size: 24rpx;
+			font-family: Microsoft YaHei;
+			font-weight: 400;
+			color: #BBBBBB;
+		}
+	}
+	.fb_img_box{
+		width: 100%;
+		padding: 18rpx;
+		.fb_img_li{
+			width: 33.3%;
+			height: 170rpx;
+			padding: 10rpx;
+			position: relative;
+			.fb_img_p{
+				width: 100%;
+				height: 100%;
+				border-radius: 12rpx;
+				position: relative;
+				z-index: 1;
+			}
+			.fb_img_i{
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 30rpx;
+				color: #fff;
+				width: 35rpx;
+				height: 35rpx;
+				position: absolute;
+				top: 15rpx;
+				right: 15rpx;
+				z-index: 100;
+			}
+		}
 	}
 	.fb_list{
 		width: 100%;
-		padding: 0 28rpx;
+		padding: 0 28rpx 30rpx;
 		.fb_li{
 			width: 100%;
 			display: flex;
@@ -385,33 +554,49 @@ page{
 			&+.fb_li{
 				border-top: 1px solid #eee;
 			}
+			.fb_li_l{
+				height: 80rpx;
+				display: flex;
+				align-items: center;
+				font-size: 32rpx;
+				font-family: Microsoft YaHei;
+				font-weight: 400;
+				color: #333;
+				text{
+					color: #ED4149;
+				}
+			}
+			.fb_li_r{
+				flex: 1;
+				text-align: right;
+				font-size: 28rpx;
+				font-family: Microsoft YaHei;
+				font-weight: 400;
+			}
+			.fb_li_area{
+				width: 100%;
+				font-size: 28rpx;
+				font-family: Microsoft YaHei;
+				font-weight: 400;
+				color: #DDDDDD;
+				line-height: 42rpx;
+				height: 300rpx;
+			}
 		}
-		.fb_li_l{
-			height: 80rpx;
-			display: flex;
-			align-items: center;
+		
+		.fb_btn{
 			font-size: 32rpx;
 			font-family: Microsoft YaHei;
 			font-weight: 400;
-			color: #333;
-			text{
-				color: #ED4149;
-			}
-		}
-		.fb_li_r{
-			flex: 1;
-			text-align: right;
-			font-size: 28rpx;
-			font-family: Microsoft YaHei;
-			font-weight: 400;
-		}
-		.fb_li_area{
-			width: 100%;
-			font-size: 28rpx;
-			font-family: Microsoft YaHei;
-			font-weight: 400;
-			color: #DDDDDD;
-			line-height: 42rpx;
+			color: #F5F5F5;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 694rpx;
+			height: 90rpx;
+			background: #4680E6;
+			border-radius: 10rpx;
+			margin: 50rpx auto 0;
 		}
 	}
 }

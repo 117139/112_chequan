@@ -76,7 +76,7 @@
 			</view>
 		</view>
 		<view v-if="cur==1" class="car_list dis_flex fww">
-			<view class="car_li" v-for="(item,index) in 20">
+			<view class="car_li" v-for="(item,index) in 20"  @click="$service.jump" :data-url="'/pages/lx_details/lx_details?id='+1">
 				<view class="car_li_box">
 					<image class="car_li_img" src="/static/images/motor_lx.jpg" mode="aspectFit"></image>
 					<view class="car_li_msg">

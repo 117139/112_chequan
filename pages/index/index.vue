@@ -130,7 +130,7 @@
 		</view>
 		<view class="data_list">
 			<view class="data_li" v-for="(item,index) in 3">
-				<view class="datali_top">
+				<view class="datali_top" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+1">
 					<image class="datali_top_img" src="/static/images/banner_car.png" mode="aspectFill"></image>
 					<view class="datali_top_msg">
 						<view class="datalimsg_tit">南中环美容洗车店</view>
@@ -156,12 +156,12 @@
 					<view class="flex_1 data_sli_c">内饰清洗-五座轿车</view>
 					<view class="data_sli_r">￥<text>438</text></view>
 				</view>
-				<view class="datasli_more">查看全部<text class="icon icon-next"></text></view>
+				<view class="datasli_more"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+1">查看全部<text class="icon icon-next"></text></view>
 			</view>
 			<view class="go_more">查看更多洗车店<text class="icon icon-next"></text></view>
 		</view>
 		<view class="index_main_tit dis_flex aic">
-			<view class="i_tit_li active" ><text>洗车店</text></view>
+			<view class="i_tit_li active" ><text>二手车</text></view>
 		</view>
 		<view class="car_list dis_flex fww">
 			<view class="car_li" v-for="(item,index) in 20">

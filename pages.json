@@ -39,6 +39,21 @@
 				"navigationBarTextStyle": "white"
 			}
 
+		}, {
+			"path": "pages/lx_details/lx_details",
+			"style": {
+				"navigationBarTitleText": "路线详情",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/bus_index/bus_index",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+
 		}
 	],
 	"subPackages": [{
@@ -96,16 +111,14 @@
 				"enablePullDownRefresh": false
 			}
 
-		}    ,{
-                    "path" : "my_luxian/my_luxian",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "路线分享",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-            ]
+		}, {
+			"path": "my_luxian/my_luxian",
+			"style": {
+				"navigationBarTitleText": "路线分享",
+				"enablePullDownRefresh": false
+			}
+
+		}]
 	}],
 	"tabBar": {
 		"color": "#BBBBBB",
