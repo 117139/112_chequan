@@ -8,7 +8,7 @@
 			</view>
 		</view>
 		</u-sticky>
-		<view class="zan_list">
+		<view class="zan_list" v-if="active==0">
 			<view class="zan_li" v-for="(item,index) in 10">
 				<image class="zan_img" src="/static/images/car1.png" mode="aspectFill"></image>
 				<view class="zan_msg">
@@ -28,7 +28,29 @@
 				</view>
 			</view>
 		</view>
-		
+		<view class="fb_box" v-if="active==1">
+			<view class="fb_imgs"></view>
+			<view class="fb_list">
+				<view class="fb_li">
+					<view class="fb_li_l">
+						<text>*</text>标题
+					</view>
+					<input class="fb_li_r" type="text" v-model="fb_tit" placeholder="请填写标题">
+				</view>
+				<view class="fb_li" @click="getadd">
+					<view class="fb_li_l">
+						<text>*</text>地址
+					</view>
+					<view class="fb_li_r">请选择地址<text class="iconfont icon-next"></text></view>
+				</view>
+				<view class="fb_li">
+					<view class="fb_li_l">
+						<text>*</text>内容描述
+					</view>
+					<textarea class="fb_li_area" v-model="fb_content" placeholder="请填写内容描述"></textarea>
+				</view>
+			</view>
+		</view>
 		<!-- 阻止滑动 -->
 		<!-- <view @touchmove.stop.prevent='test'></view> -->
 	</view>
@@ -55,7 +77,9 @@
 						title:'发布分享',
 					},
 				],
-				active:0
+				active:0,
+				fb_tit:'',
+				fb_content:'',
 			}
 		},
 		computed: {
@@ -78,6 +102,21 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			getadd(){
+				console.log(1)
+				uni.chooseLocation({
+					success: res => {
+						// this.value5 = res.name
+						console.log('当前位置的：');
+						console.log(res);
+						that.address=res.address//地址
+						that.lng=res.longitude//经度  
+						that.lat=res.latitude//纬度  
+					},fail(err) {
+						console.log(err);
+					}
+				});
+			},
 			del_fuc(item){
 				uni.showModal({
 				    title: '提示',
@@ -324,6 +363,55 @@ page{
 					color: #999999;
 				}
 			}
+		}
+	}
+}
+.fb_box{
+	width: 100%;
+	.fb_imgs{
+		width: 100%;
+		height: 364rpx;
+		background: #F8F8F8;
+	}
+	.fb_list{
+		width: 100%;
+		padding: 0 28rpx;
+		.fb_li{
+			width: 100%;
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			padding: 10rpx 0;
+			&+.fb_li{
+				border-top: 1px solid #eee;
+			}
+		}
+		.fb_li_l{
+			height: 80rpx;
+			display: flex;
+			align-items: center;
+			font-size: 32rpx;
+			font-family: Microsoft YaHei;
+			font-weight: 400;
+			color: #333;
+			text{
+				color: #ED4149;
+			}
+		}
+		.fb_li_r{
+			flex: 1;
+			text-align: right;
+			font-size: 28rpx;
+			font-family: Microsoft YaHei;
+			font-weight: 400;
+		}
+		.fb_li_area{
+			width: 100%;
+			font-size: 28rpx;
+			font-family: Microsoft YaHei;
+			font-weight: 400;
+			color: #DDDDDD;
+			line-height: 42rpx;
 		}
 	}
 }
