@@ -129,7 +129,7 @@
 			<view class="i_tit_r dis_flex aic ju_b">快速入驻<image src="/static/images/i_tit_r.png" mode="aspectFit"></image></view>
 		</view>
 		<view class="data_list">
-			<view class="data_li" v-for="(item,index) in 3">
+			<view  v-if="cur==0" class="data_li" v-for="(item,index) in 3">
 				<view class="datali_top" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+1">
 					<image class="datali_top_img" src="/static/images/banner_car.png" mode="aspectFill"></image>
 					<view class="datali_top_msg">
@@ -141,30 +141,60 @@
 						</view>
 					</view>
 				</view>
-				<view class="data_sli dis_flex aic">
+				<view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_qcmr/details_qcmr">
 					<text class="data_sli_l"></text>
 					<view class="flex_1 data_sli_c">标准洗车-五座轿车</view>
 					<view class="data_sli_r">￥<text>43</text></view>
 				</view>
-				<view class="data_sli dis_flex aic">
+				<view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_qcmr/details_qcmr">
 					<text class="data_sli_l"></text>
 					<view class="flex_1 data_sli_c">五座轿车全车打蜡</view>
 					<view class="data_sli_r">￥<text>98</text></view>
 				</view>
-				<view class="data_sli dis_flex aic">
+				<view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_qcmr/details_qcmr">
 					<text class="data_sli_l"></text>
 					<view class="flex_1 data_sli_c">内饰清洗-五座轿车</view>
 					<view class="data_sli_r">￥<text>438</text></view>
 				</view>
 				<view class="datasli_more"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+1">查看全部<text class="icon icon-next"></text></view>
 			</view>
-			<view class="go_more">查看更多洗车店<text class="icon icon-next"></text></view>
+			<view  v-if="cur==1" class="data_li" v-for="(item,index) in 3">
+				<view class="datali_top" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=3&id='+1">
+					<image class="datali_top_img" src="/static/images/banner_car.png" mode="aspectFill"></image>
+					<view class="datali_top_msg">
+						<view class="datalimsg_tit">南中环加油站</view>
+						<view class="datalimsg_add">北京市朝阳区朝外街道108号</view>
+						<view class="dis_flex aic ju_b">
+							<view class="datalimsg_dh"><image src="/static/images/iaddicon.png" mode="aspectFit"></image>导航</view>
+							<view class="datalimsg_jl">1.71km</view>
+						</view>
+					</view>
+				</view>
+				<view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_jyz/details_jyz">
+					<text class="data_sli_l"></text>
+					<view class="flex_1 data_sli_c">90#汽油</view>
+					<view class="data_sli_r">￥<text>7.18</text></view>
+				</view>
+				<view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_jyz/details_jyz">
+					<text class="data_sli_l"></text>
+					<view class="flex_1 data_sli_c">92#汽油</view>
+					<view class="data_sli_r">￥<text>7.28</text></view>
+				</view>
+				<view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_jyz/details_jyz">
+					<text class="data_sli_l"></text>
+					<view class="flex_1 data_sli_c">93#汽油</view>
+					<view class="data_sli_r">￥<text>8.18</text></view>
+				</view>
+				<view class="datasli_more"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+1">查看全部<text class="icon icon-next"></text></view>
+			</view>
+			<view v-if="cur==0" class="go_more" @click="$service.jump" data-url="/pagesA/qcmr_list/qcmr_list">查看更多洗车店<text class="icon icon-next"></text></view>
+			<view v-if="cur==1" class="go_more" @click="$service.jump" data-url="/pagesA/jyz_list/jyz_list">查看更多加油站<text class="icon icon-next"></text></view>
 		</view>
 		<view class="index_main_tit dis_flex aic">
 			<view class="i_tit_li active" ><text>二手车</text></view>
 		</view>
 		<view class="car_list dis_flex fww">
-			<view class="car_li" v-for="(item,index) in 20">
+			<view class="car_li" v-for="(item,index) in 20"  @click="$service.jump" data-url="/pages/details_car/details_car">
 				<view class="car_li_box">
 					<image class="car_li_img" src="/static/images/car.jpg" mode="aspectFill"></image>
 					<view class="car_li_msg">

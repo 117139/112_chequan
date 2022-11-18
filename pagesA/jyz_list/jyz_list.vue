@@ -15,7 +15,7 @@
 		<view class="main_box">
 			<view class="data_list">
 				<view class="data_li" v-for="(item,index) in 3">
-					<view class="datali_top" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+1">
+					<view class="datali_top" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=3&id='+1">
 						<image class="datali_top_img" src="/static/images/banner_car.png" mode="aspectFill"></image>
 						<view class="datali_top_msg">
 							<view class="datalimsg_tit">北京三十六站</view>
@@ -26,17 +26,17 @@
 							</view>
 						</view>
 					</view>
-					<view class="data_sli dis_flex aic">
+					<view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_jyz/details_jyz">
 						<text class="data_sli_l"></text>
 						<view class="flex_1 data_sli_c">90#汽油</view>
 						<view class="data_sli_r">￥<text>7.18</text></view>
 					</view>
-					<view class="data_sli dis_flex aic">
+					<view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_jyz/details_jyz">
 						<text class="data_sli_l"></text>
 						<view class="flex_1 data_sli_c">92#汽油</view>
 						<view class="data_sli_r">￥<text>7.28</text></view>
 					</view>
-					<view class="data_sli dis_flex aic">
+					<view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_jyz/details_jyz">
 						<text class="data_sli_l"></text>
 						<view class="flex_1 data_sli_c">93#汽油</view>
 						<view class="data_sli_r">￥<text>8.18</text></view>

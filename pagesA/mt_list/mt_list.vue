@@ -1,24 +1,20 @@
 <template>
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
-		<topbar >
-			<view class="bus_head dis_flex aic ju_b">
+		<topbar bg_img="/static/images/motor_tbg.jpg">
+			<view class="bus_head dis_flex aic">
 				<text class="iconfont icon-back" @click="$service.back"></text>
-				<text class="bus_title">洗车店</text>
-				<picker @change="confirm" :value="index" :range="columns" range-key="title">
-					<!-- <view class="bus_jl"  @click="showpick">{{columns[index].title}} <image src="/static/images/icon_dropdown.png" mode="aspectFit"></image></view> -->
-					<view class="bus_jl"  >{{columns[index].title}} <image src="/static/images/icon_dropdown.png" mode="aspectFit"></image></view>
-				</picker>
+				<text class="bus_title">附近经销商</text>
 			</view>
 		</topbar>
-		<u-picker :show="show_sx" :columns="columns" @confirm="confirm_sx" @cancel="cancel_sx" />
+		<!-- <u-picker :show="show_sx" :columns="columns" @confirm="confirm_sx" @cancel="cancel_sx" /> -->
 		<view class="main_box">
 			<view class="data_list">
 				<view class="data_li" v-for="(item,index) in 3">
-					<view class="datali_top" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+1">
-						<image class="datali_top_img" src="/static/images/banner_car.png" mode="aspectFill"></image>
+					<view class="datali_top" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=1&id='+1">
+						<image class="datali_top_img" src="/static/images/motor1.png" mode="aspectFill"></image>
 						<view class="datali_top_msg">
-							<view class="datalimsg_tit">南中环美容洗车店</view>
+							<view class="datalimsg_tit">南中环摩托车行</view>
 							<view class="datalimsg_add">北京市朝阳区朝外街道108号</view>
 							<view class="dis_flex aic ju_b">
 								<view class="datalimsg_dh"><image src="/static/images/iaddicon.png" mode="aspectFit"></image>导航</view>
@@ -26,20 +22,20 @@
 							</view>
 						</view>
 					</view>
-					<view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_qcmr/details_qcmr">
+					<view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_motor/details_motor">
 						<text class="data_sli_l"></text>
-						<view class="flex_1 data_sli_c">标准洗车-五座轿车</view>
-						<view class="data_sli_r">￥<text>43</text></view>
+						<view class="flex_1 data_sli_c">豪爵XCR300</view>
+						<view class="data_sli_r"><text>2.78</text>万</view>
 					</view>
-					<view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_qcmr/details_qcmr">
+					<view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_motor/details_motor">
 						<text class="data_sli_l"></text>
-						<view class="flex_1 data_sli_c">五座轿车全车打蜡</view>
-						<view class="data_sli_r">￥<text>98</text></view>
+						<view class="flex_1 data_sli_c">纵擎赛 国潮机车256</view>
+						<view class="data_sli_r"><text>1.78</text>万</view>
 					</view>
-					<view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_qcmr/details_qcmr">
+					<view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_motor/details_motor">
 						<text class="data_sli_l"></text>
-						<view class="flex_1 data_sli_c">内饰清洗-五座轿车</view>
-						<view class="data_sli_r">￥<text>438</text></view>
+						<view class="flex_1 data_sli_c">闪爆摩界 闪300s国潮</view>
+						<view class="data_sli_r"><text>2.38</text>万</view>
 					</view>
 					<view class="datasli_more"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+1">查看全部<text class="icon icon-next"></text></view>
 				</view>
@@ -260,7 +256,7 @@ page{
 	position: relative;
 	text{
 		font-size: 30rpx;
-		color: #333;
+		color: #fff;
 		position: relative;
 		z-index: 999;
 	}
@@ -273,21 +269,9 @@ page{
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		z-index: 990;
-	}
-	.bus_jl{
-		font-size: 28rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
-		color: #000000;
-		padding-right: 14rpx;
-		position: relative;
-		z-index: 999;
-		image{
-			width: 17rpx;
-			height: 13rpx;
-			margin-left: 10rpx;
-		}
+		z-index: 998;
+		font-size: 30rpx;
+		color: #fff;
 	}
 }
 .wrap_box{
@@ -298,11 +282,11 @@ page{
 .main_box{
 	width: 100%;
 	// background: #f8f8f8;
-	background-image: url(/static/images/bg_carwash.png);
+	background-image: url(/static/images/motor_tbg.jpg);
 	background-repeat: no-repeat;
-	background-size: 100% 421rpx;
+	background-size: 100% 321rpx;
 	background-position: top;
-	padding: 322rpx 28rpx 30rpx;
+	padding: 32rpx 28rpx 30rpx;
 	
 }
 .data_list{

@@ -93,7 +93,7 @@
 				<view class="flex_1">/  专业检测 车况透明</view>
 			</view>
 			<scroll-view class="scroll_x mtc_list" scroll-x="true" >
-				<view class="car_li" v-for="(item,index) in 20">
+				<view class="car_li" v-for="(item,index) in 20" @click="$service.jump" data-url="/pages/details_car/details_car">
 					<view class="car_li_box">
 						<image class="car_li_img" src="/static/images/car.jpg" mode="aspectFill"></image>
 						<view class="car_li_msg">
@@ -110,7 +110,7 @@
 			<view class="i_tit_li active" ><text>精选推荐</text></view>
 		</view>
 		<view class="car_list dis_flex fww">
-			<view class="car_li" v-for="(item,index) in 20">
+			<view class="car_li" v-for="(item,index) in 20" @click="$service.jump" data-url="/pages/details_car/details_car">
 				<view class="car_li_box">
 					<image class="car_li_img" src="/static/images/car.jpg" mode="aspectFill"></image>
 					<view class="car_li_msg">

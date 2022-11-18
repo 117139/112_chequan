@@ -55,8 +55,51 @@
 				"navigationStyle": "custom"
 			}
 
+		}, {
+			"path": "pages/details_car/details_car",
+			"style": {
+				"navigationBarTitleText": "二手车",
+				"enablePullDownRefresh": false
+			}
+
 		}
-	],
+	    ,{
+            "path" : "pages/details_motor/details_motor",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "摩托车",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/details_jyz/details_jyz",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "加油站",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/details_qcmr/details_qcmr",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "汽车美容",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/login/login",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"subPackages": [{
 		"root": "pagesA",
 		"pages": [{
@@ -83,7 +126,26 @@
 				"navigationStyle": "custom"
 			}
 
-		}]
+		}, {
+			"path": "mt_list/mt_list",
+			"style": {
+				"navigationBarTitleText": "附近经销商",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#4B4F9B",
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
+			}
+
+		}    ,{
+                    "path" : "car_canshu/car_canshu",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "参数配置",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 	}, {
 		"root": "pages_my",
 		"pages": [{

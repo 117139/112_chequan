@@ -11,7 +11,16 @@
 				<view class="bus_top">
 					<image class="bus_logo" src="/static/images/car1.png" mode="aspectFill"></image>
 				</view>
-				<view class="bus_name">
+				<view v-if="options.type==1" class="bus_name">
+					北京国潮摩托车行 <image src="/static/images/shop_vip.png" mode="aspectFit"></image>
+				</view>
+				<view v-else-if="options.type==2" class="bus_name">
+					北京淘车二手车 <image src="/static/images/shop_vip.png" mode="aspectFit"></image>
+				</view>
+				<view v-else-if="options.type==3" class="bus_name">
+					南中环加油站 <image src="/static/images/shop_vip.png" mode="aspectFit"></image>
+				</view>
+				<view v-else class="bus_name">
 					南中环美容洗车店 <image src="/static/images/shop_vip.png" mode="aspectFit"></image>
 				</view>
 				<view class="bus_jj">
@@ -57,7 +66,7 @@
 			</view>
 			
 			<view  v-if="active==0" class="car_list dis_flex fww">
-				<view class="car_li" v-for="(item,index) in 20">
+				<view class="car_li" v-for="(item,index) in 20" @click.stop="$service.jump" data-url="/pages/details_qcmr/details_qcmr">
 					<view class="car_li_box">
 						<image class="car_li_img" src="/static/images/car1.png" mode="aspectFit"></image>
 						<view class="car_li_msg">
@@ -68,7 +77,7 @@
 					</view>
 				</view>
 			</view>
-			<view  v-if="active==1" class="car_list dis_flex fww">
+			<view  v-if="active==1" class="car_list dis_flex fww" @click.stop="$service.jump" data-url="/pages/details_motor/details_motor">
 				<view class="car_li" v-for="(item,index) in 20">
 					<view class="car_li_box">
 						<image class="car_li_img" src="/static/images/motor1.png" mode="aspectFit"></image>
@@ -80,7 +89,7 @@
 					</view>
 				</view>
 			</view>
-			<view  v-if="active==2" class="car_list dis_flex fww">
+			<view  v-if="active==2" class="car_list dis_flex fww" @click.stop="$service.jump" data-url="/pages/details_car/details_car">
 				<view class="car_li" v-for="(item,index) in 20">
 					<view class="car_li_box">
 						<image class="car_li_img" src="/static/images/car1.png" mode="aspectFit"></image>
@@ -92,7 +101,7 @@
 					</view>
 				</view>
 			</view>
-			<view v-if="active==3" class="car_list dis_flex fww">
+			<view v-if="active==3" class="car_list dis_flex fww" @click.stop="$service.jump" data-url="/pages/details_jyz/details_jyz">
 				<view class="car_li" v-for="(item,index) in 20">
 					<view class="car_li_box">
 						<image class="car_li_img" src="/static/images/car.jpg" mode="aspectFit"></image>
@@ -161,6 +170,9 @@
 		onLoad(e) {
 			that=this
 			that.options=e||{}
+			if(e.type){
+				that.active=e.type
+			}
 			console.log(e)
 			
 			// that.getdata()

@@ -11,6 +11,12 @@
 			</view>
 			<text @click="$service.jump" data-url="/pages_my/my_msg/my_msg" class="iconfont icon-shezhi my_shehzi"></text>
 		</view>
+		<view class="my_top dis_flex aic " @click="$service.jump" data-url="/pages/login/login">
+			<image class="my_head" src="/static/images/pic_head.png" mode="aspectFill"></image>
+			<view class="my_name  dis_flex aic ">
+				登录
+			</view>
+		</view>
 		<view class="shop_vip_box">
 			<image class="shop_vip_bg" src="/static/images/shopvurl.png" mode="aspectFill"></image>
 			<view class="shop_vip_btn">立即开通</view>

@@ -24,7 +24,7 @@
 		</view>
 		<scroll-view class="scroll_x order_list" scroll-x="true" >
 			<view>
-				<view class="order_li" v-for="(item,index) in 4">
+				<view class="order_li" v-for="(item,index) in 4" @click="$service.jump" data-url="/pages/details_motor/details_motor">
 					<!-- <image class="order_libg" src="/static/images/order_libg.png" mode="aspectFill"></image> -->
 					<view class="order_li_box">
 						<view class="order_li_tl">今日上新</view>
@@ -44,9 +44,9 @@
 			<view class="mt_cboxtit dis_flex aic">
 				<view class="mt_cboxtit_l">附近经销商</view>
 				<view class="flex_1">/  甄选优质经销商 省心又省钱</view>
-				<view>更多<text class="icon icon-next"></text></view>
+				<view @click="$service.jump" data-url="/pagesA/mt_list/mt_list">更多<text class="icon icon-next"></text></view>
 			</view>
-			<view class="mt_msg dis_flex aic">
+			<view class="mt_msg dis_flex aic" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=1&id='+1">
 				<image class="mt_msg_l" src="/static/images/banner_motor.png" mode="aspectFill"></image>
 				<view class="mt_msg_r">
 					<view class="mt_msg_r1">北京国潮摩托车行</view>
@@ -64,7 +64,7 @@
 			<view class="flex_1"></view>
 		</view>
 		<view v-if="cur==0" class="car_list dis_flex fww">
-			<view class="car_li" v-for="(item,index) in 20">
+			<view class="car_li" v-for="(item,index) in 20" @click="$service.jump" data-url="/pages/details_motor/details_motor">
 				<view class="car_li_box">
 					<image class="car_li_img" src="/static/images/motor.jpg" mode="aspectFit"></image>
 					<view class="car_li_msg">
