@@ -1,37 +1,10 @@
 <template>
 	<view class="wrap_box">
-		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
-		<u-sticky>
-		<view class="tab_list dis_flex ju_a" scroll-x="true">
-			<view class="tab_li" :class="{active:active==index}" @click="setcur(index)" v-for="(item,index) in tabs">
-				{{item.title}}
-			</view>
-		</view>
-		</u-sticky>
-		<view class="zan_list" v-if="active==0">
-			<view class="zan_li" v-for="(item,index) in 10" @click="$service.jump" :data-url="'/pages/lx_details/lx_details?id='+1">
-				<image class="zan_img" src="/static/images/car1.png" mode="aspectFill"></image>
-				<view class="zan_msg">
-					 <view class="zan_tit">入驻泉州最著名的西街旁 | 安 静清幽的小阁楼</view>
-					 <view class="lx_num dis_flex aic" >
-						<!-- <view v-if="index==1" class="car_li_sc car_li_sc1 dis_flex aic" >
-							<text class="icon icon-xihuan1"></text>
-							256
-						</view> v-else -->
-						<view class="car_li_sc dis_flex aic" >
-							<text class="icon icon-xihuan"></text>
-							256
-						</view>
-						<view class="li_cz">编辑</view>
-						<view class="li_cz" @click="del_fuc">删除</view>
-					 </view>
-				</view>
-			</view>
-		</view>
-		<view class="fb_box" v-if="active==1">
+		
+		<view class="fb_box">
 			<view class="fb_imgs"  @click="upimg_fuc" data-type="2"  data-idx="0">
 				<image class="fb_imgs_i" src="/static/images/icon_upimg.png" mode="aspectFit"></image>
-				<view class="fb_imgs_t">添加图片</view>
+				<view class="fb_imgs_t">添加店铺图片</view>
 			</view>
 			<view class="fb_img_box dis_flex fww">
 				<view class="fb_img_li" v-for="(item,index) in real_work">
@@ -44,24 +17,56 @@
 			<view class="fb_list">
 				<view class="fb_li">
 					<view class="fb_li_l">
-						<text>*</text>标题
+						店铺名称
 					</view>
-					<input class="fb_li_r" type="text" v-model="fb_tit" placeholder="请填写标题">
-				</view>
-				<view class="fb_li" @click="getadd">
-					<view class="fb_li_l">
-						<text>*</text>地址
-					</view>
-					<view class="fb_li_r">{{fb_add||'请选择地址'}}<text class="iconfont icon-next"></text></view>
+					<input class="fb_li_r" type="text" v-model="fb_tit" placeholder="请填写店铺名称">
 				</view>
 				<view class="fb_li">
 					<view class="fb_li_l">
-						<text>*</text>内容描述
+						联系方式
 					</view>
-					<textarea class="fb_li_area" v-model="fb_content" placeholder="请填写内容描述"></textarea>
+					<input class="fb_li_r" type="number" v-model="fb_tel" placeholder="请填写真实手机号">
 				</view>
-				
-				<view class="fb_btn" @click="fub_fuc">确认发布</view>
+				<picker @change="bindPickerChange" :value="index" :range="array">
+					<view class="fb_li fb_li1">
+						<view class="fb_li_l">
+							<text>*</text>店铺类型
+						</view>
+						<view class="fb_li_r">{{array[tp_index].title}}<text class="iconfont icon-next"></text></view>
+					</view>
+				</picker>
+				<view class="fb_li">
+					<view class="fb_li_l">
+						<!-- <text>*</text> -->
+						服务详细
+					</view>
+					<textarea class="fb_li_area" v-model="fb_content" placeholder="在此输入服务内容不超过30个字符" maxlength="30"></textarea>
+				</view>
+				<view class="fb_li" @click="getadd">
+					<view class="fb_li_l">
+						<text>*</text>商家地址
+					</view>
+					<view class="fb_li_r">{{fb_add||'请选择地址'}}<text class="iconfont icon-next"></text></view>
+				</view>
+				<!-- <region-picker @change="region_change" :value="fb_add">
+				<view class="fb_li fb_li1">
+					<view class="fb_li_l">
+						<text>*</text>商家地址
+					</view>
+					<view v-if="fb_add.length>0" class="fb_li_r">{{fb_add.join(' ')}}<text class="iconfont icon-next"></text></view>
+					<view v-else class="fb_li_r">请选择地区<text class="iconfont icon-next"></text></view>
+				</view>
+				</region-picker>
+				<view class="fb_li">
+					<input class="fb_li_r fb_li_r1" type="text" v-model="fb_add_xq" placeholder="详细地址（如街道、小区、乡镇、村）">
+					<view class="fb_li_l">
+						
+					</view>
+				</view> -->
+			</view>
+			<view class="fb_btn" @click="fub_fuc">确认入驻</view>
+			<view class="fb_xy">
+				点击确认入驻表示同意<text>商家入驻规则协议</text>
 			</view>
 		</view>
 		<!-- 阻止滑动 -->
@@ -71,6 +76,7 @@
 
 <script>
 	import Vue from 'vue'
+	import regionPicker from "@/components/region-picker/region-picker.vue"
 	import {
 		mapState,
 		mapMutations
@@ -92,10 +98,34 @@
 				],
 				active:0,
 				fb_tit:'',
+				fb_tel:'',
 				fb_content:'',
 				fb_add:'',
+				fb_add_xq:'',
 				real_work:[],   ///照片
+				array:[
+					{
+						title:' 汽车美容',
+						id:1
+					},
+					{
+						title:'摩托车',
+						id:2
+					},
+					{
+						title:'二手车',
+						id:3
+					},
+					{
+						title:'加油站',
+						id:4
+					},
+				],
+				tp_index:0
 			}
+		},
+		components: {  
+				regionPicker  
 		},
 		computed: {
 		...mapState(['hasLogin', 'forcedLogin', 'userName', 'userinfo','loginDatas']),
@@ -117,14 +147,27 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			 bindPickerChange: function(e) {
+					console.log('picker发送选择改变，携带值为', e.detail.value)
+					this.tp_index = e.detail.value
+			},
+			region_change(e){
+				console.log(e)
+				that.fb_add=e.detail.value
+			},
 			fub_fuc(){
+				var datas={
+					fb_tit:that.fb_tit,
+					fb_tel:that.fb_tel,
+					fb_content:that.fb_content,
+					fb_add:that.fb_add,
+					type:that.array[that.tp_index].title
+					// fb_add_xq:that.fb_add_xq,
+				}
 				uni.showToast({
 					icon:'none',
 					title:'发布成功'
 				})
-				setTimeout(function(){
-					that.active=0
-				},1000)
 			},
 			getadd(){
 				console.log(1)
@@ -443,62 +486,10 @@ page{
 	// #ifdef H5
 	min-height: calc(100vh -  44px);
 	// #endif
-	background: #fff;
+	background: #f8f8f8;
+	padding-bottom: 30rpx;
 }
-.zan_list{
-	width: 100%;
-	.zan_li{
-		width: 100%;
-		padding: 22rpx 28rpx;
-		display: flex;
-		.zan_img{
-			width: 240rpx;
-			height: 160rpx;
-			margin-right: 29rpx;
-		}
-		.zan_msg{
-			flex: 1;
-			.zan_tit{
-				font-size: 32rpx;
-				font-family: Microsoft YaHei;
-				font-weight: 400;
-				color: #333333;
-				line-height: 42rpx;
-				height: 84rpx;
-			}
-			.lx_num{
-				margin-top: 40rpx;
-				width: 100%;
-				.car_li_sc{
-					font-size: 28rpx;
-					font-family: Arial;
-					font-weight: 400;
-					color: #999999;
-					flex: 1;
-					text{
-						margin-right: 15rpx;
-					}
-					&.car_li_sc1{
-						color: #E2382F;
-					}
-				}
-				.li_num{
-					font-size: 28rpx;
-					font-family: Arial;
-					font-weight: 400;
-					color: #E2382F;
-				}
-				.li_cz{
-					margin-left: 20rpx;
-					font-size: 24rpx;
-					font-family: Microsoft YaHei;
-					font-weight: 400;
-					color: #999999;
-				}
-			}
-		}
-	}
-}
+
 .fb_box{
 	width: 100%;
 	.fb_imgs{
@@ -553,7 +544,8 @@ page{
 	}
 	.fb_list{
 		width: 100%;
-		padding: 0 28rpx 30rpx;
+		padding: 0 28rpx ;
+		background: #fff;
 		.fb_li{
 			width: 100%;
 			display: flex;
@@ -562,6 +554,10 @@ page{
 			padding: 10rpx 0;
 			&+.fb_li{
 				border-top: 1px solid #eee;
+			}
+			&.fb_li1{
+				border-top: 1px solid #eee;
+				border-bottom: 1px solid #eee;
 			}
 			.fb_li_l{
 				height: 80rpx;
@@ -581,6 +577,9 @@ page{
 				font-size: 28rpx;
 				font-family: Microsoft YaHei;
 				font-weight: 400;
+				&.fb_li_r1{
+					text-align: left;
+				}
 			}
 			.fb_li_area{
 				width: 100%;
@@ -593,20 +592,34 @@ page{
 			}
 		}
 		
-		.fb_btn{
-			font-size: 32rpx;
-			font-family: Microsoft YaHei;
-			font-weight: 400;
-			color: #F5F5F5;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			width: 694rpx;
-			height: 90rpx;
-			background: #4680E6;
-			border-radius: 10rpx;
-			margin: 50rpx auto 0;
-		}
+		
+	}
+}
+
+.fb_btn{
+	font-size: 32rpx;
+	font-family: Microsoft YaHei;
+	font-weight: 400;
+	color: #F5F5F5;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 694rpx;
+	height: 90rpx;
+	background: #4680E6;
+	border-radius: 10rpx;
+	margin: 50rpx auto 0;
+}
+.fb_xy{
+	margin-top: 30rpx;
+	width: 100%;
+	font-size: 24rpx;
+	font-family: Microsoft YaHei;
+	font-weight: 400;
+	color: #666666;
+	text-align: center;
+	text{
+		color: #4680E6;
 	}
 }
 </style>

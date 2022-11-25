@@ -1,27 +1,8 @@
 <template>
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
-		<u-sticky>
-		<scroll-view class="tab_list scroll_x" scroll-x="true">
-			<view>
-				<view class="tab_li" :class="{active:active==index}" @click="setcur(index)" v-for="(item,index) in tabs">
-					{{item.title}}
-				</view>
-			</view>
-		</scroll-view>
-		</u-sticky>
-		<view class="zan_list">
-			<view class="zan_li" v-for="(item,index) in 10">
-				<image class="zan_img" src="/static/images/car1.png" mode="aspectFill"></image>
-				<view class="zan_msg">
-					 <view class="zan_tit">入驻泉州最著名的西街旁 | 安 静清幽的小阁楼</view>
-					 <view class="car_li_sc car_li_sc1 dis_flex aic" >
-						<view class="li_num flex_1">12万</view>
-						<view class="li_cz">编辑</view>
-						<view class="li_cz" @click="del_fuc">删除</view>
-					 </view>
-				</view>
-			</view>
+		<view class="fb_tabs">
+			<view class="tabs_li" v-for="(item,index) in tabs" :class="{active:active==index}" @click="setcur_fuc(index)">{{item.title}}</view>
 		</view>
 		
 		<!-- 阻止滑动 -->
@@ -44,7 +25,7 @@
 				page:1,
 				tabs:[
 					{
-						title:' 汽车美容',
+						title:'汽车美容',
 						id:1
 					},
 					{
@@ -83,24 +64,7 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
-			del_fuc(item){
-				uni.showModal({
-				    title: '提示',
-				    content: '是否删除该信息',
-				    success: function (res) {
-				        if (res.confirm) {
-										uni.showToast({
-											title:'删除成功',
-											icon:'none'
-										})
-				           
-				        } else if (res.cancel) {
-				            console.log('用户点击取消');
-				        }
-				    }
-				});
-			},
-			setcur(index){
+			setcur_fuc(index){
 				that.active=index
 			},
 			onRetry(){
@@ -235,89 +199,35 @@
 page{
 	// background: #fff;
 }
-.tab_list{
+.wrap_box{
+	background: #f8f8f8;
+}
+.fb_tabs{
 	width: 100%;
-	height: 100rpx;
+	height: 112rpx;
+	background: #FFFFFF;
 	padding: 0 28rpx;
-	background: #fff;
-	border-bottom: 1px solid #eee;
-	.tab_li{
-		display: inline-flex;
-		height: 100rpx;
-		align-items: center;
-		justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	.tabs_li{
 		font-size: 30rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
-		color: #666666;
-		&+.tab_li{
-			margin-left: 88rpx;
-		}
+		color: #333333;
+		position: relative;
 		&.active{
 			color: #4680E6;
-			position: relative;
 			&::after{
 				content: '';
 				position: absolute;
-				bottom: 14rpx;
-				left: 50%;
-				width: 68rpx;
-				height: 6rpx;
+				bottom: -10rpx;
+				width: 42rpx;
+				height: 5rpx;
 				background: #4680E6;
 				border-radius: 3rpx;
-				margin-left: -34rpx;
-			}
-		}
-	}
-}
-.wrap_box{
-	width: 100%;
-	min-height: 100vh;
-	// #ifdef H5
-	min-height: calc(100vh -  44px);
-	// #endif
-	background: #fff;
-}
-.zan_list{
-	width: 100%;
-	.zan_li{
-		width: 100%;
-		padding: 22rpx 28rpx;
-		display: flex;
-		.zan_img{
-			width: 240rpx;
-			height: 160rpx;
-			margin-right: 29rpx;
-		}
-		.zan_msg{
-			flex: 1;
-			.zan_tit{
-				font-size: 32rpx;
-				font-family: Microsoft YaHei;
-				font-weight: 400;
-				color: #333333;
-				line-height: 42rpx;
-				height: 84rpx;
-			}
-			.car_li_sc{
-				margin-top: 40rpx;
-				font-size: 28rpx;
-				font-family: Arial;
-				font-weight: 400;
-				color: #999999;
-				.li_num{
-					font-size: 28rpx;
-					font-family: Arial;
-					font-weight: 400;
-					color: #E2382F;
-				}
-				.li_cz{
-					margin-left: 20rpx;
-					font-size: 24rpx;
-					font-family: Microsoft YaHei;
-					font-weight: 400;
-					color: #999999;
-				}
+				left: 50%;
+				margin-left: -21rpx;
 			}
 		}
 	}

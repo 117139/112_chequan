@@ -197,7 +197,34 @@
 				"enablePullDownRefresh": false
 			}
 
-		}]
+		}    ,{
+                    "path" : "store_join/store_join",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "商家入驻",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "store_join1/store_join1",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "商家入驻",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "store_fb/store_fb",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "发布",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 	}],
 	"tabBar": {
 		"color": "#BBBBBB",
