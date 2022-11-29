@@ -129,6 +129,11 @@
 						icon: 'none',
 						title: '提交成功'
 					})
+					
+					setTimeout(function(){
+						// that.$service.wxlogin('token')
+						uni.navigateBack()
+					},1000)
 					return
 					
 				}

@@ -17,13 +17,13 @@
 				</view>
 				<view class="index_tui_li_text">汽车美容</view>
 			</view>
-			<view class="index_tui_li">
+			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_zt/rgc_zt">
 				<view class="index_tui_li_img">
 					<image src="/static/images/iti3.png" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">人工查状态</view>
 			</view>
-			<view class="index_tui_li">
+			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_nj/rgc_nj">
 				<view class="index_tui_li_img">
 					<image src="/static/images/iti4.png" mode="aspectFill"></image>
 				</view>
@@ -41,7 +41,7 @@
 				</view>
 				<view class="index_tui_li_text">车型识别</view>
 			</view>
-			<view class="index_tui_li">
+			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_wz/rgc_wz">
 				<view class="index_tui_li_img">
 					<image src="/static/images/iti7.png" mode="aspectFill"></image>
 					<view class="index_tui_jz">精准</view>
@@ -79,7 +79,7 @@
 			</view>
 		</view>
 		<view class="indext3_ul dis_flex fww">
-			<view class="indext3_li">
+			<view class="indext3_li" @click="go_vip(2)">
 				<image class="indext3_libg" src="/static/images/it3bg1.png" mode="aspectFill"></image>
 				<view class="indext3_liinr">
 					<image src="/static/images/it3i1.png" mode="aspectFit"></image>
@@ -87,7 +87,7 @@
 					<text class="icon icon-next"></text>
 				</view>
 			</view>
-			<view class="indext3_li">
+			<view class="indext3_li" @click="go_vip(1)">
 				<image class="indext3_libg" src="/static/images/it3bg2.png" mode="aspectFill"></image>
 				<view class="indext3_liinr">
 					<image src="/static/images/it3i2.png" mode="aspectFit"></image>
@@ -104,7 +104,7 @@
 						<view class="order_li_l">
 							<image class="order_li_img" src="/static/images/order_img.png" mode="aspectFit"></image>
 							<view class="order_li_carid">京A 12345</view>
-							<view class="order_li_goorder">
+							<view class="order_li_goorder" @click="$service.jump" :data-url="'/pagesA/wz_xq/wz_xq'">
 								查看订单<text class="icon icon-next"></text>
 							</view>
 						</view>
@@ -225,6 +225,13 @@
 			that =this
 		},
 		methods: {
+			go_vip(num){
+				console.log(num)
+				uni.setStorageSync('vipnum',num)
+				uni.switchTab({
+					url:'/pages/vip/vip'
+				})
+			},
 			setcur(index){
 				that.cur=index
 			},

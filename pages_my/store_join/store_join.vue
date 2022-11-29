@@ -44,7 +44,7 @@
 				</view>
 				<view class="fb_li" @click="getadd">
 					<view class="fb_li_l">
-						<text>*</text>商家地址
+						<!-- <text>*</text> -->商家地址
 					</view>
 					<view class="fb_li_r">{{fb_add||'请选择地址'}}<text class="iconfont icon-next"></text></view>
 				</view>
@@ -586,7 +586,7 @@ page{
 				font-size: 28rpx;
 				font-family: Microsoft YaHei;
 				font-weight: 400;
-				color: #DDDDDD;
+				color: #333;
 				line-height: 42rpx;
 				height: 300rpx;
 			}

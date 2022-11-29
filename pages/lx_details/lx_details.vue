@@ -44,7 +44,7 @@
 				<view class="xq_tag">
 					<image src="/static/images/icon_Wechat.png" mode="aspectFit"></image> 微信
 				</view>
-				<view class="xq_tag">
+				<view class="xq_tag" @click="$service.jump" :data-url="'/pagesA/jubao/jubao'">
 					<text class="iconfont icon-xinfangjubao"></text> 举报
 				</view>
 			</view>

@@ -164,6 +164,20 @@
 			that=this
 			// that.getviplist()
 		},
+		onShow() {
+			var vipnum = uni.getStorageSync('vipnum')
+				console.log(vipnum)
+			if(vipnum){
+				if(vipnum==1){
+					that.bg_color='#282A4F'
+					that.cur=1
+				}else{
+					that.bg_color='#FF9E54'
+					that.cur=0
+				}
+				uni.removeStorageSync('vipnum')
+			}
+		},
 		methods: {
 			setcur(index){
 				that.cur=index

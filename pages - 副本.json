@@ -182,42 +182,6 @@
                 }
                 
                 }
-                ,{
-                    "path" : "xieyi/xieyi",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
-                    "path" : "rgc_zt_order/rgc_zt_order",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "确认订单",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
-                    "path" : "rgc_wz/rgc_wz",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "人工查违章",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
-                    "path" : "rgc_nj/rgc_nj",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "急速年检",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
             ]
 	}, {
 		"root": "pages_my",

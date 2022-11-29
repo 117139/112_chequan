@@ -1,30 +1,11 @@
 <template>
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
-		<u-sticky>
-		<scroll-view class="tab_list scroll_x" scroll-x="true">
-			<view>
-				<view class="tab_li" :class="{active:active==index}" @click="setcur(index)" v-for="(item,index) in tabs">
-					{{item.title}}
-				</view>
-			</view>
-		</scroll-view>
-		</u-sticky>
-		<view class="zan_list">
-			<view class="zan_li" v-for="(item,index) in 10">
-				<image class="zan_img" src="/static/images/car1.png" mode="aspectFill"></image>
-				<view class="zan_msg">
-					 <view class="zan_tit">入驻泉州最著名的西街旁 | 安 静清幽的小阁楼{{tabs[active].title}}</view>
-					 <view class="car_li_sc car_li_sc1 dis_flex aic" >
-						<view v-if="active==0" class="li_num flex_1">40元</view>
-						<view v-if="active==1" class="li_num flex_1">7.8万</view>
-						<view v-if="active==2" class="li_num flex_1">12万</view>
-						<view v-if="active==3" class="li_num flex_1">7.8元</view>
-						<view class="li_cz" @click="$service.jump" :data-url="'/pages_my/store_fb/store_fb?type='+active+'&id='+1">编辑</view>
-						<view class="li_cz" @click="del_fuc">删除</view>
-					 </view>
-				</view>
-			</view>
+		<view class="ok_box dis_flex_c aic ju_c">
+			<image class="ok_img" src="/static/images/order_ok.png" mode="aspectFit"></image>
+			<view class="ok_tip">发布成功</view>
+			<view class="ok_tip1">成功发布，快去看看吧</view>
+			<view class="ok_btn" @click="go_fb">继续发布</view>
 		</view>
 		
 		<!-- 阻止滑动 -->
@@ -44,26 +25,7 @@
 			return {
 				options:'',
 				datas:'',
-				page:1,
-				tabs:[
-					{
-						title:' 汽车美容',
-						id:1
-					},
-					{
-						title:'摩托车',
-						id:2
-					},
-					{
-						title:'二手车',
-						id:3
-					},
-					{
-						title:'加油站',
-						id:4
-					},
-				],
-				active:0
+				page:1
 			}
 		},
 		computed: {
@@ -86,25 +48,10 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
-			del_fuc(item){
-				uni.showModal({
-				    title: '提示',
-				    content: '是否删除该信息',
-				    success: function (res) {
-				        if (res.confirm) {
-										uni.showToast({
-											title:'删除成功',
-											icon:'none'
-										})
-				           
-				        } else if (res.cancel) {
-				            console.log('用户点击取消');
-				        }
-				    }
-				});
-			},
-			setcur(index){
-				that.active=index
+			go_fb(){
+				uni.redirectTo({
+					url:'/pages_my/store_fb/store_fb'
+				})
 			},
 			onRetry(){
 				that.page=1
@@ -235,94 +182,47 @@
 </script>
 
 <style lang="scss" scoped>
-page{
-	// background: #fff;
+.wrap_box{
+	background: #f8f8f8;
+	padding:28rpx;
 }
-.tab_list{
+.ok_box{
 	width: 100%;
-	height: 100rpx;
-	padding: 0 28rpx;
-	background: #fff;
-	border-bottom: 1px solid #eee;
-	.tab_li{
-		display: inline-flex;
-		height: 100rpx;
+	height: 560rpx;
+	background: #FFFFFF;
+	border-radius: 10rpx;
+	.ok_img{
+		width: 116rpx;
+		height: 116rpx;
+		border-radius: 50%;
+		margin-bottom: 30rpx;
+	}
+	.ok_tip{
+		font-size: 30rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #333333;
+		margin-bottom: 16rpx;
+	}
+	.ok_tip1{
+		font-size: 24rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #999999;
+		margin-bottom: 36rpx;
+	}
+	.ok_btn{
+		display: flex;
 		align-items: center;
 		justify-content: center;
 		font-size: 30rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
-		color: #666666;
-		&+.tab_li{
-			margin-left: 88rpx;
-		}
-		&.active{
-			color: #4680E6;
-			position: relative;
-			&::after{
-				content: '';
-				position: absolute;
-				bottom: 14rpx;
-				left: 50%;
-				width: 68rpx;
-				height: 6rpx;
-				background: #4680E6;
-				border-radius: 3rpx;
-				margin-left: -34rpx;
-			}
-		}
-	}
-}
-.wrap_box{
-	width: 100%;
-	min-height: 100vh;
-	// #ifdef H5
-	min-height: calc(100vh -  44px);
-	// #endif
-	background: #fff;
-}
-.zan_list{
-	width: 100%;
-	.zan_li{
-		width: 100%;
-		padding: 22rpx 28rpx;
-		display: flex;
-		.zan_img{
-			width: 240rpx;
-			height: 160rpx;
-			margin-right: 29rpx;
-		}
-		.zan_msg{
-			flex: 1;
-			.zan_tit{
-				font-size: 32rpx;
-				font-family: Microsoft YaHei;
-				font-weight: 400;
-				color: #333333;
-				line-height: 42rpx;
-				height: 84rpx;
-			}
-			.car_li_sc{
-				margin-top: 40rpx;
-				font-size: 28rpx;
-				font-family: Arial;
-				font-weight: 400;
-				color: #999999;
-				.li_num{
-					font-size: 28rpx;
-					font-family: Arial;
-					font-weight: 400;
-					color: #E2382F;
-				}
-				.li_cz{
-					margin-left: 20rpx;
-					font-size: 24rpx;
-					font-family: Microsoft YaHei;
-					font-weight: 400;
-					color: #999999;
-				}
-			}
-		}
+		color: #4680E6;
+		width: 280rpx;
+		height: 80rpx;
+		border: 1px solid #4680E6;
+		border-radius: 40rpx;
 	}
 }
 </style>

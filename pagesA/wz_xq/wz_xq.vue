@@ -1,28 +1,51 @@
 <template>
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
-		<u-sticky>
-		<scroll-view class="tab_list scroll_x" scroll-x="true">
-			<view>
-				<view class="tab_li" :class="{active:active==index}" @click="setcur(index)" v-for="(item,index) in tabs">
-					{{item.title}}
-				</view>
+		<view class="xq_box">
+			<view class="xq_li">
+				<view class="xq_l">车辆类型</view>
+				<view class="xq_r">小型轿车</view>
 			</view>
-		</scroll-view>
-		</u-sticky>
-		<view class="zan_list">
-			<view class="zan_li" v-for="(item,index) in 10">
-				<image class="zan_img" src="/static/images/car1.png" mode="aspectFill"></image>
-				<view class="zan_msg">
-					 <view class="zan_tit">入驻泉州最著名的西街旁 | 安 静清幽的小阁楼{{tabs[active].title}}</view>
-					 <view class="car_li_sc car_li_sc1 dis_flex aic" >
-						<view v-if="active==0" class="li_num flex_1">40元</view>
-						<view v-if="active==1" class="li_num flex_1">7.8万</view>
-						<view v-if="active==2" class="li_num flex_1">12万</view>
-						<view v-if="active==3" class="li_num flex_1">7.8元</view>
-						<view class="li_cz" @click="$service.jump" :data-url="'/pages_my/store_fb/store_fb?type='+active+'&id='+1">编辑</view>
-						<view class="li_cz" @click="del_fuc">删除</view>
-					 </view>
+			<view class="xq_li">
+				<view class="xq_l">车牌号码</view>
+				<view class="xq_r">京A12345</view>
+			</view>
+			<view class="xq_li">
+				<view class="xq_l">处罚书编号</view>
+				<view class="xq_r">2202000004858</view>
+			</view>
+			<view class="xq_li">
+				<view class="xq_l">违法时间</view>
+				<view class="xq_r">2022-01-21 20:46:00</view>
+			</view>
+			<view class="xq_li">
+				<view class="xq_l">违法地址</view>
+				<view class="xq_r">北京市东城区某某路</view>
+			</view>
+			<view class="xq_li">
+				<view class="xq_l">执法大队</view>
+				<view class="xq_r">北京市公安局交通警察支队东城大队</view>
+			</view>
+			<view class="xq_li">
+				<view class="xq_l">违法行为</view>
+				<view class="xq_r">机动车违反规定停放、临时停车，妨碍其他车辆、行人通行的</view>
+			</view>
+			<view class="xq_li">
+				<view class="xq_l">罚款金额</view>
+				<view class="xq_r" style="color: #E2382F;">200元</view>
+			</view>
+			<view class="xq_li">
+				<view class="xq_l">违法扣分</view>
+				<view class="xq_r" style="color: #E2382F;">0分</view>
+			</view>
+			<view class="xq_li">
+				<view class="xq_l">违章图片</view>
+				<view class="xq_r">
+					<view class="xq_imgs">
+						<view class="xq_img" v-for="(item,index) in 4">
+							<image src="/static/images/car1.png" mode="aspectFill"></image>
+						</view>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -44,26 +67,7 @@
 			return {
 				options:'',
 				datas:'',
-				page:1,
-				tabs:[
-					{
-						title:' 汽车美容',
-						id:1
-					},
-					{
-						title:'摩托车',
-						id:2
-					},
-					{
-						title:'二手车',
-						id:3
-					},
-					{
-						title:'加油站',
-						id:4
-					},
-				],
-				active:0
+				page:1
 			}
 		},
 		computed: {
@@ -86,26 +90,6 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
-			del_fuc(item){
-				uni.showModal({
-				    title: '提示',
-				    content: '是否删除该信息',
-				    success: function (res) {
-				        if (res.confirm) {
-										uni.showToast({
-											title:'删除成功',
-											icon:'none'
-										})
-				           
-				        } else if (res.cancel) {
-				            console.log('用户点击取消');
-				        }
-				    }
-				});
-			},
-			setcur(index){
-				that.active=index
-			},
 			onRetry(){
 				that.page=1
 				that.datas=[]
@@ -235,91 +219,47 @@
 </script>
 
 <style lang="scss" scoped>
-page{
-	// background: #fff;
-}
-.tab_list{
-	width: 100%;
-	height: 100rpx;
-	padding: 0 28rpx;
-	background: #fff;
-	border-bottom: 1px solid #eee;
-	.tab_li{
-		display: inline-flex;
-		height: 100rpx;
-		align-items: center;
-		justify-content: center;
-		font-size: 30rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
-		color: #666666;
-		&+.tab_li{
-			margin-left: 88rpx;
-		}
-		&.active{
-			color: #4680E6;
-			position: relative;
-			&::after{
-				content: '';
-				position: absolute;
-				bottom: 14rpx;
-				left: 50%;
-				width: 68rpx;
-				height: 6rpx;
-				background: #4680E6;
-				border-radius: 3rpx;
-				margin-left: -34rpx;
-			}
-		}
-	}
-}
 .wrap_box{
 	width: 100%;
-	min-height: 100vh;
-	// #ifdef H5
-	min-height: calc(100vh -  44px);
-	// #endif
-	background: #fff;
+	padding: 28rpx;
+	background: #f8f8f8;
 }
-.zan_list{
+.xq_box{
 	width: 100%;
-	.zan_li{
+	background: #FFFFFF;
+	border-radius: 10rpx;
+	.xq_li{
 		width: 100%;
-		padding: 22rpx 28rpx;
+		padding: 25rpx 28rpx;
 		display: flex;
-		.zan_img{
-			width: 240rpx;
-			height: 160rpx;
-			margin-right: 29rpx;
+		&+.xq_li{
+			border-top: 1px solid #EEEEEE;
 		}
-		.zan_msg{
+		.xq_l{
+			font-size: 30rpx;
+			font-family: Microsoft YaHei;
+			font-weight: 400;
+			color: #333333;
+			width: 212rpx;
+		}
+		.xq_r{
 			flex: 1;
-			.zan_tit{
-				font-size: 32rpx;
-				font-family: Microsoft YaHei;
-				font-weight: 400;
-				color: #333333;
-				line-height: 42rpx;
-				height: 84rpx;
-			}
-			.car_li_sc{
-				margin-top: 40rpx;
-				font-size: 28rpx;
-				font-family: Arial;
-				font-weight: 400;
-				color: #999999;
-				.li_num{
-					font-size: 28rpx;
-					font-family: Arial;
-					font-weight: 400;
-					color: #E2382F;
-				}
-				.li_cz{
-					margin-left: 20rpx;
-					font-size: 24rpx;
-					font-family: Microsoft YaHei;
-					font-weight: 400;
-					color: #999999;
+			font-size: 30rpx;
+			font-family: Microsoft YaHei;
+			font-weight: 400;
+			color: #333333;
+			.xq_imgs{
+				width: 100%;
+				display: flex;
+				flex-wrap: wrap;
+				.xq_img{
+					width: 33.33%;
+					height: 144rpx;
+					padding: 5rpx;
+					image{
+						width: 100%;
+						height: 100%;
+					}
 				}
 			}
 		}
