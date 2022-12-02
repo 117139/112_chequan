@@ -11,7 +11,7 @@
 		</scroll-view>
 		</u-sticky>
 		<view class="zan_list">
-			<view class="zan_li" v-for="(item,index) in 10">
+			<view class="zan_li" v-for="(item,index) in 10" @click="jump_fuc">
 				<image class="zan_img" src="/static/images/car1.png" mode="aspectFill"></image>
 				<view class="zan_msg">
 					 <view class="zan_tit">入驻泉州最著名的西街旁 | 安 静清幽的小阁楼{{tabs[active].title}}</view>
@@ -20,8 +20,8 @@
 						<view v-if="active==1" class="li_num flex_1">7.8万</view>
 						<view v-if="active==2" class="li_num flex_1">12万</view>
 						<view v-if="active==3" class="li_num flex_1">7.8元</view>
-						<view class="li_cz" @click="$service.jump" :data-url="'/pages_my/store_fb/store_fb?type='+active+'&id='+1">编辑</view>
-						<view class="li_cz" @click="del_fuc">删除</view>
+						<view class="li_cz" @click.stop="$service.jump" :data-url="'/pages_my/store_fb/store_fb?type='+active+'&id='+1">编辑</view>
+						<view class="li_cz" @click.stop="del_fuc">删除</view>
 					 </view>
 				</view>
 			</view>
@@ -86,6 +86,28 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			jump_fuc(){
+				if(that.active==0){
+					uni.navigateTo({
+						url:'/pages/details_qcmr/details_qcmr'
+					})
+				}
+				if(that.active==1){
+					uni.navigateTo({
+						url:'/pages/details_motor/details_motor'
+					})
+				}
+				if(that.active==2){
+					uni.navigateTo({
+						url:'/pages/details_car/details_car'
+					})
+				}
+				if(that.active==3){
+					uni.navigateTo({
+						url:'/pages/details_jyz/details_jyz'
+					})
+				}
+			},
 			del_fuc(item){
 				uni.showModal({
 				    title: '提示',
