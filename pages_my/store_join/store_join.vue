@@ -27,7 +27,7 @@
 					</view>
 					<input class="fb_li_r" type="number" v-model="fb_tel" placeholder="请填写真实手机号">
 				</view>
-				<picker @change="bindPickerChange" :value="index" :range="array">
+				<picker @change="bindPickerChange" :value="index" :range="array" range-key="title">
 					<view class="fb_li fb_li1">
 						<view class="fb_li_l">
 							<text>*</text>店铺类型
@@ -168,6 +168,11 @@
 					icon:'none',
 					title:'发布成功'
 				})
+				setTimeout(function(){
+					uni.navigateTo({
+						url:'/pages_my/store_join1/store_join1'
+					})
+				},1000)
 			},
 			getadd(){
 				console.log(1)
