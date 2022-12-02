@@ -22,7 +22,7 @@
 		</scroll-view>
 		</u-sticky>
 		<view class="zan_list">
-			<view class="zan_li" v-for="(item,index) in 10">
+			<view class="zan_li" v-for="(item,index) in 10" @click.stop="jump_fuc" data-url="/pages/details_jyz/details_jyz">
 				<image class="zan_img" src="/static/images/car1.png" mode="aspectFill"></image>
 				<view class="zan_msg">
 					 <view class="zan_tit">入驻泉州最著名的西街旁 | 安 静清幽的小阁楼</view>
@@ -81,7 +81,8 @@
 			that=this
 			that.options=e||{}
 			console.log(e)
-			
+			that.active=e.type||0
+			that.keyword=e.key||''
 			// that.getdata()
 		},
 		onShow() {
@@ -91,6 +92,28 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			jump_fuc(){
+				if(that.active==0){
+					uni.navigateTo({
+						url:'/pages/details_qcmr/details_qcmr'
+					})
+				}
+				if(that.active==1){
+					uni.navigateTo({
+						url:'/pages/details_motor/details_motor'
+					})
+				}
+				if(that.active==2){
+					uni.navigateTo({
+						url:'/pages/details_car/details_car'
+					})
+				}
+				if(that.active==3){
+					uni.navigateTo({
+						url:'/pages/details_jyz/details_jyz'
+					})
+				}
+			},
 			del_fuc(item){
 				uni.showModal({
 				    title: '提示',
