@@ -62,44 +62,36 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/details_motor/details_motor",
+			"style": {
+				"navigationBarTitleText": "摩托车",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/details_jyz/details_jyz",
+			"style": {
+				"navigationBarTitleText": "加油站",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/details_qcmr/details_qcmr",
+			"style": {
+				"navigationBarTitleText": "汽车美容",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
 		}
-	    ,{
-            "path" : "pages/details_motor/details_motor",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "摩托车",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/details_jyz/details_jyz",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "加油站",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/details_qcmr/details_qcmr",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "汽车美容",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/login/login",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"subPackages": [{
 		"root": "pagesA",
 		"pages": [{
@@ -136,63 +128,88 @@
 				"navigationStyle": "custom"
 			}
 
+		}, {
+			"path": "car_canshu/car_canshu",
+			"style": {
+				"navigationBarTitleText": "参数配置",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "jubao/jubao",
+			"style": {
+				"navigationBarTitleText": "举报",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "wz_xq/wz_xq",
+			"style": {
+				"navigationBarTitleText": "违章详情",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "rgc_zt/rgc_zt",
+			"style": {
+				"navigationBarTitleText": "人工查状态",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pzsb/pzsb",
+			"style": {
+				"navigationBarTitleText": "拍照识别",
+				// "navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "xieyi/xieyi",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "rgc_zt_order/rgc_zt_order",
+			"style": {
+				"navigationBarTitleText": "确认订单",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "rgc_wz/rgc_wz",
+			"style": {
+				"navigationBarTitleText": "人工查违章",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "rgc_nj/rgc_nj",
+			"style": {
+				"navigationBarTitleText": "急速年检",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "rgc_zt_jg/rgc_zt_jg",
+			"style": {
+				"navigationBarTitleText": "订单详情",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "openVIp/openVIp",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
+			}
+
 		}    ,{
-                    "path" : "car_canshu/car_canshu",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "参数配置",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
-                    "path" : "jubao/jubao",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "举报",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
-                    "path" : "wz_xq/wz_xq",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "违章详情",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
-                    "path" : "rgc_zt/rgc_zt",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "人工查状态",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
-                    "path" : "pzsb/pzsb",
-                    "style" :                                                                                    
-                {
-                    // "navigationBarTitleText": "拍照识别",
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
-                    "path" : "xieyi/xieyi",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
-                    "path" : "rgc_zt_order/rgc_zt_order",
+                    "path" : "rgc_nj_order/rgc_nj_order",
                     "style" :                                                                                    
                 {
                     "navigationBarTitleText": "确认订单",
@@ -201,19 +218,82 @@
                 
                 }
                 ,{
-                    "path" : "rgc_wz/rgc_wz",
+                    "path" : "rgc_nj_order1/rgc_nj_order1",
                     "style" :                                                                                    
                 {
-                    "navigationBarTitleText": "人工查违章",
+                    "navigationBarTitleText": "上传资料",
                     "enablePullDownRefresh": false
                 }
                 
                 }
                 ,{
-                    "path" : "rgc_nj/rgc_nj",
+                    "path" : "rgc_nj_order2/rgc_nj_order2",
                     "style" :                                                                                    
                 {
-                    "navigationBarTitleText": "急速年检",
+                    "navigationBarTitleText": "年检办理",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "rgc_nj_order3/rgc_nj_order3",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "回寄标志",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "rgc_mfpg/rgc_mfpg",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "免费评估",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "rgc_mfpg_jg/rgc_mfpg_jg",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "免费评估",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "rgc_sb/rgc_sb",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "车型识别",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "rgc_sb_jg/rgc_sb_jg",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "车型识别",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "pzsb_n/pzsb_n",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "拍照识别",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "ctpe_list/ctpe_list",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "选择车型",
                     "enablePullDownRefresh": false
                 }
                 
@@ -270,43 +350,35 @@
 				"enablePullDownRefresh": false
 			}
 
-		}    ,{
-                    "path" : "store_join/store_join",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "商家入驻",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
-                    "path" : "store_join1/store_join1",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "商家入驻",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
-                    "path" : "store_fb/store_fb",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "发布",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
-                    "path" : "store_fb_ok/store_fb_ok",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "发布",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-            ]
+		}, {
+			"path": "store_join/store_join",
+			"style": {
+				"navigationBarTitleText": "商家入驻",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "store_join1/store_join1",
+			"style": {
+				"navigationBarTitleText": "商家入驻",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "store_fb/store_fb",
+			"style": {
+				"navigationBarTitleText": "发布",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "store_fb_ok/store_fb_ok",
+			"style": {
+				"navigationBarTitleText": "发布",
+				"enablePullDownRefresh": false
+			}
+
+		}]
 	}],
 	"tabBar": {
 		"color": "#BBBBBB",

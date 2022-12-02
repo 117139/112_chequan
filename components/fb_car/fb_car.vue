@@ -299,8 +299,8 @@
 				car_gh:false, //包含过户费
 				car_xslc:'',
 				car_sp:'',
-				car_sp_add:[],
-				car_sz_add:[],
+				car_sp_add:['北京市','市辖区','东城区'],
+				car_sz_add:['北京市','市辖区','东城区'],
 				car_ghnum:'',
 				car_bxdq:'',
 				car_njdq:''

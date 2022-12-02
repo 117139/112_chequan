@@ -3,9 +3,9 @@
 		<topbar>
 			<view class="my_header dis_flex aic">
 				<image class="h_add" src="/static/images/icon_address.png" mode="aspectFit"></image>
-				<view class="flex_1 h_add_text" >北京1</view>
+				<view class="flex_1 h_add_text" >北京</view>
 				<image  @tap="$service.jump" data-url="/pagesA/search/search" class="h_iconr" src="/static/images/icon_find.png" mode="aspectFit"></image>
-				<image class="h_iconr" src="/static/images/icon_kefu.png" mode="aspectFit"></image>
+				<image @click="$service.call" data-tel="18300000000" class="h_iconr" src="/static/images/icon_kefu.png" mode="aspectFit"></image>
 			</view>
 		</topbar>
 		<view class="mbanner">

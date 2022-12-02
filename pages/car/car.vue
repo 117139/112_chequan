@@ -5,7 +5,7 @@
 				<image class="h_add" src="/static/images/icon_address.png" mode="aspectFit"></image>
 				<view class=" h_add_text">北京</view>
 				
-				<view class="top_search flex_1">
+				<view class="top_search flex_1" @tap="$service.jump" data-url="/pagesA/search/search">
 					<text class="icon icon-sousuo"></text>
 					<view class="flex_1">请输入你要搜索的内容</view>
 					<view class="top_search_btn">搜素</view>
@@ -14,25 +14,25 @@
 		</topbar>
 		<!-- 金刚区 -->
 		<view class="index_tui_list dis_flex fww">
-			<view class="index_tui_li">
+			<view class="index_tui_li" @tap="$service.jump" data-url="/pages_my/store_fb/store_fb">
 				<view class="index_tui_li_img">
 					<image src="/static/images/ici1.png" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">我要发布</view>
 			</view>
-			<view class="index_tui_li">
+			<view class="index_tui_li" @tap="$service.jump" data-url="/pages_my/store_fb/store_fb?type=2">
 				<view class="index_tui_li_img">
 					<image src="/static/images/ici2.png" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">我要卖车</view>
 			</view>
-			<view class="index_tui_li">
+			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_sb/rgc_sb">
 				<view class="index_tui_li_img">
 					<image src="/static/images/iti6.png" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">车型识别</view>
 			</view>
-			<view class="index_tui_li">
+			<view class="index_tui_li"  @click="$service.jump" data-url="/pagesA/rgc_mfpg/rgc_mfpg">
 				<view class="index_tui_li_img">
 					<image src="/static/images/iti5.png" mode="aspectFill"></image>
 				</view>
@@ -45,43 +45,43 @@
 		</view>
 		
 		<view class="cart_list dis_flex fww">
-			<view class="cart_li">
+			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/search/search?type=2&key=大众">
 				<image class="cart_img" src="/static/images/icon_dazhong.png" mode="aspectFit"></image>
 				<view class="cart_text">大众</view>
 			</view>
-			<view class="cart_li">
+			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/search/search?type=2&key=本田">
 				<image class="cart_img" src="/static/images/icon_bentian.png" mode="aspectFit"></image>
 				<view class="cart_text">本田</view>
 			</view>
-			<view class="cart_li">
+			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/search/search?type=2&key=吉利汽车">
 				<image class="cart_img" src="/static/images/icon_jili.png" mode="aspectFit"></image>
 				<view class="cart_text">吉利汽车</view>
 			</view>
-			<view class="cart_li">
+			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/search/search?type=2&key=奥迪">
 				<image class="cart_img" src="/static/images/icon_aodi.png" mode="aspectFit"></image>
 				<view class="cart_text">奥迪</view>
 			</view>
-			<view class="cart_li">
+			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/search/search?type=2&key=丰田">
 				<image class="cart_img" src="/static/images/icon_fengtian.png" mode="aspectFit"></image>
 				<view class="cart_text">丰田</view>
 			</view>
-			<view class="cart_li">
+			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/search/search?type=2&key=大众">
 				<image class="cart_img" src="/static/images/icon_bieke.png" mode="aspectFit"></image>
 				<view class="cart_text">别克</view>
 			</view>
-			<view class="cart_li">
+			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/search/search?type=2&key=大众">
 				<image class="cart_img" src="/static/images/icon_richan.png" mode="aspectFit"></image>
 				<view class="cart_text">日产</view>
 			</view>
-			<view class="cart_li">
+			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/search/search?type=2&key=大众">
 				<image class="cart_img" src="/static/images/icon_benchi.png" mode="aspectFit"></image>
 				<view class="cart_text">奔驰</view>
 			</view>
-			<view class="cart_li">
+			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/search/search?type=2&key=大众">
 				<image class="cart_img" src="/static/images/icon_changan.png" mode="aspectFit"></image>
 				<view class="cart_text">长安</view>
 			</view>
-			<view class="cart_li">
+			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/ctpe_list/ctpe_list?type=2&key=大众">
 				<image class="cart_img" src="/static/images/icon_more.png" mode="aspectFit"></image>
 				<view class="cart_text">更多</view>
 			</view>

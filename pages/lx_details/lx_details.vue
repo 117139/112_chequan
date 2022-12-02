@@ -7,7 +7,7 @@
 				<!-- <block v-for="(item,idx) in goodsData.img"> -->
 				<block v-for="(item,idx) in goodsData.imageList ">
 					<swiper-item>
-						<image :src="$service.getimg(item.url)" class="slide-image" mode="aspectFill" :data-src="$service.getimg(item.url)"  @tap="pveimg" />
+						<image :src="$service.getimg(item.url)" class="slide-image" mode="aspectFill" :data-src="$service.getimg(item.url)"  />
 						<!-- <image :src="getimg(item)" class="slide-image" mode="aspectFill" width="355" height="150" :data-src="getimg(item)"
 						 :data-array="filter.getgimgarrIP(goodsData.img)" @tap.stop="pveimg" /> -->
 					</swiper-item>
@@ -127,10 +127,12 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			
 			share_fuc(){
+				var code='111'
 				uni.shareWithSystem({
-				  summary: '依辈通',
-				  href: 'https://uniapp.dcloud.io',
+				  summary: 'chequan',
+				  href: 'https://www.baidu.com?code='+code,
 				  success(){
 				    // 分享完成，请注意此时不一定是成功分享
 				  },

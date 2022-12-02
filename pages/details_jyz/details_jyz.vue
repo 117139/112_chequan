@@ -9,6 +9,7 @@
 							:autoplay="false"
 							height="500rpx"
 							radius="0"
+							:circular="true" 
 							indicatorStyle="right: 20px"
 			>
 					<view
@@ -68,7 +69,7 @@
 					<view class="dp_bmsg_l1">中石化#93号汽油</view>
 					<view class="dp_bmsg_l2">价格: 7.52元</view>
 				</view>
-				<view class="dp_bmsg_r">立即咨询</view>
+				<view class="dp_bmsg_r"  @click="$service.call" :data-tel="18300000000">立即咨询</view>
 			</view>
 		</view>
 		<view class="bbox"></view>
@@ -90,7 +91,7 @@
 					<text class="iconfont icon-zhuanfa3"></text>
 					<text>转发</text>
 				</view>
-				<view class="xq_b_btn" @click="$service.jump" :data-url="'/pagesA/order/order'">
+				<view class="xq_b_btn"  @click="$service.call" :data-tel="18300000000">
 					联系商家
 				</view>
 			</view>
@@ -114,16 +115,16 @@
 				datas:'',
 				page:1,
 				list4: [{
-						url: 'https://cdn.uviewui.com/uview/resources/video.mp4',
-						title: '昨夜星辰昨夜风，画楼西畔桂堂东',
-						poster: 'https://cdn.uviewui.com/uview/swiper/swiper1.png',
-						type: 'video'
-				},{
-						url: 'https://cdn.uviewui.com/uview/swiper/swiper2.png',
+				// 		url: 'https://cdn.uviewui.com/uview/resources/video.mp4',
+				// 		title: '昨夜星辰昨夜风，画楼西畔桂堂东',
+				// 		poster: 'https://cdn.uviewui.com/uview/swiper/swiper1.png',
+				// 		type: 'video'
+				// },{
+						url: '/static/images/car.jpg',
 						title: '身无彩凤双飞翼，心有灵犀一点通',
 						type: 'image'
 				},{
-						url: 'https://cdn.uviewui.com/uview/swiper/swiper3.png',
+						url: '/static/images/car.jpg',
 						title: '谁念西风独自凉，萧萧黄叶闭疏窗，沉思往事立残阳'
 				}],
 				currentNum:0,

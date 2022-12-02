@@ -34,7 +34,7 @@
 						<image src="/static/images/bus_dh.png" mode="aspectFit"></image>
 						<view>导航</view>
 					</view>
-					<view class="bus_bb">
+					<view class="bus_bb" @click="$service.call" :data-tel="18300000000">
 						<image src="/static/images/bus_tel.png" mode="aspectFit"></image>
 						<view>电话</view>
 					</view>
@@ -55,7 +55,7 @@
 				<picker @change="confirm" :value="active" :range="columns" range-key="title">
 					<view class="bus_btit bus_btit1">
 						<view class="bus_btit_l">
-							门店照片
+							发布信息
 						</view>
 						<view class="bus_btit_r">
 							{{columns[active].title}}
@@ -101,8 +101,9 @@
 					</view>
 				</view>
 			</view>
-			<view v-if="active==3" class="car_list dis_flex fww" @click.stop="$service.jump" data-url="/pages/details_jyz/details_jyz">
-				<view class="car_li" v-for="(item,index) in 20">
+			<!-- <view v-if="active==3" class="car_list dis_flex fww" @click.stop="$service.jump" data-url="/pages/details_jyz/details_jyz"> -->
+			<view v-if="active==3" class="car_list dis_flex fww">
+				<!-- <view class="car_li" v-for="(item,index) in 20">
 					<view class="car_li_box">
 						<image class="car_li_img" src="/static/images/car.jpg" mode="aspectFit"></image>
 						<view class="car_li_msg">
@@ -111,11 +112,26 @@
 							<view class="car_li_num">5.62元</view>
 						</view>
 					</view>
+				</view> -->
+				<view class="data_sli dis_flex aic">
+					<text class="data_sli_l"></text>
+					<view class="flex_1 data_sli_c">92#汽油</view>
+					<view class="data_sli_r">￥<text>7.18</text></view>
+				</view>
+				<view class="data_sli dis_flex aic">
+					<text class="data_sli_l"></text>
+					<view class="flex_1 data_sli_c">95#汽油</view>
+					<view class="data_sli_r">￥<text>7.28</text></view>
+				</view>
+				<view class="data_sli dis_flex aic">
+					<text class="data_sli_l"></text>
+					<view class="flex_1 data_sli_c">98#汽油</view>
+					<view class="data_sli_r">￥<text>8.18</text></view>
 				</view>
 			</view>
 		</view>
 		<view class="b_box">
-			<view class="b_box_btn">联系商家</view>
+			<view class="b_box_btn" @click="$service.call" :data-tel="18300000000">联系商家</view>
 		</view>
 		<!-- 阻止滑动 -->
 		<!-- <view @touchmove.stop.prevent='test'></view> -->
@@ -525,6 +541,34 @@ page{
 					&.car_li_sc1{
 						color: #E2382F;
 					}
+				}
+			}
+		}
+		.data_sli{
+			border-top: 1px solid #EEEEEE;
+			width: 100%;
+			height: 96rpx;
+			padding: 0 32rpx;
+			.data_sli_l{
+				width: 12rpx;
+				height: 12rpx;
+				background: #DDDDDD;
+				border-radius: 50%;
+				margin-right: 14rpx;
+			}
+			.data_sli_c{
+				font-size: 28rpx;
+				font-family: Microsoft YaHei;
+				font-weight: 400;
+				color: #333333;
+			}
+			.data_sli_r{
+				font-size: 28rpx;
+				font-family: Microsoft YaHei;
+				font-weight: 400;
+				color: #E2382F;
+				text{
+					font-size: 36rpx;
 				}
 			}
 		}

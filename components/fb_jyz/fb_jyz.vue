@@ -1,19 +1,42 @@
 <template>
 	<view class="w100">
 		<view class="fb_box">
-			<view class="fb_li">
+			<!-- <view class="fb_li">
 				<view class="fb_li_l">
-					<text>*</text>服务标题
+					<text>*</text>
+					服务标题
 				</view>
 				<input class="fb_li_r" type="text" v-model="fb_tit" placeholder="请填写服务标题">
-			</view>
+			</view> -->
 			<view class="fb_li">
 				<view class="fb_li_l">
-					<text>*</text>价格
+					<!-- <text>*</text> -->
+					92号汽油
 				</view>
 				<input class="fb_li_r" type="number" v-model="fb_pri" placeholder="请填写价格">
 			</view>
 			<view class="fb_li">
+				<view class="fb_li_l">
+					<!-- <text>*</text> -->
+					95号汽油
+				</view>
+				<input class="fb_li_r" type="number" v-model="fb_pri" placeholder="请填写价格">
+			</view>
+			<view class="fb_li">
+				<view class="fb_li_l">
+					<!-- <text>*</text> -->
+					98号汽油
+				</view>
+				<input class="fb_li_r" type="number" v-model="fb_pri" placeholder="请填写价格">
+			</view>
+			<view class="fb_li">
+				<view class="fb_li_l">
+					<!-- <text>*</text> -->
+					0号柴油
+				</view>
+				<input class="fb_li_r" type="number" v-model="fb_pri" placeholder="请填写价格">
+			</view>
+			<!-- <view class="fb_li">
 				<view class="fb_li_l">
 					<text>*</text>
 					商品描述
@@ -43,7 +66,6 @@
 			</view>
 			<view class="fb_li">
 				<view class="fb_li_l">
-					<!-- <text>*</text> -->
 					上传商品视频
 				</view>
 				<view class="imgs_list">
@@ -96,8 +118,7 @@
 				</view>
 				<view class="flex_1"></view>
 				<u-switch v-model="dz_type" @change="dzchange" activeColor="#4680E6"></u-switch>
-				<!-- <input class="fb_li_r" type="text" v-model="fb_tit" placeholder="请填写服务标题"> -->
-			</view>
+			</view> -->
 		</view>
 		
 		<view class="b_box">
@@ -142,48 +163,48 @@
 					dz_type:that.dz_type
 				}
 				
-				if(!that.fb_tit){
-					uni.showToast({
-						icon:'none',
-						title:'请填写服务标题'
-					})
-					return
-				}
-				if(!that.fb_pri){
-					uni.showToast({
-						icon:'none',
-						title:'请填写价格'
-					})
-					return
-				}
-				if(!that.fb_content){
-					uni.showToast({
-						icon:'none',
-						title:'请填写商品描述'
-					})
-					return
-				}
-				if(that.goods_img.length==0){
-					uni.showToast({
-						icon:'none',
-						title:'请上传商品图'
-					})
-					return
-				}
-				if(!that.fb_content1){
-					uni.showToast({
-						icon:'none',
-						title:'请填写服务详情'
-					})
-					return
-				}
-				if(that.goodsxq_img.length==0){
-					uni.showToast({
-						icon:'none',
-						title:'请上传服务详情图片'
-					})
-					return
-				}
+				// if(!that.fb_tit){
+				// 	uni.showToast({
+				// 		icon:'none',
+				// 		title:'请填写服务标题'
+				// 	})
+				// 	return
+				// }
+				// if(!that.fb_pri){
+				// 	uni.showToast({
+				// 		icon:'none',
+				// 		title:'请填写价格'
+				// 	})
+				// 	return
+				// }
+				// if(!that.fb_content){
+				// 	uni.showToast({
+				// 		icon:'none',
+				// 		title:'请填写商品描述'
+				// 	})
+				// 	return
+				// }
+				// if(that.goods_img.length==0){
+				// 	uni.showToast({
+				// 		icon:'none',
+				// 		title:'请上传商品图'
+				// 	})
+				// 	return
+				// }
+				// if(!that.fb_content1){
+				// 	uni.showToast({
+				// 		icon:'none',
+				// 		title:'请填写服务详情'
+				// 	})
+				// 	return
+				// }
+				// if(that.goodsxq_img.length==0){
+				// 	uni.showToast({
+				// 		icon:'none',
+				// 		title:'请上传服务详情图片'
+				// 	})
+				// 	return
+				// }
 				console.log(datas)
 				uni.showToast({
 					icon:'none',

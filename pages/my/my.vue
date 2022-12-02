@@ -11,17 +11,17 @@
 			</view>
 			<text @click="$service.jump" data-url="/pages_my/my_msg/my_msg" class="iconfont icon-shezhi my_shehzi"></text>
 		</view>
-		<view class="my_top dis_flex aic " @click="$service.jump" data-url="/pages/login/login">
+		<!-- <view class="my_top dis_flex aic " @click="$service.jump" data-url="/pages/login/login">
 			<image class="my_head" src="/static/images/pic_head.png" mode="aspectFill"></image>
 			<view class="my_name  dis_flex aic ">
 				登录
 			</view>
-		</view>
-		<view class="shop_vip_box">
+		</view> -->
+		<view class="shop_vip_box" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=1"  :data-login="true">
 			<image class="shop_vip_bg" src="/static/images/shopvurl.png" mode="aspectFill"></image>
 			<view class="shop_vip_btn">立即开通</view>
 		</view>
-		<view class="shop_vip_box">
+		<view class="shop_vip_box" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=0"  :data-login="true">
 			<image class="shop_vip_bg" src="/static/images/uservurl.png" mode="aspectFill"></image>
 			<view class="shop_vip_btn">立即开通</view>
 		</view>
@@ -82,17 +82,16 @@
 					<image src="/static/images/icon_enter.png" mode="aspectFit"></image>
 					<text>商家入驻</text>
 				</view>
-				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/store_join1/store_join1" >
-					<!-- <image  src="/static/images/iti3.png" mode="aspectFit"></image> -->
+				<!-- <view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/store_join1/store_join1" >
 					<image src="/static/images/icon_enter.png" mode="aspectFit"></image>
 					<text>已入驻</text>
-				</view>
+				</view> -->
 				<view class="fuwu_li dis_flex_c aic ju_c"  @click="kf_open" >
 					<!-- <image  src="/static/images/iti3.png" mode="aspectFit"></image> -->
 					<image src="/static/images/icon_mykefu.png" mode="aspectFit"></image>
 					<text>我的客服</text>
 				</view>
-				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/vip_home/vip_home" >
+				<view class="fuwu_li dis_flex_c aic ju_c" @click="share_fuc" data-url="/pages_my/vip_home/vip_home" >
 					<!-- <image  src="/static/images/iti3.png" mode="aspectFit"></image> -->
 					<image src="/static/images/icon_share.png" mode="aspectFit"></image>
 					<text>分享转发</text>
@@ -148,10 +147,22 @@
 		onShow() {
 			// that.onRetry()
 		},
-		
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			share_fuc(){
+				var code='111'
+				uni.shareWithSystem({
+					summary: '车圈',
+					href: 'https://www.baidu.com?code='+code,
+					success(){
+						// 分享完成，请注意此时不一定是成功分享
+					},
+					fail(){
+						// 分享失败
+					}
+				})
+			},
 			kf_open() { //筛选 弹窗
 				this.$refs.popup.open('center')
 			},
