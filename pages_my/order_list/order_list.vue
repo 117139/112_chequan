@@ -11,7 +11,7 @@
 		</scroll-view>
 		</u-sticky>
 		<view v-if="active==0" class="datas_list">
-			<view class="datas_li" v-for="(item,index) in 5">
+			<view class="datas_li" v-for="(item,index) in 5" @click="$service.jump" :data-url="'/pagesA/rgc_zt_jg/rgc_zt_jg?type=1'">
 				<!-- <image v-if="index==1" class="datas_li_st" src="/static/images/o_type1.png" mode="aspectFill"></image> -->
 				<image v-if="index==2" class="datas_li_st" src="/static/images/o_type2.png" mode="aspectFill"></image>
 				<!-- <image v-if="index==3" class="datas_li_st" src="/static/images/o_type3.png" mode="aspectFill"></image> -->
@@ -42,7 +42,7 @@
 			
 		</view>
 		<view v-if="active==1" class="datas_list">
-			<view class="datas_li" v-for="(item,index) in 5">
+			<view class="datas_li" v-for="(item,index) in 5" @click="$service.jump" :data-url="'/pagesA/rgc_nj_order3/rgc_nj_order3?type=1'">
 				<image v-if="index==1" class="datas_li_st" src="/static/images/o_type1.png" mode="aspectFill"></image>
 				<!-- <image v-if="index==2" class="datas_li_st" src="/static/images/o_type2.png" mode="aspectFill"></image> -->
 				<!-- <image v-if="index==3" class="datas_li_st" src="/static/images/o_type3.png" mode="aspectFill"></image> -->
@@ -67,7 +67,7 @@
 			
 		</view>
 		<view v-if="active==2" class="datas_list">
-			<view class="datas_li" v-for="(item,index) in 5">
+			<view class="datas_li" v-for="(item,index) in 5" @click="$service.jump" :data-url="'/pagesA/rgc_sb_jg/rgc_sb_jg'">
 				<!-- <image v-if="index==1" class="datas_li_st" src="/static/images/o_type1.png" mode="aspectFill"></image> -->
 				<!-- <image v-if="index==2" class="datas_li_st" src="/static/images/o_type2.png" mode="aspectFill"></image> -->
 				<!-- <image v-if="index==3" class="datas_li_st" src="/static/images/o_type3.png" mode="aspectFill"></image> -->
@@ -92,7 +92,7 @@
 			
 		</view>
 		<view v-if="active==3" class="datas_list">
-			<view class="datas_li" v-for="(item,index) in 5">
+			<view class="datas_li" v-for="(item,index) in 5" @click="$service.jump" :data-url="'/pagesA/rgc_zt_jg/rgc_zt_jg?type=4'">
 				<!-- <image v-if="index==1" class="datas_li_st" src="/static/images/o_type1.png" mode="aspectFill"></image> -->
 				<!-- <image v-if="index==2" class="datas_li_st" src="/static/images/o_type2.png" mode="aspectFill"></image> -->
 				<image v-if="index==1" class="datas_li_st" src="/static/images/o_type3.png" mode="aspectFill"></image>
