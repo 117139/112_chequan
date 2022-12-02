@@ -21,7 +21,7 @@
 			</view>
 			
 		</view>
-		<view class="shop_vip_box">
+		<view class="shop_vip_box" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=0"  :data-login="true">
 			<image class="shop_vip_bg" src="/static/images/uservurl.png" mode="aspectFill"></image>
 			<view class="shop_vip_btn">去开通</view>
 		</view>
@@ -84,8 +84,11 @@
 		</checkbox-group>
 		<view class="b_box">
 			<view class="b_box1">
-				<view class="b_btn1">看广告</view>
-				<view class="b_btn">确认支付￥5.00</view>
+				<view class="b_btn1" @click="pay_fuc">
+					<view class="b_btn1_tip" @click.stop="test">每日3次，免费支付</view>
+					看广告
+				</view>
+				<view class="b_btn" @click="pay_fuc">确认支付￥{{fw_type==0?'5.00':'20.00'}}</view>
 			</view>
 		</view>
 		
@@ -121,6 +124,7 @@
 		onLoad(e) {
 			that=this
 			that.options=e||{}
+			//type 1 查状态    2 年检   3 车型识别   4 查违章
 			console.log(e)
 			
 			// that.getdata()
@@ -132,6 +136,11 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			pay_fuc(){
+				uni.redirectTo({
+					url:'/pagesA/rgc_zt_jg/rgc_zt_jg?type='+that.options.type
+				})
+			},
 			checkboxChange: function (e) {
 				console.log(e.detail.value)
 				var arr=e.detail.value
@@ -273,7 +282,7 @@
 <style lang="scss" scoped>
 .wrap_box{
 	background: #f8f8f8;
-	padding: 28rpx 28rpx 200rpx;
+	padding: 28rpx 28rpx 240rpx;
 }
 .cz_box{
 	width: 100%;
@@ -484,6 +493,34 @@
 			font-family: Microsoft YaHei;
 			font-weight: 400;
 			color: #F5F5F5;
+			position: relative;
+			.b_btn1_tip{
+				position: absolute;
+				bottom: 110rpx;
+				width: 264rpx;
+				height: 58rpx;
+				background: #333333;
+				border-radius: 10rpx;
+				z-index: 999;
+				font-size: 24rpx;
+				font-family: Microsoft YaHei;
+				font-weight: 400;
+				color: #FFFFFF;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				&::after{
+					content: '';
+					position: absolute;
+					bottom: -20rpx;
+					right: 50rpx;
+					width: 0;
+					height: 0;
+					border:10rpx solid transparent;
+					border-top-color: #333;
+					z-index: 999;
+				}
+			}
 		}
 		.b_btn{
 			width: 328rpx;
