@@ -123,7 +123,7 @@
 			test(){},
 			go_fuc(){
 				uni.navigateTo({
-					url:'/pagesA/rgc_zt_order/rgc_zt_order'
+					url:'/pagesA/rgc_zt_order/rgc_zt_order?type=1'
 				})
 			},
 			focus ( type ) {
