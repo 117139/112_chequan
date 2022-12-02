@@ -201,6 +201,13 @@
 				console.log(e)
 			},
 			go_fuc(){
+				if(!this.car_id){
+					uni.showToast({
+						icon:'none',
+						title:'请输入车牌号'
+					})
+					return
+				}
 				if(!this.car_cz){
 					uni.showToast({
 						icon:'none',
@@ -216,7 +223,7 @@
 					return
 				}
 				uni.navigateTo({
-					url:'/pagesA/rgc_zt_order/rgc_zt_order'
+					url:'/pagesA/rgc_nj_order/rgc_nj_order?type='+that.nj_index
 				})
 			},
 			focus ( type ) {
