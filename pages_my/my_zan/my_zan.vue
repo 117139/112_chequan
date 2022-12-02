@@ -2,7 +2,7 @@
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
 		<view class="zan_list">
-			<view class="zan_li" v-for="(item,index) in 10">
+			<view class="zan_li" v-for="(item,index) in 10"  @click="$service.jump" :data-url="'/pages/lx_details/lx_details?id='+1">
 				<image class="zan_img" src="/static/images/car1.png" mode="aspectFill"></image>
 				<view class="zan_msg">
 					 <view class="zan_tit">入驻泉州最著名的西街旁 | 安 静清幽的小阁楼</view>
@@ -54,6 +54,7 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			
 			onRetry(){
 				that.page=1
 				that.datas=[]
