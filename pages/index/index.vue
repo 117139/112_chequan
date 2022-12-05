@@ -58,44 +58,44 @@
 		<view class="indext2_ul dis_flex fww">
 			<view class="indext2_li" @click="$service.jump" data-url="/pagesA/rgc_sb/rgc_sb">
 				<image class="indext2_libg" src="/static/images/it2i1.png" mode="aspectFill"></image>
-				<view class="indext2_liinr">
+				<!-- <view class="indext2_liinr">
 					<view>车型识别</view>
 					<text>识别高低配</text>
-				</view>
+				</view> -->
 			</view>
 			<view class="indext2_li" @click="$service.jump" data-url="/pagesA/rgc_zt/rgc_zt">
 				<image class="indext2_libg" src="/static/images/it2i2.png" mode="aspectFill"></image>
-				<view class="indext2_liinr">
+				<!-- <view class="indext2_liinr">
 					<view>人工查违章</view>
 					<text>1对1快速</text>
-				</view>
+				</view> -->
 			</view>
 			<view class="indext2_li" @click="$service.jump" data-url="/pagesA/rgc_mfpg/rgc_mfpg">
 				<image class="indext2_libg" src="/static/images/it2i3.png" mode="aspectFill"></image>
-				<view class="indext2_liinr" style="color: #305380;">
+				<!-- <view class="indext2_liinr" style="color: #305380;">
 					<view>一键评估</view>
 					<text>免费快捷</text>
-				</view>
+				</view> -->
 			</view>
 		</view>
 		<view class="indext3_ul dis_flex fww">
 			<!-- <view class="indext3_li" @click="go_vip(2)"> -->
 			<view class="indext3_li" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=0"  :data-login="true">
 				<image class="indext3_libg" src="/static/images/it3bg1.png" mode="aspectFill"></image>
-				<view class="indext3_liinr">
+				<!-- <view class="indext3_liinr">
 					<image src="/static/images/it3i1.png" mode="aspectFit"></image>
 					<view class="flex_1">开通用户会员</view>
 					<text class="icon icon-next"></text>
-				</view>
+				</view> -->
 			</view>
 			<!-- <view class="indext3_li" @click="go_vip(1)"> -->
 			<view class="indext3_li" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=1"  :data-login="true">
 				<image class="indext3_libg" src="/static/images/it3bg2.png" mode="aspectFill"></image>
-				<view class="indext3_liinr">
+				<!-- <view class="indext3_liinr">
 					<image src="/static/images/it3i2.png" mode="aspectFit"></image>
 					<view class="flex_1">开通商户会员</view>
 					<text class="icon icon-next"></text>
-				</view>
+				</view> -->
 			</view>
 		</view>
 		<scroll-view class="scroll_x order_list" scroll-x="true" >
@@ -217,6 +217,8 @@
 		data() {
 			return {
 				list1: [
+						'/static/images/banner.png',
+						'/static/images/banner.png',
 						'/static/images/banner.png',
 				],
 				cur:0
