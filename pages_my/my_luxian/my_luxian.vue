@@ -107,7 +107,9 @@
 			that=this
 			that.options=e||{}
 			console.log(e)
-			
+			if(e.type){
+				that.active=e.type
+			}
 			// that.getdata()
 		},
 		onShow() {
