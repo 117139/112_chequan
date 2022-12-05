@@ -35,7 +35,7 @@
 				<view class="down_btn" v-if="index==2||index==4">
 					一键下载图片
 				</view>
-				<view class="down_btn" v-if="index==4">
+				<view class="down_btn" v-if="index==4" @click.stop="sub_fuc">
 					重新提交
 				</view>
 			</view>
@@ -43,7 +43,7 @@
 		</view>
 		<view v-if="active==1" class="datas_list">
 			<view class="datas_li" v-for="(item,index) in 5" @click="$service.jump" :data-url="'/pagesA/rgc_nj_order3/rgc_nj_order3?type=1'">
-				<image v-if="index==1" class="datas_li_st" src="/static/images/o_type1.png" mode="aspectFill"></image>
+				<image v-if="index==1" class="datas_li_st" src="/static/images/o_type2.png" mode="aspectFill"></image>
 				<!-- <image v-if="index==2" class="datas_li_st" src="/static/images/o_type2.png" mode="aspectFill"></image> -->
 				<!-- <image v-if="index==3" class="datas_li_st" src="/static/images/o_type3.png" mode="aspectFill"></image> -->
 				<!-- <image v-else-if="index==4" class="datas_li_st" src="/static/images/o_type4.png" mode="aspectFill"></image> -->
@@ -92,7 +92,7 @@
 			
 		</view>
 		<view v-if="active==3" class="datas_list">
-			<view class="datas_li" v-for="(item,index) in 5" @click="$service.jump" :data-url="'/pagesA/rgc_zt_jg/rgc_zt_jg?type=4'">
+			<view class="datas_li" v-for="(item,index) in 5" @click="jump_fuc(index)"  :data-url="'/pagesA/rgc_zt_jg/rgc_zt_jg?type=4'">
 				<!-- <image v-if="index==1" class="datas_li_st" src="/static/images/o_type1.png" mode="aspectFill"></image> -->
 				<!-- <image v-if="index==2" class="datas_li_st" src="/static/images/o_type2.png" mode="aspectFill"></image> -->
 				<image v-if="index==1" class="datas_li_st" src="/static/images/o_type3.png" mode="aspectFill"></image>
@@ -181,6 +181,29 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			sub_fuc(){
+				// uni.showToast({
+				// 	icon:'none',
+				// 	title:'提交成功'
+				// })
+				if(that.active==0){
+					uni.navigateTo({
+						url:'/pagesA/rgc_zt/rgc_zt'
+					})
+				}
+				if(that.active==3){
+					uni.navigateTo({
+						url:'/pagesA/rgc_wz/rgc_wz'
+					})
+				}
+			},
+			jump_fuc(e){
+				if(e!=1){
+					uni.navigateTo({
+						url:'/pagesA/rgc_zt_jg/rgc_zt_jg?type=4'
+					})
+				}
+			},
 			setcur(index){
 				that.active=index
 			},
@@ -374,8 +397,8 @@ page{
 			position: absolute;
 			top: 0;
 			right: 0;
-			width: 84rpx;
-			height: 76rpx;
+			width: 100rpx;
+			height: 100rpx;
 		}
 		.datas_li_cname{
 			font-size: 32rpx;

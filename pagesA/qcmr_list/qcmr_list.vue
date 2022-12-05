@@ -13,6 +13,7 @@
 		</topbar>
 		<u-picker :show="show_sx" :columns="columns" @confirm="confirm_sx" @cancel="cancel_sx" />
 		<view class="main_box">
+			<image class="main_bg" src="/static/images/bg_carwash.png" mode="widthFix"></image>
 			<view class="data_list">
 				<view class="data_li" v-for="(item,index) in 3">
 					<view class="datali_top" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+1">
@@ -298,15 +299,25 @@ page{
 .main_box{
 	width: 100%;
 	// background: #f8f8f8;
-	background-image: url(/static/images/bg_carwash.png);
-	background-repeat: no-repeat;
-	background-size: 100% 421rpx;
-	background-position: top;
+	// background-image: url(/static/images/bg_carwash.png);
+	// background-repeat: no-repeat;
+	// background-size: 100% 421rpx;
+	// background-position: top;
 	padding: 322rpx 28rpx 30rpx;
-	
+	position: relative;
+		
+}
+.main_bg{
+	position: absolute;
+	top: 0;
+	width: 100%;
+	left: 0;
+	z-index: 1;
 }
 .data_list{
 		width: 100%;
+		position: relative;
+		z-index: 2;
 		// padding: 0 28rpx;
 		.data_li{
 			width: 100%;

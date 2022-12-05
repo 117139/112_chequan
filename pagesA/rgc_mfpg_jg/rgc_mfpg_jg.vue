@@ -2,6 +2,7 @@
 	<view class="wrap_box">
 		
 		<view class="main_box">
+			<image class="main_bg" src="/static/images/bg_pinggu.png" mode="widthFix"></image>
 			<view class="cz_box">
 				<view class="cz_tip"><text class="iconfont icon-yanzhengma"></text>为全网95%二手车交易提供估值服务</view>
 				<view class="jg_top">
@@ -450,18 +451,28 @@ page{
 .main_box{
 	width: 100%;
 	// background: #f8f8f8;
-	background-image: url(/static/images/bg_pinggu.png);
-	background-repeat: no-repeat;
-	background-size: 100% auto;
-	background-position: 0 -130rpx;
+	// background-image: url(/static/images/bg_pinggu.png);
+	// background-repeat: no-repeat;
+	// background-size: 100% auto;
+	// background-position: 0 -130rpx;
 	padding: 322rpx 28rpx 30rpx;
+	position: relative;
 	
+}
+.main_bg{
+	position: absolute;
+	top: 0;
+	width: 100%;
+	left: 0;
+	z-index: 1;
 }
 .cz_box{
 	width: 100%;
 	background: #FFFFFF;
 	border-radius: 10rpx;
 	padding: 20rpx 0;
+	position: relative;
+	z-index: 2;
 	.cz_tip{
 		width: 100%;
 		height: 64rpx;

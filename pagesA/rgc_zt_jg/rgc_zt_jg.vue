@@ -13,7 +13,7 @@
 			<image v-else-if="order_type==2" class="datas_li_st" src="/static/images/o_type2.png" mode="aspectFill"></image> <!-- 已查 -->
 			<image v-else-if="order_type==3" class="datas_li_st" src="/static/images/o_type3.png" mode="aspectFill"></image><!-- 正常 -->
 			<image v-else-if="order_type==4" class="datas_li_st" src="/static/images/o_type4.png" mode="aspectFill"></image><!-- 有误 -->
-			<image v-else-if="order_type==5" class="datas_li_st" src="/static/images/o_type4.png" mode="aspectFill"></image><!-- 违章 -->
+			<image v-else-if="order_type==5" class="datas_li_st" src="/static/images/o_type5.png" mode="aspectFill"></image><!-- 违章 -->
 			<image v-else class="datas_li_st" src="/static/images/o_type0.png" mode="aspectFill"></image> <!-- 待办 -->
 			<view v-if="order_type==3" class="order_text" style="color: #4680E6;">恭喜您暂无违章记录</view>
 			<view v-if="order_type==5" class="order_text" style="color: #E2382F;">该车有违章记录</view>
@@ -23,7 +23,7 @@
 		<view v-if="options.type==4" class="jg_box jg_box_wz">
 			<view class="jg_tit">京A12345</view>
 			
-			<image  class="datas_li_st" src="/static/images/o_type4.png" mode="aspectFill"></image><!-- 违章 -->
+			<image  class="datas_li_st" src="/static/images/o_type5.png" mode="aspectFill"></image><!-- 违章 -->
 			<view  class="order_text" style="color: #E2382F;">该车有违章记录</view>
 		</view>
 		<view v-if="options.type==4" class="jg_box jg_box_wz">
@@ -122,10 +122,20 @@
 				})
 			},
 			sub_fuc(){
-				uni.showToast({
-					icon:'none',
-					title:'提交成功'
-				})
+				// uni.showToast({
+				// 	icon:'none',
+				// 	title:'提交成功'
+				// })
+				if(that.options.type==1){
+					uni.redirectTo({
+						url:'/pagesA/rgc_zt/rgc_zt'
+					})
+				}
+				if(that.options.type==4){
+					uni.redirectTo({
+						url:'/pagesA/rgc_wz/rgc_wz'
+					})
+				}
 			},
 			click_fuc(e){
 				console.log(e)
@@ -311,8 +321,8 @@
 		position: absolute;
 		top: 0;
 		right: 0;
-		width: 84rpx;
-		height: 76rpx;
+		width: 104rpx;
+		height: 104rpx;
 	}
 	.order_text{
 		font-size: 32rpx;

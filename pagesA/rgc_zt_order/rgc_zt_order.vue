@@ -494,6 +494,7 @@
 			font-weight: 400;
 			color: #F5F5F5;
 			position: relative;
+			margin-right: 30rpx;
 			.b_btn1_tip{
 				position: absolute;
 				bottom: 110rpx;
@@ -523,7 +524,8 @@
 			}
 		}
 		.b_btn{
-			width: 328rpx;
+			// width: 328rpx;
+			flex: 1;
 			height: 90rpx;
 			background: #4680E6;
 			border-radius: 10rpx;

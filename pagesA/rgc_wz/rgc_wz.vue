@@ -2,6 +2,7 @@
 	<view class="wrap_box">
 		
 		<view class="main_box">
+			<image class="main_bg" src="/static/images/rgcwz_bg.png" mode="widthFix"></image>
 			<view class="cz_box">
 				<view class="cz_tip"><text class="iconfont icon-yanzhengma"></text>以下信息仅供交管局查询使用，我们将严格保密</view>
 				
@@ -40,11 +41,11 @@
 				</view>
 				<view class="xq_li">
 					<view class="xq_l">车辆识别号</view>
-					<input type="text" class="xq_r" v-model="car_num" placeholder="请输入车辆识别号后4位">
+					<input type="text" class="xq_r" v-model="car_num" placeholder="请输入车辆识别号"><!-- 后4位 -->
 				</view>
 				<view class="xq_li">
 					<view class="xq_l">发动机号</view>
-					<input type="text" class="xq_r" v-model="pow_num" placeholder="请输入发动机号后4位">
+					<input type="text" class="xq_r" v-model="pow_num" placeholder="请输入发动机号"><!-- 后4位 -->
 				</view>
 				<picker @change="bindPickerChange_c" :value="cc_index" :range="cc_array" range-key="title">
 					<view class="xq_li">
@@ -378,18 +379,28 @@ page{
 .main_box{
 	width: 100%;
 	// background: #f8f8f8;
-	background-image: url(/static/images/rgcwz_bg.png);
-	background-repeat: no-repeat;
-	background-size: 100% auto;
-	background-position: 0 0;
+	// background-image: url(/static/images/bg_pinggu.png);
+	// background-repeat: no-repeat;
+	// background-size: 100% auto;
+	// background-position: 0 -130rpx;
 	padding: 322rpx 28rpx 30rpx;
+	position: relative;
 	
+}
+.main_bg{
+	position: absolute;
+	top: 0;
+	width: 100%;
+	left: 0;
+	z-index: 1;
 }
 .cz_box{
 	width: 100%;
 	background: #FFFFFF;
 	border-radius: 10rpx;
 	padding: 20rpx 0;
+	position: relative;
+	z-index: 2;
 	.cz_tip{
 		width: 100%;
 		height: 64rpx;
