@@ -22,10 +22,9 @@
 				</swiper-item>
 			</swiper>
 		</view>
-		<scroll-view class="scroll_x order_list" scroll-x="true" >
+		<!-- <scroll-view class="scroll_x order_list" scroll-x="true" >
 			<view>
 				<view class="order_li" v-for="(item,index) in 4" @click="$service.jump" data-url="/pages/details_motor/details_motor">
-					<!-- <image class="order_libg" src="/static/images/order_libg.png" mode="aspectFill"></image> -->
 					<view class="order_li_box">
 						<view class="order_li_tl">今日上新</view>
 						<image class="order_li_l" src="/static/images/motor.jpg" mode="aspectFit"></image>
@@ -38,8 +37,15 @@
 					</view>
 				</view>
 			</view>
-		</scroll-view>
-		
+		</scroll-view> -->
+		<view class="fb_list" @click="$service.jump" data-url="/pages_my/store_fb/store_fb?type=1">
+			<view class="fb_li">
+				<image src="/static/images/fbi_mt.png" mode="aspectFill"></image>
+			</view>
+			<view class="fb_li" @click="$service.jump" data-url="/pages_my/my_luxian/my_luxian?type=1">
+				<image src="/static/images/fbi_xl.png" mode="aspectFill"></image>
+			</view>
+		</view>
 		<view class="mt_cbox">
 			<view class="mt_cboxtit dis_flex aic">
 				<view class="mt_cboxtit_l">附近经销商</view>
@@ -560,4 +566,18 @@
 			}
 		}
 	}
+.fb_list{
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	padding: 2rpx 28rpx 22rpx;
+	.fb_li{
+		width: 336rpx;
+		height: 176rpx;
+		image{
+			width: 100%;
+			height: 100%;
+		}
+	}
+}
 </style>
