@@ -47,8 +47,10 @@
 					<view :class="{active:cur==0}" @click="setcur(0)">用户会员套餐</view>
 					<view :class="{active:cur==1}" @click="setcur(1)">商户会员套餐</view>
 				</view>
-				<scroll-view v-if="cur==1" class="sw_list scroll_x">
-					<view class="sw_li" :class="{active:active==index}" @click="active=index" v-for="(item,index) in tabs">{{item.title}}</view>
+				<scroll-view v-if="cur==1" class="sw_list scroll_x" scroll-x="true">
+					<view>
+						<view class="sw_li" :class="{active:active==index}" @click="active=index" v-for="(item,index) in tabs">{{item.title}}</view>
+					</view>
 				</scroll-view>
 				<view  v-if="cur==0" class="package_wrap flex">
 					<view :class="current==index?'list_active':'list_item'" v-for="(item,index) in list" :key="index"
