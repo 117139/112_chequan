@@ -213,7 +213,7 @@
 				setTimeout(function(){
 					uni.redirectTo({
 						// url:'/pages_my/my_fabu/my_fabu'
-						url:'/pages_my/store_fb_ok/store_fb_ok'
+						url:'/pages_my/store_fb_ok/store_fb_ok?type=3'
 					})
 				},1000)
 			},

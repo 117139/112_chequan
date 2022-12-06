@@ -63,7 +63,8 @@
 						id:4
 					},
 				],
-				active:0
+				active:0,
+				
 			}
 		},
 		computed: {

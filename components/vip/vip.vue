@@ -103,7 +103,9 @@
 					</view>
 				</view>
 				<view class="agree_wrap dis_flex aic" @tap="sele=!sele">
-					<view :class="sele?'icon icon-duigou1 active_big':'big'"></view>
+					<view :class="sele?'active_big':'big'">
+						<text class="icon icon-duigou2 "></text>
+					</view>
 					阅读并同意 
 					<text @click="$service.jump" data-url="/pagesMy/webview/webview?type=vipxy">《会员服务协议》</text>
 					<text @click="$service.jump" data-url="/pagesMy/webview/webview?type=ysxy">《隐私协议》</text>
@@ -569,15 +571,29 @@
 				border: 1px solid #BBBBBB;
 				border-radius: 50%;
 				margin-right: 14rpx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				text{
+					color: #fff;
+					font-size: 22rpx;
+				}
 			}
 			
 			.active_big {
 				width: 26rpx;
 				height: 26rpx;
 				color: #FF831F;
-				font-size: 26rpx;
-				border: none;
 				margin-right: 14rpx;
+				background: #FF831F;
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				text{
+					color: #fff;
+					font-size: 22rpx;
+				}
 			}
 			text{
 				color: #FF831F;

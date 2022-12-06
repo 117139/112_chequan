@@ -20,7 +20,7 @@
 				</view>
 				<view class="index_tui_li_text">我要发布</view>
 			</view>
-			<view class="index_tui_li" @tap="$service.jump" data-url="/pages_my/store_fb/store_fb?type=2">
+			<view class="index_tui_li" @tap="$service.jump" data-url="/pages_my/store_fb/store_fb?type1=1&type=2">
 				<view class="index_tui_li_img">
 					<image src="/static/images/ici2.png" mode="aspectFill"></image>
 				</view>

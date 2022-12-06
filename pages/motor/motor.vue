@@ -38,7 +38,7 @@
 				</view>
 			</view>
 		</scroll-view> -->
-		<view class="fb_list" @click="$service.jump" data-url="/pages_my/store_fb/store_fb?type=1">
+		<view class="fb_list" @click="$service.jump" data-url="/pages_my/store_fb/store_fb?type1=1&type=1">
 			<view class="fb_li">
 				<image src="/static/images/fbi_mt.png" mode="aspectFill"></image>
 			</view>

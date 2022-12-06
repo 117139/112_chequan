@@ -1,7 +1,7 @@
 <template>
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
-		<view class="fb_tabs">
+		<view v-if="type1!=1" class="fb_tabs">
 			<view class="tabs_li" v-for="(item,index) in tabs" :class="{active:active==index}" @click="setcur_fuc(index)">{{item.title}}</view>
 		</view>
 		<view v-if="active==0" class="fb_tip">
@@ -97,6 +97,15 @@
 				<view class="flex_1"></view>
 				<u-switch v-model="dz_type" @change="dzchange" activeColor="#4680E6"></u-switch>
 				<!-- <input class="fb_li_r" type="text" v-model="fb_tit" placeholder="请填写服务标题"> -->
+			</view>
+			<view v-if="dz_type" class="fb_li">
+				<view class="fb_li_l">
+					扣除金额
+				</view>
+				<view class="flex_1 fb_hyzk">商家会员85折</view>
+				<view class="fb_mon">
+					￥20
+				</view>
 			</view>
 		</view>
 		<!-- 摩托车 -->
@@ -204,7 +213,7 @@
 				<u-switch v-model="dz_type" @change="dzchange" activeColor="#4680E6"></u-switch>
 				<!-- <input class="fb_li_r" type="text" v-model="fb_tit" placeholder="请填写服务标题"> -->
 			</view>
-			<view class="fb_li">
+			<view v-if="dz_type" class="fb_li">
 				<view class="fb_li_l">
 					扣除金额
 				</view>
@@ -222,7 +231,7 @@
 				<view class="b_btn" @click="sub_fuc">确认发布</view>
 			</view>
 		</view>
-		<fbCar v-if="active==2"></fbCar>
+		<fbCar v-if="active==2" :type1="options.type1"></fbCar>
 		<fbJyz  v-if="active==3"></fbJyz>
 		<!-- 阻止滑动 -->
 		<!-- <view @touchmove.stop.prevent='test'></view> -->
@@ -279,7 +288,8 @@
 				mt_img:[],
 				mt_video:[],
 				mt_content:'',
-				mtxq_img:[]
+				mtxq_img:[],
+				type1:4
 			}
 		},
 		computed: {
@@ -293,6 +303,9 @@
 			that.options=e||{}
 			if(e.type){
 				that.active=e.type
+			}
+			if(e.type1){
+				that.type1=e.type1
 			}
 			console.log(e)
 			
@@ -427,7 +440,7 @@
 				setTimeout(function(){
 					uni.redirectTo({
 						// url:'/pages_my/my_fabu/my_fabu'
-						url:'/pages_my/store_fb_ok/store_fb_ok'
+						url:'/pages_my/store_fb_ok/store_fb_ok?type='+that.options.type+'&type1='+that.options.type1
 					})
 				},1000)
 			},

@@ -96,7 +96,7 @@
 				<!-- <image v-if="index==1" class="datas_li_st" src="/static/images/o_type1.png" mode="aspectFill"></image> -->
 				<!-- <image v-if="index==2" class="datas_li_st" src="/static/images/o_type2.png" mode="aspectFill"></image> -->
 				<image v-if="index==1" class="datas_li_st" src="/static/images/o_type3.png" mode="aspectFill"></image>
-				<image v-else-if="index==2" class="datas_li_st" src="/static/images/o_type4.png" mode="aspectFill"></image>
+				<image v-else-if="index==2" class="datas_li_st" src="/static/images/o_type5.png" mode="aspectFill"></image>
 				<image v-else class="datas_li_st" src="/static/images/o_type0.png" mode="aspectFill"></image>
 				<view class="datas_li_cname">
 					京A12345

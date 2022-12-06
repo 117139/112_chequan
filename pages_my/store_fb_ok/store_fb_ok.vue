@@ -50,7 +50,7 @@
 			test(){},
 			go_fb(){
 				uni.redirectTo({
-					url:'/pages_my/store_fb/store_fb'
+					url:'/pages_my/store_fb/store_fb?type='+that.options.type+'&type1='+that.options.type1
 				})
 			},
 			onRetry(){

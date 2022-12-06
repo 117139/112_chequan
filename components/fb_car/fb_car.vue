@@ -215,6 +215,15 @@
 				<u-switch v-model="dz_type" @change="dzchange" activeColor="#4680E6"></u-switch>
 				<!-- <input class="fb_li_r" type="text" v-model="fb_tit" placeholder="请填写服务标题"> -->
 			</view>
+			<view v-if="dz_type" class="fb_li">
+				<view class="fb_li_l">
+					扣除金额
+				</view>
+				<view class="flex_1 fb_hyzk">商家会员85折</view>
+				<view class="fb_mon">
+					￥20
+				</view>
+			</view>
 		</view>
 		
 		<view class="b_box">
@@ -231,6 +240,13 @@
 		name:"fb_car",
 		components: {  
 				regionPicker  
+		},
+		props: {
+			type1:{
+				type: String,
+				default: ''
+			},
+			
 		},
 		data() {
 			const currentDate = this.getDate({
@@ -391,106 +407,90 @@
 					fb_content:that.fb_content,
 					goods_img:goods_img,
 					mt_video:that.mt_video,
-					// fb_content1:that.fb_content1,
-					// goodsxq_img:goodsxq_img,
 					dz_type:that.dz_type
 				}
 				
-				if(!that.fb_tit){
-					uni.showToast({
-						icon:'none',
-						title:'请填写车辆的名称'
-					})
-					return
-				}
-				// if(!that.car_type){
+				// if(!that.fb_tit){
 				// 	uni.showToast({
 				// 		icon:'none',
-				// 		title:'请选择车型'
+				// 		title:'请填写车辆的名称'
 				// 	})
 				// 	return
 				// }
-				if(!that.car_pri){
-					uni.showToast({
-						icon:'none',
-						title:'请填写车辆的价格'
-					})
-					return
-				}
-				if(!that.car_xslc){
-					uni.showToast({
-						icon:'none',
-						title:'请填写行驶里程'
-					})
-					return
-				}
-				
-				if(!that.car_sp){
-					uni.showToast({
-						icon:'none',
-						title:'请选择上牌的时间'
-					})
-					return
-				}
-				if(that.car_sp_add.length==0){
-					uni.showToast({
-						icon:'none',
-						title:'请选择上牌地'
-					})
-					return
-				}
-				if(that.car_sz_add.length==0){
-					uni.showToast({
-						icon:'none',
-						title:'请选择所在地'
-					})
-					return
-				}
-				
-				if(!that.car_ghnum){
-					uni.showToast({
-						icon:'none',
-						title:'请输入过户次数'
-					})
-					return
-				}
-				
-				if(!that.car_bxdq){
-					uni.showToast({
-						icon:'none',
-						title:'请选择保险到期时间'
-					})
-					return
-				}
-				if(!that.car_njdq){
-					uni.showToast({
-						icon:'none',
-						title:'请选择年检到期时间'
-					})
-					return
-				}
-				if(!that.fb_content){
-					uni.showToast({
-						icon:'none',
-						title:'请输入车辆的情况'
-					})
-					return
-				}
-				if(that.goods_img.length==0){
-					uni.showToast({
-						icon:'none',
-						title:'请上传商品图'
-					})
-					return
-				}
-				
-				// if(that.goodsxq_img.length==0){
+				// if(!that.car_pri){
 				// 	uni.showToast({
 				// 		icon:'none',
-				// 		title:'请上传服务详情图片'
+				// 		title:'请填写车辆的价格'
 				// 	})
 				// 	return
 				// }
+				// if(!that.car_xslc){
+				// 	uni.showToast({
+				// 		icon:'none',
+				// 		title:'请填写行驶里程'
+				// 	})
+				// 	return
+				// }
+				
+				// if(!that.car_sp){
+				// 	uni.showToast({
+				// 		icon:'none',
+				// 		title:'请选择上牌的时间'
+				// 	})
+				// 	return
+				// }
+				// if(that.car_sp_add.length==0){
+				// 	uni.showToast({
+				// 		icon:'none',
+				// 		title:'请选择上牌地'
+				// 	})
+				// 	return
+				// }
+				// if(that.car_sz_add.length==0){
+				// 	uni.showToast({
+				// 		icon:'none',
+				// 		title:'请选择所在地'
+				// 	})
+				// 	return
+				// }
+				
+				// if(!that.car_ghnum){
+				// 	uni.showToast({
+				// 		icon:'none',
+				// 		title:'请输入过户次数'
+				// 	})
+				// 	return
+				// }
+				
+				// if(!that.car_bxdq){
+				// 	uni.showToast({
+				// 		icon:'none',
+				// 		title:'请选择保险到期时间'
+				// 	})
+				// 	return
+				// }
+				// if(!that.car_njdq){
+				// 	uni.showToast({
+				// 		icon:'none',
+				// 		title:'请选择年检到期时间'
+				// 	})
+				// 	return
+				// }
+				// if(!that.fb_content){
+				// 	uni.showToast({
+				// 		icon:'none',
+				// 		title:'请输入车辆的情况'
+				// 	})
+				// 	return
+				// }
+				// if(that.goods_img.length==0){
+				// 	uni.showToast({
+				// 		icon:'none',
+				// 		title:'请上传图片'
+				// 	})
+				// 	return
+				// }
+				
 				console.log(datas)
 				uni.showToast({
 					icon:'none',
@@ -499,7 +499,7 @@
 				setTimeout(function(){
 					uni.redirectTo({
 						// url:'/pages_my/my_fabu/my_fabu'
-						url:'/pages_my/store_fb_ok/store_fb_ok'
+						url:'/pages_my/store_fb_ok/store_fb_ok?type=2&type1='+that.type1
 					})
 				},1000)
 			},

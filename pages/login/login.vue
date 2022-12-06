@@ -65,6 +65,16 @@
 				<view v-if="yzm_time==60" @click="getCode" class="login_yzm">获取验证码</view>
 				<view v-else class="login_yzm">{{yzm_time}}s</view>
 			</view>
+			
+			<view class="login_li dis_flex">
+				<text class="iconfont icon-zhanghao icon_l"></text>
+				<input class="login_int" type="text"  v-model="sfz_name" placeholder="请输入真实姓名"/>
+			</view>
+			
+			<view class="login_li dis_flex">
+				<text class="iconfont icon-zhanghao icon_l"></text>
+				<input class="login_int" type="text"  v-model="sfz_id" placeholder="请输入身份证号"/>
+			</view>
 			<!-- <view class="login_li dis_flex">
 				<image src="/static/images/app/incode_i.png" mode="aspectFit"></image>
 				<input class="login_int" type="text"  v-model="yq_code" placeholder="请输入邀请码(非必填)"/>
@@ -157,6 +167,8 @@
 				yzm:'',  //验证码
 				yq_code:'', //邀请码
 				pwd1:'',  //确认密码
+				sfz_name:'',
+				sfz_id:'',
 				yzm_time:60,
 				xy_active:false,
 				canIUseGetUserProfile:false,
@@ -763,6 +775,20 @@
 					})
 					return
 				}
+				if (!that.sfz_name) {
+					wx.showToast({
+						icon: 'none',
+						title: '请输入真实姓名'
+					})
+					return
+				}
+				if (!that.sfz_id) {
+					wx.showToast({
+						icon: 'none',
+						title: '请输入身份证号'
+					})
+					return
+				}
 				// if (that.pwd!=that.pwd1) {
 				// 	wx.showToast({
 				// 		icon: 'none',
@@ -782,6 +808,8 @@
 					invite_code:that.yq_code,
 					password:that.pwd,
 					// pass:that.pwd1,
+					sfz_name:that.sfz_name,
+					sfz_id:that.sfz_id,
 				}
 				
 				
