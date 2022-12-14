@@ -45,6 +45,9 @@
 				<!-- identity 1雇主，2阿姨 -->
 				退出登录
 			</view>
+			<view class="hold hold2 area" @tap="id_del">
+				注销账号
+			</view>
 	</view>
 </template>
 
@@ -195,18 +198,18 @@
 				    content: '是否退出当前账号',
 				    success: function (res) {
 				        if (res.confirm) {
-				      //       that.logout()
+				            that.$store.commit('logout')
 										// uni.clearStorageSync()
 										// uni.setStorageSync('yhxy', 'true')
 										uni.showToast({
 											title:'退出成功',
 											icon:'none'
 										})
-										// setTimeout(function(){
-										// 	uni.navigateTo({
-										// 		url:'/pages/login_app/login_app'
-										// 	})
-										// },1000)
+										setTimeout(function(){
+											uni.switchTab({
+												url:'/pages/index/index'
+											})
+										},1000)
 				           
 				        } else if (res.cancel) {
 				            console.log('用户点击取消');
@@ -302,6 +305,12 @@
 			// border-top: 1px solid #eee;
 			background: #fff;
 			margin-top: 100rpx;
+			color: #bbb;
+		}
+		&.hold2{
+			border-top: 1px solid #eee;
+			background: #fff;
+			// margin-top: 100rpx;
 			color: #bbb;
 		}
 	}

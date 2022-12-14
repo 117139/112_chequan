@@ -2,7 +2,8 @@
 	<view class="wrap_box">
 		
 		<view class="main_box">
-			<image class="main_bg" src="/static/images/rgcwz_bg.png" mode="widthFix"></image>
+			<image v-if="navdata[6].banner" class="main_bg" :src="$service.getimg(navdata[6].banner)" mode="aspectFill"></image>
+			<image v-else class="main_bg" src="/static/images/rgcwz_bg.png" mode="widthFix"></image>
 			<view class="cz_box">
 				<view class="cz_tip"><text class="iconfont icon-yanzhengma"></text>以下信息仅供交管局查询使用，我们将严格保密</view>
 				
@@ -55,7 +56,14 @@
 					</view>				
 				</picker>
 				<view class="xq_btn" @click="go_fuc">立即查询</view>
-				<view class="xq_yx">点击立即查询表示同意<text @click="$service.jump" data-url="/pagesA/xieyi/xieyi?type=0">用户协议</text>和<text @click="$service.jump" data-url="/pagesA/xieyi/xieyi?type=1">隐私协议</text></view>
+				<view class="xq_yx" @click="active=!active">
+					<view class="xy_box" :class="{active: active}">
+						<text class="icon icon-duigou2"></text>
+					</view>
+					我已阅读并同意
+					<text @click.stop="$service.jump" data-url="/pagesA/xieyi/xieyi?id=yhxy">《用户协议》</text>和
+					<text @click.stop="$service.jump" data-url="/pagesA/xieyi/xieyi?id=grxx">《个人信息处理单独同意书》</text>
+				</view>
 			</view>
 		</view>
 		
@@ -99,11 +107,12 @@
 						title:'重型车'
 					},
 				],
-				cc_index:0
+				cc_index:0,
+				active:false
 			}
 		},
 		computed: {
-		...mapState(['hasLogin', 'forcedLogin', 'userName', 'userinfo','loginDatas']),
+		...mapState(['hasLogin', 'forcedLogin', 'userName', 'userinfo','loginDatas','addmsg','p_config','navdata']),
 		},
 		// onReachBottom() {
 		// 	that.getdata()
@@ -123,6 +132,14 @@
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
 			go_fuc(){
+				if(!that.active){
+					uni.showToast({
+						icon:'none',
+						title:"请先阅读并同意用户协议和隐私协议",
+						duration:3000
+					})
+					return
+				}
 				uni.navigateTo({
 					url:'/pagesA/rgc_zt_order/rgc_zt_order?type=4'
 				})
@@ -550,13 +567,35 @@ page{
 .xq_yx{
 	width: 100%;
 	text-align: center;
-	font-size: 24rpx;
+	font-size: 22rpx;
 	font-family: Microsoft YaHei;
 	font-weight: 400;
 	color: #666666;
 	padding-bottom: 20rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	text{
 		color: #4680e6;
 	}
+	.xy_box{
+		width: 30rpx;
+		height: 30rpx;
+		background: #ddd;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+		margin-right: 10rpx;
+		border-radius: 50%;
+		text{
+			font-size: 24rpx;
+			color: #fff;
+		}
+		&.active{
+			background: #4680E6;
+		}
+	}
 }
+
 </style>

@@ -107,8 +107,8 @@
 						<text class="icon icon-duigou2 "></text>
 					</view>
 					阅读并同意 
-					<text @click="$service.jump" data-url="/pagesMy/webview/webview?type=vipxy">《会员服务协议》</text>
-					<text @click="$service.jump" data-url="/pagesMy/webview/webview?type=ysxy">《隐私协议》</text>
+					<text @click.stop="$service.jump" data-url="/pagesA/xieyi/xieyi?id=hyfwxy">《会员服务协议》</text>
+					<text @click.stop="$service.jump" data-url="/pagesA/xieyi/xieyi?id=ysxy">《隐私协议》</text>
 				</view>
 				<view class="btn_wrap" :class="{btn_wrap1:cur==1}" v-if="isShow">
 					立即续费
@@ -276,6 +276,14 @@
 		},
 		methods: {
 			pay_fuc(){
+				if(!that.sele){
+					uni.showToast({
+						icon:'none',
+						title:"请先阅读并同意会员服务协议和隐私协议",
+						duration:3000
+					})
+					return
+				}
 				uni.showToast({
 					icon:'none',
 					title:'开通成功'

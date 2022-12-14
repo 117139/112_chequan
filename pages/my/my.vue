@@ -2,21 +2,23 @@
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
 		
-		<view class="my_top dis_flex aic ">
-			<image class="my_head" src="/static/images/pic_head.png" mode="aspectFill"></image>
+		<view v-if="hasLogin" class="my_top dis_flex aic ">
+			
+			<image v-if="loginDatas.img" class="my_head" :src="$service.getimg(loginDatas.img)" mode="aspectFill"></image>
+			<image v-else class="my_head" src="/static/images/pic_head.png" mode="aspectFill"></image>
 			<view class="my_name  dis_flex aic ">
-				136****5678
+				{{loginDatas.name}}
 				<image src="/static/images/user_vip.png" mode="heightFix"></image>
 				<image src="/static/images/shop_vip.png" mode="heightFix"></image>
 			</view>
 			<text @click="$service.jump" data-url="/pages_my/my_msg/my_msg" class="iconfont icon-shezhi my_shehzi"></text>
 		</view>
-		<!-- <view class="my_top dis_flex aic " @click="$service.jump" data-url="/pages/login/login">
+		<view v-else class="my_top dis_flex aic " @click="$service.jump" data-url="/pages/login/login">
 			<image class="my_head" src="/static/images/pic_head.png" mode="aspectFill"></image>
 			<view class="my_name  dis_flex aic ">
 				登录
 			</view>
-		</view> -->
+		</view>
 		<view class="shop_vip_box" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=1"  :data-login="true">
 			<image class="shop_vip_bg" src="/static/images/shopvurl.png" mode="aspectFill"></image>
 			<view class="shop_vip_btn">立即开通</view>
@@ -57,27 +59,27 @@
 			<!-- <view class="fw_zzc" v-if="appstatus!=1"></view> -->
 			<view class="fuwu_tit">我的服务</view>
 			<view class="fuwu_list">
-				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/my_fabu/my_fabu" >
+				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/my_fabu/my_fabu"  :data-login="true">
 					<!-- <image  src="/static/images/iti3.png" mode="aspectFit"></image> -->
 					<image src="/static/images/icon_publish.png" mode="aspectFit"></image>
 					<text>我的发布</text>
 				</view>
-				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/my_luxian/my_luxian" >
+				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/my_luxian/my_luxian"  :data-login="true">
 					<!-- <image  src="/static/images/iti3.png" mode="aspectFit"></image> -->
 					<image src="/static/images/icon_roadshare.png" mode="aspectFit"></image>
 					<text>路线分享</text>
 				</view>
-				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/my_zan/my_zan" >
+				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/my_zan/my_zan"  :data-login="true">
 					<!-- <image  src="/static/images/iti3.png" mode="aspectFit"></image> -->
 					<image src="/static/images/icon_mylike.png" mode="aspectFit"></image>
 					<text>我的点赞</text>
 				</view>
-				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/my_sc/my_sc" >
+				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/my_sc/my_sc"  :data-login="true">
 					<!-- <image  src="/static/images/iti3.png" mode="aspectFit"></image> -->
 					<image src="/static/images/icon_mycollect.png" mode="aspectFit"></image>
 					<text>我的收藏</text>
 				</view>
-				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/store_join/store_join" >
+				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/store_join/store_join"  :data-login="true">
 					<!-- <image  src="/static/images/iti3.png" mode="aspectFit"></image> -->
 					<image src="/static/images/icon_enter.png" mode="aspectFit"></image>
 					<text>商家入驻</text>
@@ -132,7 +134,7 @@
 			}
 		},
 		computed: {
-		...mapState(['hasLogin', 'forcedLogin', 'userName', 'userinfo','loginDatas']),
+		...mapState(['hasLogin', 'forcedLogin', 'userName', 'userinfo','loginDatas','p_config']),
 		},
 		// onReachBottom() {
 		// 	that.getdata()
@@ -301,6 +303,9 @@ page{
 .wrap_box{
 	width: 100%;
 	min-height: 100vh;
+	// #ifdef H5
+	min-height: calc(100vh - 50px);
+	// #endif
 	background-image: url(/static/images/bg_mine.png);
 	background-repeat: no-repeat;
 	background-size: 100% 369rpx;
@@ -315,6 +320,7 @@ page{
 			width: 78rpx;
 			height: 78rpx;
 			margin-right: 25rpx;
+			border-radius: 50%;
 		}
 		.my_name{
 			flex: 1;

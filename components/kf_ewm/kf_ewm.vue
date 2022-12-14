@@ -4,7 +4,7 @@
 			在线客服
 		</view>
 		<view class="popup_img_wrap flex_cen">
-			<image :src="imgUrl" mode="aspectFit"></image>
+			<image v-if="p_config.kf_img" :src="$service.getimg(p_config.kf_img)" mode="aspectFit"></image>
 		</view>
 		<!-- <view class="">
 			广州汇金易智科技有限公司
@@ -16,17 +16,24 @@
 </template>
 
 <script>
+	import Vue from 'vue'
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	export default {
 		name:"kf_ewm",
 		data() {
 			return {
 				// userImg: "/static/v2/tx.png",
-				userName: "风向数据最多是十个字",
 				userNum: 20220812,
 				// imgUrl:"/static/v2/kfewm.png",
 				imgUrl:'https://www.winddatas.com/res/profile/consultant.png',
 			}
-		}
+		},
+		computed: {
+		...mapState(['hasLogin', 'forcedLogin', 'userinfo','loginDatas','p_config']),
+		},
 	}
 </script>
 
@@ -48,12 +55,15 @@
 			background: rgba(255, 147, 7, .2);
 			border-radius: 10rpx;
 			margin-bottom: 26rpx;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			image{
 				width: 250rpx;
 				height: 250rpx;
 				background: #FF9307;
 				border-radius: 6rpx;
-				padding: 6rpx;
+				// padding: 6rpx;
 			}
 		}
 		.popup_tit{

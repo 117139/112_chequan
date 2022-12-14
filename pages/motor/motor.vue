@@ -8,9 +8,9 @@
 				<image @click="$service.call" data-tel="18300000000" class="h_iconr" src="/static/images/icon_kefu.png" mode="aspectFit"></image>
 			</view>
 		</topbar>
-		<view class="mbanner">
+		<view  v-if="list1.length>0" class="mbanner">
 			<view class="banner_box">
-				<u-swiper  :list="list1"   @click="click_fuc" height="286rpx" radius='5' :circular="true" indicator indicatorMode="line"></u-swiper>
+				<u-swiper :list="list1"  keyName="img"  @click="click_fuc" height="286rpx" radius='5' :circular="true" indicator indicatorMode="line"></u-swiper>
 			</view>
 		</view>
 		<view class="pttz_box">
@@ -104,28 +104,129 @@
 </template>
 
 <script>
-	var that 
+	import Vue from 'vue'
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
+	var that
 	export default {
 		data() {
 			return {
 				list1: [
-						'/static/images/banner_motor.png',
-						'/static/images/banner_motor.png',
-						'/static/images/banner_motor.png',
+						// '/static/images/banner_motor.png',
+						// '/static/images/banner_motor.png',
+						// '/static/images/banner_motor.png',
 				],
 				cur:0
 			}
 		},
 		onLoad() {
 			that =this
+			that.getbanner()
 		},
 		methods: {
+			getbanner(){
+				var datas={
+					type:2,
+				}
+				var jkurl='/publics/banner'
+				
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.list1=datas.map(function(item){
+							return {
+								id: item.id,
+								img: that.$service.getimg(item.img),
+								is_jump: item.is_jump,
+								jump_url: item.jump_url,
+								title: item.title,
+							}
+						})
+						// that.getdata_tz()
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
 			setcur(index){
 				that.cur=index
 			},
 			click_fuc(e){
 				console.log(e)
-			}
+				var item=that.list1[e]
+				if(item.is_jump==2){
+					if(item.jump_url==1){
+						uni.navigateTo({
+							url:'/pagesA/jyz_list/jyz_list'
+						})
+					}else if(item.jump_url==2){
+						uni.navigateTo({
+							url:'/pagesA/qcmr_list/qcmr_list'
+						})
+					}else if(item.jump_url==3){
+						uni.navigateTo({
+							url:'/pagesA/rgc_zt/rgc_zt'
+						})
+					}else if(item.jump_url==4){
+						uni.navigateTo({
+							url:'/pagesA/rgc_nj/rgc_nj'
+						})
+					}else if(item.jump_url==5){
+						uni.navigateTo({
+							url:'/pagesA/rgc_mfpg/rgc_mfpg'
+						})
+					}else if(item.jump_url==6){
+						uni.navigateTo({
+							url:'/pagesA/rgc_sb/rgc_sb'
+						})
+					}else{
+						uni.navigateTo({
+							url:'/pagesA/rgc_wz/rgc_wz'
+						})
+					}
+				}
+				if(item.is_jump==3){
+					uni.navigateTo({
+						url:'/pagesA/xieyi/xieyi?type=2&id='+item.id
+					})
+				}
+			},
 		}
 	}
 </script>

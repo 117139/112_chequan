@@ -1,77 +1,88 @@
 <template>
 	<view class="content">
 		<view class="banner_box">
-			<u-swiper  :list="list1"   @click="click_fuc" height="320rpx" radius='0' :circular="true"></u-swiper>
+			<u-swiper  v-if="list1.length>0"  :list="list1"  keyName="img" @click="click_fuc" height="320rpx" radius='0' :circular="true"></u-swiper>
 		</view>
 		<!-- 金刚区 -->
 		<view class="index_tui_list dis_flex fww">
 			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/jyz_list/jyz_list">
 				<view class="index_tui_li_img">
-					<image src="/static/images/iti1.png" mode="aspectFill"></image>
+					<image v-if="navdata[0].img" :src="$service.getimg(navdata[0].img)" mode="aspectFill"></image>
+					<image v-else src="/static/images/iti1.png" mode="aspectFill"></image>
 				</view>
-				<view class="index_tui_li_text">加油站</view>
+				<view class="index_tui_li_text">{{navdata[0].title||'加油站'}}</view>
 			</view>
 			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/qcmr_list/qcmr_list">
 				<view class="index_tui_li_img">
-					<image src="/static/images/iti2.png" mode="aspectFill"></image>
+					<image v-if="navdata[1].img" :src="$service.getimg(navdata[1].img)" mode="aspectFill"></image>
+					<image v-else src="/static/images/iti2.png" mode="aspectFill"></image>
 				</view>
-				<view class="index_tui_li_text">汽车美容</view>
+				<view class="index_tui_li_text">{{navdata[1].title||'汽车美容'}}</view>
 			</view>
 			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_zt/rgc_zt">
 				<view class="index_tui_li_img">
-					<image src="/static/images/iti3.png" mode="aspectFill"></image>
+					<image v-if="navdata[2].img" :src="$service.getimg(navdata[2].img)" mode="aspectFill"></image>
+					<image v-else src="/static/images/iti3.png" mode="aspectFill"></image>
 				</view>
-				<view class="index_tui_li_text">人工查状态</view>
+				<view class="index_tui_li_text">{{navdata[2].title||'人工查状态'}}</view>
 			</view>
 			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_nj/rgc_nj">
 				<view class="index_tui_li_img">
-					<image src="/static/images/iti4.png" mode="aspectFill"></image>
+					<image v-if="navdata[3].img" :src="$service.getimg(navdata[3].img)" mode="aspectFill"></image>
+					<image v-else src="/static/images/iti4.png" mode="aspectFill"></image>
 				</view>
-				<view class="index_tui_li_text">急速年检</view>
+				<view class="index_tui_li_text">{{navdata[3].title||'急速年检'}}</view>
 			</view>
 			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_mfpg/rgc_mfpg">
 				<view class="index_tui_li_img">
-					<image src="/static/images/iti5.png" mode="aspectFill"></image>
+					<image v-if="navdata[4].img" :src="$service.getimg(navdata[4].img)" mode="aspectFill"></image>
+					<image v-else src="/static/images/iti5.png" mode="aspectFill"></image>
 				</view>
-				<view class="index_tui_li_text">免费评估</view>
+				<view class="index_tui_li_text">{{navdata[4].title||'免费评估'}}</view>
 			</view>
 			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_sb/rgc_sb">
 				<view class="index_tui_li_img">
-					<image src="/static/images/iti6.png" mode="aspectFill"></image>
+					<image v-if="navdata[5].img" :src="$service.getimg(navdata[5].img)" mode="aspectFill"></image>
+					<image v-else src="/static/images/iti6.png" mode="aspectFill"></image>
 				</view>
-				<view class="index_tui_li_text">车型识别</view>
+				<view class="index_tui_li_text">{{navdata[5].title||'车型识别'}}</view>
 			</view>
 			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_wz/rgc_wz">
 				<view class="index_tui_li_img">
-					<image src="/static/images/iti7.png" mode="aspectFill"></image>
+					<image v-if="navdata[6].img" :src="$service.getimg(navdata[6].img)" mode="aspectFill"></image>
+					<image v-else src="/static/images/iti7.png" mode="aspectFill"></image>
 					<view class="index_tui_jz">精准</view>
 				</view>
-				<view class="index_tui_li_text">人工查违章</view>
+				<view class="index_tui_li_text">{{navdata[6].title||'人工查违章'}}</view>
 			</view>
 			<view class="index_tui_li" @click="$service.jump" data-url="/pages/car/car" data-type="2">
 				<view class="index_tui_li_img">
-					<image src="/static/images/iti8.png" mode="aspectFill"></image>
+					<image v-if="navdata[7].img" :src="$service.getimg(navdata[7].img)" mode="aspectFill"></image>
+					<image v-else src="/static/images/iti8.png" mode="aspectFill"></image>
 				</view>
-				<view class="index_tui_li_text">靠谱二手车</view>
+				<view class="index_tui_li_text">{{navdata[7].title||'靠谱二手车'}}</view>
 			</view>
 		</view>
 		<view class="indext2_ul dis_flex fww">
 			<view class="indext2_li" @click="$service.jump" data-url="/pagesA/rgc_sb/rgc_sb">
-				<image class="indext2_libg" src="/static/images/it2i1.png" mode="aspectFill"></image>
+				<image v-if="p_config.img1" class="indext2_libg" :src="$service.getimg(p_config.img1)" mode="aspectFill"></image>
+				<image v-else class="indext2_libg" src="/static/images/it2i1.png" mode="aspectFill"></image>
 				<!-- <view class="indext2_liinr">
 					<view>车型识别</view>
 					<text>识别高低配</text>
 				</view> -->
 			</view>
 			<view class="indext2_li" @click="$service.jump" data-url="/pagesA/rgc_zt/rgc_zt">
-				<image class="indext2_libg" src="/static/images/it2i2.png" mode="aspectFill"></image>
+				<image v-if="p_config.img2" class="indext2_libg" :src="$service.getimg(p_config.img2)" mode="aspectFill"></image>
+				<image v-else class="indext2_libg" src="/static/images/it2i2.png" mode="aspectFill"></image>
 				<!-- <view class="indext2_liinr">
 					<view>人工查违章</view>
 					<text>1对1快速</text>
 				</view> -->
 			</view>
 			<view class="indext2_li" @click="$service.jump" data-url="/pagesA/rgc_mfpg/rgc_mfpg">
-				<image class="indext2_libg" src="/static/images/it2i3.png" mode="aspectFill"></image>
+				<image v-if="p_config.img3" class="indext2_libg" :src="$service.getimg(p_config.img3)" mode="aspectFill"></image>
+				<image v-else class="indext2_libg" src="/static/images/it2i3.png" mode="aspectFill"></image>
 				<!-- <view class="indext2_liinr" style="color: #305380;">
 					<view>一键评估</view>
 					<text>免费快捷</text>
@@ -81,7 +92,8 @@
 		<view class="indext3_ul dis_flex fww">
 			<!-- <view class="indext3_li" @click="go_vip(2)"> -->
 			<view class="indext3_li" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=0"  :data-login="true">
-				<image class="indext3_libg" src="/static/images/it3bg1.png" mode="aspectFill"></image>
+				<image v-if="p_config.vip_img" class="indext3_libg" :src="$service.getimg(p_config.vip_img)" mode="aspectFill"></image>
+				<image v-else class="indext3_libg" src="/static/images/it3bg1.png" mode="aspectFill"></image>
 				<!-- <view class="indext3_liinr">
 					<image src="/static/images/it3i1.png" mode="aspectFit"></image>
 					<view class="flex_1">开通用户会员</view>
@@ -90,7 +102,8 @@
 			</view>
 			<!-- <view class="indext3_li" @click="go_vip(1)"> -->
 			<view class="indext3_li" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=1"  :data-login="true">
-				<image class="indext3_libg" src="/static/images/it3bg2.png" mode="aspectFill"></image>
+				<image v-if="p_config.vip_img1" class="indext3_libg" :src="$service.getimg(p_config.vip_img1)" mode="aspectFill"></image>
+				<image v-else class="indext3_libg" src="/static/images/it3bg2.png" mode="aspectFill"></image>
 				<!-- <view class="indext3_liinr">
 					<image src="/static/images/it3i2.png" mode="aspectFit"></image>
 					<view class="flex_1">开通商户会员</view>
@@ -125,85 +138,74 @@
 			</view>
 		</scroll-view>
 		<view class="index_main_tit dis_flex aic">
-			<view class="i_tit_li" :class="{active:cur==0}" @click="setcur(0)"><text>汽车美容</text></view>
-			<view class="i_tit_li" :class="{active:cur==1}" @click="setcur(1)"><text>加油站</text></view>
+			<view class="i_tit_li" :class="{active:cur==1}" @click="setcur(1)"><text>汽车美容</text></view>
+			<view class="i_tit_li" :class="{active:cur==4}" @click="setcur(4)"><text>加油站</text></view>
 			<view class="flex_1"></view>
-			<view class="i_tit_r dis_flex aic ju_b" @tap="$service.jump" data-url="/pages_my/store_join/store_join">快速入驻<image src="/static/images/i_tit_r.png" mode="aspectFit"></image></view>
+			<view class="i_tit_r dis_flex aic ju_b" @tap="$service.jump" data-url="/pages_my/store_join/store_join">
+				快速入驻<image src="/static/images/i_tit_r.png" mode="aspectFit"></image>
+			</view>
 		</view>
 		<view class="data_list">
-			<view  v-if="cur==0" class="data_li" v-for="(item,index) in 3">
-				<view class="datali_top" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+1">
-					<image class="datali_top_img" src="/static/images/banner_car.png" mode="aspectFill"></image>
-					<view class="datali_top_msg">
-						<view class="datalimsg_tit">南中环美容洗车店</view>
-						<view class="datalimsg_add">北京市朝阳区朝外街道108号</view>
-						<view class="dis_flex aic ju_b">
-							<view class="datalimsg_dh"><image src="/static/images/iaddicon.png" mode="aspectFit"></image>导航</view>
-							<view class="datalimsg_jl">1.71km</view>
+			<block v-if="cur==1">
+				<view  class="data_li" v-for="(item,index) in datas">
+					<view class="datali_top" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+item.id">
+						<image class="datali_top_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
+						<view class="datali_top_msg">
+							<view class="datalimsg_tit">{{item.title||''}}</view>
+							<view class="datalimsg_add">{{item.address||''}}</view>
+							<view class="dis_flex aic ju_b">
+								<view class="datalimsg_dh"><image src="/static/images/iaddicon.png" mode="aspectFit"></image>导航</view>
+								<view class="datalimsg_jl">{{item.juli||'--'}}</view>
+							</view>
 						</view>
 					</view>
+					<view class="data_sli dis_flex aic" v-for="(item1,index1) in item.child" @click.stop="$service.jump" :data-url="'/pages/details_qcmr/details_qcmr?id='+item1.id">
+						<text class="data_sli_l"></text>
+						<view class="flex_1 data_sli_c">{{item1.title}}</view>
+						<view class="data_sli_r">￥<text>{{item1.price}}</text></view>
+					</view>
+					<view class="datasli_more"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+1">查看全部<text class="icon icon-next"></text></view>
 				</view>
-				<view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_qcmr/details_qcmr">
-					<text class="data_sli_l"></text>
-					<view class="flex_1 data_sli_c">标准洗车-五座轿车</view>
-					<view class="data_sli_r">￥<text>43</text></view>
-				</view>
-				<view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_qcmr/details_qcmr">
-					<text class="data_sli_l"></text>
-					<view class="flex_1 data_sli_c">五座轿车全车打蜡</view>
-					<view class="data_sli_r">￥<text>98</text></view>
-				</view>
-				<view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_qcmr/details_qcmr">
-					<text class="data_sli_l"></text>
-					<view class="flex_1 data_sli_c">内饰清洗-五座轿车</view>
-					<view class="data_sli_r">￥<text>438</text></view>
-				</view>
-				<view class="datasli_more"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+1">查看全部<text class="icon icon-next"></text></view>
-			</view>
-			<view  v-if="cur==1" class="data_li" v-for="(item,index) in 3" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=3&id='+1">
-				<view class="datali_top">
-					<image class="datali_top_img" src="/static/images/banner_car.png" mode="aspectFill"></image>
-					<view class="datali_top_msg">
-						<view class="datalimsg_tit">南中环加油站</view>
-						<view class="datalimsg_add">北京市朝阳区朝外街道108号</view>
-						<view class="dis_flex aic ju_b">
-							<view class="datalimsg_dh"><image src="/static/images/iaddicon.png" mode="aspectFit"></image>导航</view>
-							<view class="datalimsg_jl">1.71km</view>
+				<view  v-if="datas.length>0" class="go_more" @click="$service.jump" data-url="/pagesA/qcmr_list/qcmr_list">查看更多洗车店<text class="icon icon-next"></text></view>
+				
+			</block>
+			<block v-if="cur==4">
+				<view class="data_li" v-for="(item,index) in datas" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=3&id='+item.id">
+					<view class="datali_top">
+						<image class="datali_top_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
+						<view class="datali_top_msg">
+							<view class="datalimsg_tit">{{item.title||''}}</view>
+							<view class="datalimsg_add">{{item.address||''}}</view>
+							<view class="dis_flex aic ju_b">
+								<view class="datalimsg_dh"><image src="/static/images/iaddicon.png" mode="aspectFit"></image>导航</view>
+								<view class="datalimsg_jl">{{item.juli||'--'}}</view>
+							</view>
 						</view>
 					</view>
+					<!-- <view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_jyz/details_jyz"> -->
+					
+					<view class="data_sli dis_flex aic" v-for="(item1,index1) in item.child">
+						<text class="data_sli_l"></text>
+						<view class="flex_1 data_sli_c">{{item1.title}}</view>
+						<view class="data_sli_r">￥<text>{{item1.price}}</text></view>
+					</view>
+					<view class="datasli_more">查看全部<text class="icon icon-next"></text></view>
 				</view>
-				<!-- <view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_jyz/details_jyz"> -->
-				<view class="data_sli dis_flex aic">
-					<text class="data_sli_l"></text>
-					<view class="flex_1 data_sli_c">90#汽油</view>
-					<view class="data_sli_r">￥<text>7.18</text></view>
-				</view>
-				<view class="data_sli dis_flex aic">
-					<text class="data_sli_l"></text>
-					<view class="flex_1 data_sli_c">92#汽油</view>
-					<view class="data_sli_r">￥<text>7.28</text></view>
-				</view>
-				<view class="data_sli dis_flex aic">
-					<text class="data_sli_l"></text>
-					<view class="flex_1 data_sli_c">98#汽油</view>
-					<view class="data_sli_r">￥<text>8.18</text></view>
-				</view>
-				<view class="datasli_more">查看全部<text class="icon icon-next"></text></view>
-			</view>
-			<view v-if="cur==0" class="go_more" @click="$service.jump" data-url="/pagesA/qcmr_list/qcmr_list">查看更多洗车店<text class="icon icon-next"></text></view>
-			<view v-if="cur==1" class="go_more" @click="$service.jump" data-url="/pagesA/jyz_list/jyz_list">查看更多加油站<text class="icon icon-next"></text></view>
+				<view v-if="datas.length>0" class="go_more" @click="$service.jump" data-url="/pagesA/jyz_list/jyz_list">查看更多加油站<text class="icon icon-next"></text></view>
+			</block>
+			<uni-load-more v-if="list_status" :status="list_status" :contentText="contentText"></uni-load-more>
 		</view>
 		<view class="index_main_tit dis_flex aic">
 			<view class="i_tit_li active" ><text>二手车</text></view>
 		</view>
 		<view class="car_list dis_flex fww">
-			<view class="car_li" v-for="(item,index) in 20"  @click="$service.jump" data-url="/pages/details_car/details_car">
+			<view class="car_li" v-for="(item,index) in datas_car"  @click="$service.jump" :data-url="'/pages/details_car/details_car?id='+item.id">
 				<view class="car_li_box">
-					<image class="car_li_img" src="/static/images/car.jpg" mode="aspectFill"></image>
+					<image class="car_li_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 					<view class="car_li_msg">
-						<view class="car_li_tit oh2">大众ID.4 X 2021款 Pure+ 纯净长续航版</view>
-						<view class="car_li_jl oh1">2021年/0.80万公里</view>
-						<view class="car_li_num">17.66万</view>
+						<view class="car_li_tit oh2">{{item.title}}</view>
+						<view class="car_li_jl oh1">{{item.brand_time||''}}年/0.80万公里</view>
+						<view class="car_li_num">{{$service.getnum(item.price)||''}}</view>
 					</view>
 				</view>
 			</view>
@@ -212,28 +214,336 @@
 </template>
 
 <script>
-	var that 
+	import Vue from 'vue'
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
+	var that
 	export default {
 		data() {
 			return {
 				list1: [
-						'/static/images/banner.png',
-						'/static/images/banner.png',
-						'/static/images/banner.png',
+						// '/static/images/banner.png',
+						// '/static/images/banner.png',
+						// '/static/images/banner.png',
 				],
-				cur:0
+				cur:1,
+				datas:[],
+				list_status:'loading',
+				listc_status:'loading',
+				contentText:{contentdown: "上拉显示更多",contentrefresh: "正在加载...",contentnomore: "暂无数据"},
+				
+				page:1
 			}
 		},
 		onLoad() {
 			that =this
+			that.getnav()
+			that.getadd()
+			that.getbanner()
+			that.getlist(1)
+			that.onRetry()
+		},
+		
+		computed: {
+			...mapState(['hasLogin', 'forcedLogin','loginDatas','addmsg','p_config','navdata']),
+		},
+		onReachBottom() {
+			that.getlist_car()
 		},
 		methods: {
+			/**
+			 * @Description 获取金刚区数据
+			 * 
+			 */
+			getnav(){
+				var datas={}
+				var jkurl='/index/nav'
+				
+				that.$service.P_get(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.$store.commit('setnavdata',res.data)
+						// that.getdata_tz()
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
+			
+			/**
+			 * @Description 获取地理位置信息
+			 * 
+			 */
+			getadd(){
+				uni.getLocation({
+					type: 'gcj02',
+					// #ifdef APP
+					geocode:true,
+					// #endif
+					success: function (res) {
+						console.log('当前位置的经度：' + res.longitude);
+						console.log('当前位置的纬度：' + res.latitude);
+						that.$store.commit('setaddmsg',res)
+						// that.getdata()
+					},
+					fail: function (res) {
+						console.log(res)
+					}
+				});
+			},
+			/**
+			 * @Description 获取banner
+			 * 
+			 */
+			getbanner(){
+				var datas={
+					type:1,
+				}
+				var jkurl='/publics/banner'
+				
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.list1=datas.map(function(item){
+							return {
+								id: item.id,
+								img: that.$service.getimg(item.img),
+								is_jump: item.is_jump,
+								jump_url: item.jump_url,
+								title: item.title,
+							}
+						})
+						// that.getdata_tz()
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
 			up_fuc(){
 				uni.showToast({
 					icon:'none',
 					title:'下载成功'
 				})
 			},
+			/**
+			 * 店铺列表
+			 * @param  status = [1|2|3|4] 类型 1、汽车美容 2、摩托车 3、二手车 4、加油站
+			 */
+			getlist(status){
+				// /index/store
+				var datas={
+					status:status,
+					lat:that.addmsg.latitude||'',
+					lng:that.addmsg.longitude||'',
+					page:1,
+					limit:3
+				}
+				var jkurl='/index/store'
+				that.list_status='loading'
+				that.datas=[]
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.datas=datas.data
+						if(datas.total==0){
+							that.list_status='noMore'
+							
+						}else{
+							that.list_status=''
+						}
+						// that.getdata_tz()
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
+			onRetry(){
+					that.page=1
+					that.datas_car=[]
+					that.getlist_car()
+			},
+			/**
+			 * 二手车列表
+			 */
+			getlist_car(){
+				// /index/store
+				var datas={
+					// store_id:'',
+					// lat:that.addmsg.latitude||'',
+					// lng:that.addmsg.longitude||'',
+					// is_hot:'',//是否热门推荐 1、是 2、否
+					// search:'',
+					page:that.page,
+					limit:3
+				}
+				var jkurl='/index/usedcar'
+				that.listc_status='loading'
+				that.datas=[]
+				var nowpage=that.page
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						
+						if(nowpage==1){
+							that.datas_car=datas.data
+						}else{
+							that.datas_car=that.datas_car.concat(datas.data)
+						}
+						
+						if(datas.total==0){
+							that.listc_status='noMore'
+							
+						}else{
+							that.listc_status=''
+						}
+						if(datas.data>length>0){
+							that.page++
+						}
+						// that.getdata_tz()
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
+			
 			go_vip(num){
 				console.log(num)
 				uni.setStorageSync('vipnum',num)
@@ -243,12 +553,47 @@
 			},
 			setcur(index){
 				that.cur=index
+				that.getlist(index)
 			},
 			click_fuc(e){
 				console.log(e)
-				uni.navigateTo({
-					url:'/pagesA/rgc_wz/rgc_wz'
-				})
+				var item=that.list1[e]
+				if(item.is_jump==2){
+					if(item.jump_url==1){
+						uni.navigateTo({
+							url:'/pagesA/jyz_list/jyz_list'
+						})
+					}else if(item.jump_url==2){
+						uni.navigateTo({
+							url:'/pagesA/qcmr_list/qcmr_list'
+						})
+					}else if(item.jump_url==3){
+						uni.navigateTo({
+							url:'/pagesA/rgc_zt/rgc_zt'
+						})
+					}else if(item.jump_url==4){
+						uni.navigateTo({
+							url:'/pagesA/rgc_nj/rgc_nj'
+						})
+					}else if(item.jump_url==5){
+						uni.navigateTo({
+							url:'/pagesA/rgc_mfpg/rgc_mfpg'
+						})
+					}else if(item.jump_url==6){
+						uni.navigateTo({
+							url:'/pagesA/rgc_sb/rgc_sb'
+						})
+					}else{
+						uni.navigateTo({
+							url:'/pagesA/rgc_wz/rgc_wz'
+						})
+					}
+				}
+				if(item.is_jump==3){
+					uni.navigateTo({
+						url:'/pagesA/xieyi/xieyi?type=2&id='+item.id
+					})
+				}
 			}
 		}
 	}
@@ -490,7 +835,7 @@
 			font-family: Microsoft YaHei;
 			font-weight: 400;
 			color: #FFFFFF;
-			line-height: 26rpx;
+			line-height: 30rpx;
 			image{
 				width: 26rpx;
 				height: 26rpx;

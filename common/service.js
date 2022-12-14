@@ -4,14 +4,20 @@ import store from '../store/index.js'
 const USERS_KEY = 'USERS_KEY';
 const STATE_KEY = 'STATE_KEY';
 const map_key = "7FEBZ-WLWK2-PMGUE-C4BFT-EKXB6-BFFNR"
-const appVN=0
-const baseurl = "https://bhqh.htbg2008.com/"
+const appVN=1
+let baseurl = ""
 // const baseurl = "http://192.168.0.119:8000/"
 // var jkurl_type=uni.getStorageSync('jkurl_type')
 var ck_url=uni.getStorageSync('jkurl')
 
-// let imgurl = baseurl
-let imgurl = ''
+if (process.env.NODE_ENV === 'development') {
+	console.log('开发环境');
+	baseurl='http://10.10.66.102:8000/'
+} else {
+	console.log('生产环境');
+}
+let imgurl = baseurl
+// let imgurl = ''
 var  IPurl = baseurl + 'api/'
 if(ck_url){
 	IPurl=ck_url
@@ -22,7 +28,7 @@ const limit=20
 // }else{
 // 	IPurl = imgurl + 'api/'
 // }
-
+// http://10.10.66.102:8000
 // const IPurl=process.env.NODE_ENV === 'production' ? imgurl + 'api/' : 'http://192.168.0.100/api/'
 
 // #ifdef H5
@@ -297,7 +303,7 @@ const wxlogin = function(num) {
 		}
 
 		uni.request({
-			url: IPurl + '/login/getInfo',
+			url: IPurl + '/login/token',
 			data: data,
 			header: {
 				'content-type': 'application/x-www-form-urlencoded',
@@ -2056,6 +2062,59 @@ const LNum=function(txt,num) {
 	}
 	return str
 }
+const getnum = function(num,tonum) {
+	if (!num) {
+		return 0
+	}
+	if(!tonum){
+		tonum=2
+	}
+	if(tonum<0){
+		tonum=0
+	}
+	num=num*1
+	// console.log(num)
+	if(num >0){
+		if (num > 1000000000000) {
+			num = num / 1000000000000
+			num = num.toFixed(tonum)
+			num = num + '万亿'
+		} else if (num > 100000000) {
+			num = num / 100000000
+			num = num.toFixed(tonum)
+			num = num + '亿'
+		} else if (num > 10000) {
+			num = num / 10000
+			num = num.toFixed(tonum)
+			num = num + '万'
+		} else {
+			num = num.toFixed(tonum)
+		}
+	}else if(num<0){
+		if (num < -1000000000000) {
+			num = num / 1000000000000
+			num = num.toFixed(tonum)
+			num = num + '万亿'
+		} else if (num < -100000000) {
+			num = num / 100000000
+			num = num.toFixed(tonum)
+			num = num + '亿'
+		} else if (num < -10000) {
+			num = num / 10000
+			if(num>999){
+				num = num.toFixed(0)
+			}else{
+				num = num.toFixed(tonum)
+			}
+			num = num + '万'
+		} else {
+			// console.log(num)
+			num=num*1
+			num = num.toFixed(tonum)
+		}
+	}
+	return num
+}
 export default {
 	getUsers,
 	addUser,
@@ -2091,5 +2150,6 @@ export default {
 	appVN,
 	set_num,
 	LNum,
-	limit
+	limit,
+	getnum
 }

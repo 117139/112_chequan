@@ -2,7 +2,8 @@
 	<view class="wrap_box">
 		
 		<view class="main_box">
-			<image class="main_bg" src="/static/images/bg_pinggu.png" mode="widthFix"></image>
+			<image v-if="navdata[4].banner" class="main_bg" :src="$service.getimg(navdata[4].banner)" mode="aspectFill"></image>
+			<image v-else class="main_bg" src="/static/images/bg_pinggu.png" mode="widthFix"></image>
 			<view class="cz_box">
 				<view class="cz_tip"><text class="iconfont icon-yanzhengma"></text>为全网95%二手车交易提供估值服务</view>
 				
@@ -127,7 +128,7 @@
 			}
 		},
 		computed: {
-			...mapState(['hasLogin', 'forcedLogin', 'userName', 'userinfo','loginDatas']),
+			...mapState(['hasLogin', 'forcedLogin', 'userName', 'userinfo','loginDatas','addmsg','p_config','navdata']),
 			startDate() {
 					return this.getDate('start');
 			},

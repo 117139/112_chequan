@@ -1,14 +1,16 @@
 <template>
 	<view class="wrap_box">
-		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
-		<view v-if="options.type==1">
-			<rich-text :nodes="nodes"></rich-text>
-		</view>
-		<view v-else>
-			
-			<rich-text :nodes="nodes1"></rich-text>
-			
-		</view>
+		<block v-if="options.id">
+			<uParse v-if="datas" :content="datas"></uParse>
+		</block>
+		<block v-else>
+			<view v-if="options.type==1">
+				<rich-text :nodes="nodes"></rich-text>
+			</view>
+			<view v-else>
+				<rich-text :nodes="nodes1"></rich-text>
+			</view>
+		</block>
 
 		<!-- 阻止滑动 -->
 		<!-- <view @touchmove.stop.prevent='test'></view> -->
@@ -42,8 +44,13 @@
 			that = this
 			that.options = e || {}
 			console.log(e)
-			 that.onRetry()
-			 that.onRetry1()
+			if(e.id){
+				that.getdata1()
+			}else{
+				that.onRetry()
+				that.onRetry1()
+			}
+			 
 			// that.getdata()
 		},
 		onShow() {
@@ -53,6 +60,59 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test() {},
+			// 单条数据
+			getdata1(){
+				
+				var datas={
+					key: that.options.id,
+					type:that.options.type==2?2:1,
+				}
+				var jkurl='/publics/single'
+				
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.datas=datas.content
+						if(datas.title){
+							uni.setNavigationBarTitle({
+								title:datas.title
+							})
+						}
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
+			
 			// 用户协议
 			onRetry(){
 				this.nodes=`

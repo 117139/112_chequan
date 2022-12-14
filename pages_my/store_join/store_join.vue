@@ -66,7 +66,7 @@
 			</view>
 			<view class="fb_btn" @click="fub_fuc">确认入驻</view>
 			<view class="fb_xy">
-				点击确认入驻表示同意<text>商家入驻规则协议</text>
+				点击确认入驻表示同意<text @click.stop="$service.jump" data-url="/pagesA/xieyi/xieyi?id=sjrzgzxy">商家入驻规则协议</text>
 			</view>
 		</view>
 		<!-- 阻止滑动 -->

@@ -7,7 +7,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
 	state: {
 		loginDatas:'',//登录返回信息
-		hasLogin:true,
+		hasLogin:false,
 		loginDatas_user:'', //系统用户信息
 		token:'',
 		loginPage:'',
@@ -22,7 +22,6 @@ const store = new Vuex.Store({
 		jl_data:[],
 		app_type:1,
 		sf_type:0,
-		basedata:'',
 		rz_datas:'',
 		
 		
@@ -36,8 +35,24 @@ const store = new Vuex.Store({
 		
 		
 		Storedatas:'', //店长信息
+		
+		addmsg:'',
+		p_config:'',
+		navdata:'',
 	},
 	mutations: {
+		// 金刚区数据
+		setnavdata(state, navdata){
+			state.navdata = navdata||{}
+		},
+		// 公共数据
+		setconfig(state, p_config){
+			state.p_config = p_config||{}
+		},
+		// 设置经纬度
+		setaddmsg(state, addmsg){
+			state.addmsg = addmsg||{}
+		},
 		setStoredatas(state, Storedatas){
 			state.Storedatas = Storedatas||{}
 		},
@@ -93,6 +108,7 @@ const store = new Vuex.Store({
 			state.loginDatas = ''
 			state.token = ''
 			// uni.removeStorageSync('token')
+			uni.clearStorageSync()
 			state.hasLogin = false
 		},
 		logout_com(state) {

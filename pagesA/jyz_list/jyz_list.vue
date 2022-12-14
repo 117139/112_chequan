@@ -13,7 +13,8 @@
 		</topbar>
 		<u-picker :show="show_sx" :columns="columns" @confirm="confirm_sx" @cancel="cancel_sx" />
 		<view class="main_box">
-			<image class="main_bg" src="/static/images/bg_addoil.png" mode="widthFix"></image>
+			<image v-if="navdata[0].banner" class="main_bg" :src="$service.getimg(navdata[0].banner)" mode="aspectFill"></image>
+			<image v-else class="main_bg" src="/static/images/bg_addoil.png" mode="widthFix"></image>
 			<view class="data_list">
 				<view class="data_li" v-for="(item,index) in 3"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=3&id='+1">
 					<view class="datali_top">
@@ -88,7 +89,7 @@
 			}
 		},
 		computed: {
-		...mapState(['hasLogin', 'forcedLogin', 'userName', 'userinfo','loginDatas']),
+		...mapState(['hasLogin', 'forcedLogin', 'userName', 'userinfo','loginDatas','addmsg','p_config','navdata']),
 		},
 		// onReachBottom() {
 		// 	that.getdata()

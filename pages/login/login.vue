@@ -143,7 +143,7 @@
 			<view class="xieyi_k" :class="{active:xy_active}">
 				<text class="iconfont icon-duigou"></text>
 			</view>
-			我已阅读并同意<text style="color: #FDC113;" @click.stop="$service.jump" data-url="/pagesA/about/about?type=yhxy">《用户协议》</text>和<text style="color: #FDC113;" @click.stop="$service.jump" data-url="/pagesA/about/about?type=ysxy">《隐私政策》</text>
+			我已阅读并同意<text style="color: #FDC113;" @click.stop="$service.jump" data-url="/pagesA/xieyi/xieyi?id=yhxy">《用户协议》</text>和<text style="color: #FDC113;" @click.stop="$service.jump" data-url="/pagesA/xieyi/xieyi?id=ysxy">《隐私政策》</text>
 		</view>
 		<!-- 阻止滑动 -->
 		<!-- <view @touchmove.stop.prevent='test'></view> -->
@@ -805,15 +805,15 @@
 					type:1,
 					phone:that.tel,
 					code:that.yzm,
-					invite_code:that.yq_code,
-					password:that.pwd,
+					// invite_code:that.yq_code,
+					pass:that.pwd,
 					// pass:that.pwd1,
-					sfz_name:that.sfz_name,
-					sfz_id:that.sfz_id,
+					name:that.sfz_name,
+					idcard:that.sfz_id,
 				}
 				
 				
-				var jkurl='/register'
+				var jkurl='/login/register'
 				
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
@@ -823,9 +823,9 @@
 						var datas = res.data
 						console.log(typeof datas)
 				
-						if (typeof datas == 'string') {
-							datas = JSON.parse(datas)
-						}
+						// if (typeof datas == 'string') {
+						// 	datas = JSON.parse(datas)
+						// }
 						console.log(res)
 						wx.showToast({
 							icon: 'none',
@@ -898,7 +898,7 @@
 					datas={
 						type:3,
 						phone:that.tel,
-						password:that.pwd,
+						pass:that.pwd,
 					}
 				}
 				if(that.v_type==2){
@@ -932,7 +932,7 @@
 				// setTimeout(function(){
 				// 	uni.navigateBack()
 				// },1000)
-				var jkurl='/login'
+				var jkurl='/login/login'
 				
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
@@ -942,15 +942,20 @@
 						var datas = res.data
 						console.log(typeof datas)
 				
-						if (typeof datas == 'string') {
-							datas = JSON.parse(datas)
-						}
+						// if (typeof datas == 'string') {
+						// 	datas = JSON.parse(datas)
+						// }
 						console.log(res)
 						uni.showToast({
 							icon: 'none',
 							title: '登录成功'
 						})
-						that.$store.commit('login',datas)
+						uni.setStorageSync('token',res.data)
+						uni.$emit('login_fuc', {
+							title: ' 刷新信息 ',
+							content: 'item.id'
+						});
+						// that.$store.commit('login',datas)
 						setTimeout(()=>{
 							uni.navigateBack({
 								delta:1
@@ -1030,7 +1035,7 @@
 				var datas={
 					phone:that.tel,
 					code:that.yzm,
-					password:that.pwd,
+					pass:that.pwd,
 					// new_password:that.pwd1,
 				}
 				// wx.showToast({
@@ -1038,7 +1043,7 @@
 				// 	title: '提交成功'
 				// })
 				// that.v_type=1
-				var jkurl='/user/forgetPwd'
+				var jkurl='/login/pass_refund'
 				
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
@@ -1048,9 +1053,9 @@
 						var datas = res.data
 						console.log(typeof datas)
 				
-						if (typeof datas == 'string') {
-							datas = JSON.parse(datas)
-						}
+						// if (typeof datas == 'string') {
+						// 	datas = JSON.parse(datas)
+						// }
 						console.log(res)
 						wx.showToast({
 							icon: 'none',
@@ -1114,15 +1119,15 @@
 				// that.codetime()
 				// that.btnkg = 0
 				// return
-				var jkurl = '/sendCode'
-				//type：1：注册  2：忘记密码   3：验证码登录   4：修改绑定手机  5：修改密码
+				var jkurl = '/publics/send_sms'
+				//type：类型 1、注册 2、忘记密码
 				//页面 0注册 1账号密码登录 2手机号登录 3忘记密码
 				var data = {
 					// type:that.login_type==0?2:that.login_type==2?1:1,
-					type:that.v_type==0?1:that.v_type==2?3:2,
+					type:that.v_type==0?1:that.v_type==3?2:0,
 					phone: that.tel
 				}
-				that.$service.P_get(jkurl, data).then(res => {
+				that.$service.P_post(jkurl, data).then(res => {
 					that.btnkg = 0
 					console.log(res)
 					if (res.code == 1) {

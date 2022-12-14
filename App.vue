@@ -9,6 +9,7 @@
 		onLaunch: function() {
 			console.log('App Launch')
 			that=this
+			that.getconfig()
 			if(that.$service.appVN==0){
 				that.$service.wxlogin('token')
 			}
@@ -57,11 +58,11 @@
 			console.log('App Hide')
 		},
 		methods:{
-			getbasedata(){
+			getconfig(){
 				var datas={}
-				var jkurl='/public/config'
+				var jkurl='/publics/info'
 				
-				that.$service.P_get(jkurl, datas).then(res => {
+				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
 					console.log(res)
 					if (res.code == 1) {
@@ -73,7 +74,7 @@
 							datas = JSON.parse(datas)
 						}
 						console.log(res)
-						that.$store.commit('set_basedata',res.data)
+						that.$store.commit('setconfig',res.data)
 						// that.getdata_tz()
 						// if(datas.title){
 						// 	uni.setNavigationBarTitle({
