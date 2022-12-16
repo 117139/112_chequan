@@ -10,6 +10,7 @@
 			console.log('App Launch')
 			that=this
 			that.getconfig()
+			that.getcar_datas()
 			if(that.$service.appVN==0){
 				that.$service.wxlogin('token')
 			}
@@ -58,6 +59,55 @@
 			console.log('App Hide')
 		},
 		methods:{
+			getcar_datas() {
+			
+				var datas = {}
+				var jkurl = '/publics/car_info'
+			
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.$store.commit('setcardatas',datas)
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
+					} else {
+			
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
+			
 			getconfig(){
 				var datas={}
 				var jkurl='/publics/info'

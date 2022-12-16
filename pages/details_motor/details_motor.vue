@@ -792,4 +792,38 @@
 		border-radius: 8rpx;
 	}
 }
+.indicator-num {
+	padding: 2px 0;
+	background-color: rgba(0, 0, 0, 0.35);
+	border-radius: 100px;
+	width: 35px;
+	@include flex;
+	justify-content: center;
+	position: absolute;
+	bottom: 30rpx;
+	right: 30rpx;
+	z-index: 999999;
+	&__text {
+			 color: #FFFFFF;
+			 font-size: 12px;
+	 }
+}
+.swiper_box{
+	width: 100%;
+	height:500rpx;
+	position: relative;
+	.swiper{
+		height: 100%;
+		position: relative;
+		z-index: 900;
+		.swiper-item{
+			width: 100%;
+			height: 100%;
+			image{
+				width: 100%;
+				height: 100%;
+			}
+		}
+	}
+}
 </style>

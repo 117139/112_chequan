@@ -361,9 +361,6 @@ const wxlogin = function(num) {
 					if(res.data.data.token){
 						uni.setStorageSync('token', res.data.data.token)
 					}
-					
-								
-												
 					store.commit('login', res.data.data)
 				} else {
 					uni.removeStorageSync('userInfo')

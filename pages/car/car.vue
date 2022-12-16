@@ -51,43 +51,13 @@
 		</view>
 		
 		<view class="cart_list dis_flex fww">
-			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/search/search?type=2&key=大众">
-				<image class="cart_img" src="/static/images/icon_dazhong.png" mode="aspectFit"></image>
-				<view class="cart_text">大众</view>
-			</view>
-			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/search/search?type=2&key=本田">
-				<image class="cart_img" src="/static/images/icon_bentian.png" mode="aspectFit"></image>
-				<view class="cart_text">本田</view>
-			</view>
-			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/search/search?type=2&key=吉利汽车">
-				<image class="cart_img" src="/static/images/icon_jili.png" mode="aspectFit"></image>
-				<view class="cart_text">吉利汽车</view>
-			</view>
-			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/search/search?type=2&key=奥迪">
-				<image class="cart_img" src="/static/images/icon_aodi.png" mode="aspectFit"></image>
-				<view class="cart_text">奥迪</view>
-			</view>
-			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/search/search?type=2&key=丰田">
-				<image class="cart_img" src="/static/images/icon_fengtian.png" mode="aspectFit"></image>
-				<view class="cart_text">丰田</view>
-			</view>
-			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/search/search?type=2&key=大众">
-				<image class="cart_img" src="/static/images/icon_bieke.png" mode="aspectFit"></image>
-				<view class="cart_text">别克</view>
-			</view>
-			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/search/search?type=2&key=大众">
-				<image class="cart_img" src="/static/images/icon_richan.png" mode="aspectFit"></image>
-				<view class="cart_text">日产</view>
-			</view>
-			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/search/search?type=2&key=大众">
-				<image class="cart_img" src="/static/images/icon_benchi.png" mode="aspectFit"></image>
-				<view class="cart_text">奔驰</view>
-			</view>
-			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/search/search?type=2&key=大众">
-				<image class="cart_img" src="/static/images/icon_changan.png" mode="aspectFit"></image>
-				<view class="cart_text">长安</view>
-			</view>
-			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/ctpe_list/ctpe_list?type=2&key=大众">
+			<block v-for="(item,index) in car_info_hot">
+				<view class="cart_li"  @tap="$service.jump" :data-url="'/pagesA/search/search?type=2&key='+item.name">
+					<image class="cart_img" :src="$service.getimg(item.img)" mode="aspectFit"></image>
+					<view class="cart_text">{{item.name}}</view>
+				</view>
+			</block>
+			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/ctpe_list/ctpe_list">
 				<image class="cart_img" src="/static/images/icon_more.png" mode="aspectFit"></image>
 				<view class="cart_text">更多</view>
 			</view>
@@ -151,11 +121,63 @@
 		onLoad() {
 			that =this
 			that.getbanner()
+			if(that.car_info.length==0){
+				that.getcar_datas()
+			}
 		},
 		computed: {
-			...mapState(['hasLogin', 'forcedLogin','loginDatas','addmsg','p_config','navdata']),
+			...mapState(['hasLogin', 'forcedLogin','loginDatas','addmsg','p_config','navdata','car_info','car_info_hot']),
 		},
 		methods: {
+			getcar_datas() {
+			
+				var datas = {}
+				var jkurl = '/publics/car_info'
+			
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+			
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.$store.commit('setcardatas',datas)
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
+					} else {
+			
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
+			
 			getbanner(){
 				var datas={
 					type:3,

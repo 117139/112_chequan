@@ -1,7 +1,13 @@
 <template>
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
-		<view class="ok_box dis_flex_c aic ju_c">
+		<view v-if="options.edit==1" class="ok_box dis_flex_c aic ju_c">
+			<image class="ok_img" src="/static/images/order_ok.png" mode="aspectFit"></image>
+			<view class="ok_tip">提交成功</view>
+			<!-- <view class="ok_tip1">成功发布，快去看看吧</view> -->
+			<view class="ok_btn" @click="$service.back">返回</view>
+		</view>
+		<view v-else class="ok_box dis_flex_c aic ju_c">
 			<image class="ok_img" src="/static/images/order_ok.png" mode="aspectFit"></image>
 			<view class="ok_tip">发布成功</view>
 			<view class="ok_tip1">成功发布，快去看看吧</view>

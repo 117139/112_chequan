@@ -38,7 +38,20 @@ const store = new Vuex.Store({
 		
 		addmsg:'',
 		p_config:'',
-		navdata:'',
+		navdata:[
+			{},
+			{},
+			{},
+			{},
+			{},
+			{},
+			{},
+			{},
+		],
+		cardatas:{},
+		car_info:[],
+		car_info_hot:[],
+		car_info_all:[]
 	},
 	mutations: {
 		// 金刚区数据
@@ -48,6 +61,12 @@ const store = new Vuex.Store({
 		// 公共数据
 		setconfig(state, p_config){
 			state.p_config = p_config||{}
+		},
+		
+		setcardatas(state, cardatas){
+			state.car_info = cardatas.car_info||{}
+			state.car_info_hot = cardatas.car_info_hot||[]
+			state.car_info_all = cardatas.car_info_all||[]
 		},
 		// 设置经纬度
 		setaddmsg(state, addmsg){

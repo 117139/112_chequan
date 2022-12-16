@@ -27,7 +27,14 @@
 					</view>
 					<input class="fb_li_r" type="number" v-model="fb_tel" placeholder="请填写真实手机号">
 				</view>
-				<picker @change="bindPickerChange" :value="index" :range="array" range-key="title">
+				
+				<view v-if="datas" class="fb_li fb_li1">
+					<view class="fb_li_l">
+						店铺类型
+					</view>
+					<view class="fb_li_r">{{array[tp_index].title}}</view>
+				</view>
+				<picker v-else @change="bindPickerChange" :value="index" :range="array" range-key="title">
 					<view class="fb_li fb_li1">
 						<view class="fb_li_l">
 							<text>*</text>店铺类型
@@ -101,7 +108,9 @@
 				fb_tel:'',
 				fb_content:'',
 				fb_add:'',
-				fb_add_xq:'',
+				address:'',
+				lat:'',
+				lng:'',
 				real_work:[],   ///照片
 				array:[
 					{
@@ -121,7 +130,8 @@
 						id:4
 					},
 				],
-				tp_index:0
+				tp_index:0,
+				btnkg:0
 			}
 		},
 		components: {  
@@ -137,7 +147,18 @@
 			that=this
 			that.options=e||{}
 			console.log(e)
-			
+			var store=that.loginDatas.store
+			if(store){
+				that.datas=store
+				that.real_work=store.banner
+				that.fb_tit=store.title
+				that.fb_tel=store.phone
+				that.fb_content=store.content
+				that.fb_add=store.address
+				that.lat=store.lat
+				that.lng=store.lng
+				that.tp_index=store.status-1
+			}
 			// that.getdata()
 		},
 		onShow() {
@@ -156,23 +177,121 @@
 				that.fb_add=e.detail.value
 			},
 			fub_fuc(){
-				var datas={
-					fb_tit:that.fb_tit,
-					fb_tel:that.fb_tel,
-					fb_content:that.fb_content,
-					fb_add:that.fb_add,
-					type:that.array[that.tp_index].title
-					// fb_add_xq:that.fb_add_xq,
-				}
-				uni.showToast({
-					icon:'none',
-					title:'发布成功'
-				})
-				setTimeout(function(){
-					uni.navigateTo({
-						url:'/pages_my/store_join1/store_join1'
+				
+				if(that.real_work.length==0){
+					uni.showToast({
+						icon:'none',
+						title:'请添加店铺图片'
 					})
-				},1000)
+					return
+				}
+				var banner=that.real_work.join(',')
+				if(!that.fb_tit){
+					uni.showToast({
+						icon:'none',
+						title:'请输入店铺名称'
+					})
+					return
+				}
+				if(!that.fb_tel){
+					uni.showToast({
+						icon:'none',
+						title:'请输入联系方式'
+					})
+					return
+				}
+				// if (that.fb_tel == '' || !(/^1\d{10}$/.test(that.fb_tel))) {
+				// 	wx.showToast({
+				// 		icon: 'none',
+				// 		title: '手机号有误'
+				// 	})
+				// 	return
+				// }
+				if(!that.fb_content){
+					uni.showToast({
+						icon:'none',
+						title:'请输入服务详情'
+					})
+					return
+				}
+				if(!that.fb_content){
+					uni.showToast({
+						icon:'none',
+						title:'请选择商家地址'
+					})
+					return
+				}
+				var datas={
+					banner:banner,
+					title:that.fb_tit,
+					phone:that.fb_tel,
+					content:that.fb_content,
+					address:that.fb_add,
+					status:that.array[that.tp_index].id,
+					lat:that.lat,
+					lng:that.lng,
+				}
+				// /sub/merchant
+				
+				var jkurl='/sub/merchant'
+				if(that.btnkg==1){
+					return
+				}
+				that.btnkg=1
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						uni.showToast({
+							icon:'none',
+							title:'提交成功'
+						})
+						setTimeout(function(){
+							that.btnkg=0
+							uni.$emit('login_fuc', {
+								title: ' 刷新信息 ',
+								content: 'item.id'
+							});
+						},900)
+						setTimeout(function(){
+							uni.redirectTo({
+								url:'/pages_my/store_join1/store_join1'
+							})
+						},1000)
+					} else {
+						that.btnkg=0
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+				
 			},
 			getadd(){
 				console.log(1)

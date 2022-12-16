@@ -2,34 +2,46 @@
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
 		<view class="banner_box">
-			<u-swiper class="banner_img" :list="list1"   @click="click_fuc" height="364rpx" radius='0' :circular="true"></u-swiper>
+			<u-swiper class="banner_img" :list="list1"   @click="click_fuc" height="364rpx" radius='0' :circular="true" :autoplay="false"></u-swiper>
 			<view class="store_box">
 				<view class="store_box_b">
 					<view class="sb_t">
 						<view class="sb_t_name">
-							南中环二手车店
-							<view class="rz_icon">
-								<image src="/static/images/order_ok.png" mode="aspectFit"></image>入驻成功
+							{{datas.title}}
+							<view v-if="datas.examine==2" class="rz_icon">
+								<image src="/static/images/order_ok.png" mode="aspectFit"></image>
+								<text>入驻成功</text>
 							</view>
+							<!-- <view v-if="datas.examine==1" class="rz_icon">
+								<image src="/static/images/order_ok.png" mode="aspectFit"></image>
+								<text>审核中</text>
+							</view>
+							<view v-if="datas.examine==3" class="rz_icon">
+								<image src="/static/images/order_ok.png" mode="aspectFit"></image>
+								<text>未通过</text>
+							</view> -->
 						</view>
 						<view class="sb_t_num">
 							<text class="iconfont icon-dianhuatianchong"></text>
-							18612345678
+							{{datas.phone}}
 						</view>
 						<view class="sb_t_num">
 							<text class="iconfont icon-daohangdizhi"></text>
-							北京朝阳区来广营乡北园东路顾家庄桥北300米 路西
+							{{datas.address}}
 						</view>
 					</view>
 					<view class="sb_b">
 						<view class="sb_b_t">服务详细</view>
 						<view class="sb_b_inr">
-							二十三年品牌老店汇众车行，长期经营中高端精品二手车，车源充足，车况明，退还有保障。支持7天内退车，15天可换服务。
+							{{datas.content}}
 						</view>
 					</view>
 				</view>
 				<view class="reset_btn"  @tap="$service.jump" data-url="/pages_my/store_join/store_join">修改信息</view>
-				<view class="sub_btn" @tap="$service.jump" data-url="/pages_my/store_fb/store_fb">我要发布</view>
+				<view  v-if="datas.examine==2" class="sub_btn" @tap="$service.jump" :data-url="'/pages_my/store_fb/store_fb?type1=1&type='+store_type">我要发布</view>
+				<view  v-if="datas.examine==1" class="sub_btn sub_btn1" >审核中</view>
+				<view  v-if="datas.examine==3" class="sub_btn sub_btn2" >审核失败</view>
+				<view  v-if="datas.examine==3" class="examine_tip" >审核原因：{{datas.examine_content||''}}</view>
 			</view>
 		</view>
 		
@@ -54,7 +66,8 @@
 				list1: [
 						'/static/images/lx1.jpg',
 				],
-				cur:0
+				cur:0,
+				store_type:1
 			}
 		},
 		computed: {
@@ -67,8 +80,14 @@
 			that=this
 			that.options=e||{}
 			console.log(e)
-			
-			// that.getdata()
+			that.datas=that.loginDatas.store
+			if(that.datas){
+				that.list1=that.datas.banner.map((item)=>{
+					return that.$service.getimg(item)
+				})
+				that.store_type=that.datas.status-1
+			}
+			that.getdata()
 		},
 		onShow() {
 			// that.onRetry()
@@ -85,7 +104,7 @@
 				that.datas=[]
 				that.getdata()
 			},
-			getdata(){
+			getdata1(){
 				
 				var datas={
 					// day:that.date,
@@ -147,12 +166,16 @@
 				})
 			},
 			// 单条数据
-			getdata1(){
-				
+			getdata(){
+				uni.$emit('login_fuc', {
+					title: ' 刷新信息 ',
+					content: 'item.id'
+				});
+				return
 				var datas={
-					id: that.options.id
+					id: that.loginDatas.store.id||''
 				}
-				var jkurl='/news_detail'
+				var jkurl='/detail/store'
 				
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
@@ -166,7 +189,7 @@
 							datas = JSON.parse(datas)
 						}
 						console.log(res)
-						that.datas=datas.content
+						that.datas=datas
 						// if(datas.title){
 						// 	uni.setNavigationBarTitle({
 						// 		title:datas.title
@@ -260,6 +283,7 @@ page{
 						font-family: Microsoft YaHei;
 						font-weight: 400;
 						color: #4680E6;
+						line-height: 32rpx;
 						image{
 							width: 32rpx;
 							height: 32rpx;
@@ -334,7 +358,7 @@ page{
 	margin-top: 20rpx;
 	width: 100%;
 	height: 90rpx;
-	border: 1px solid#4680E6;
+	border: 1px solid #4680E6;
 	background: #4680E6;
 	border-radius: 10rpx;
 	display: flex;
@@ -344,5 +368,21 @@ page{
 	font-family: Microsoft YaHei;
 	font-weight: 400;
 	color: #fff;
+	&.sub_btn1{
+		border: 1px solid #ddd;
+		background: #eee;
+		color: #666;
+	}
+	&.sub_btn2{
+		border: 1px solid #ff0000;
+		background: #ff0000;
+		color: #fff;
+	}
+}
+.examine_tip{
+	color: #f00;
+	font-size: 26rpx;
+	padding: 20rpx 0;
+	line-height: 34rpx;
 }
 </style>

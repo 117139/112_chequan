@@ -13,28 +13,28 @@
 					<!-- <text>*</text> -->
 					92号汽油
 				</view>
-				<input class="fb_li_r" type="number" v-model="fb_pri" placeholder="请填写价格">
+				<input class="fb_li_r" type="number" v-model="price_92" placeholder="请填写价格">
 			</view>
 			<view class="fb_li">
 				<view class="fb_li_l">
 					<!-- <text>*</text> -->
 					95号汽油
 				</view>
-				<input class="fb_li_r" type="number" v-model="fb_pri" placeholder="请填写价格">
+				<input class="fb_li_r" type="number" v-model="price_95" placeholder="请填写价格">
 			</view>
 			<view class="fb_li">
 				<view class="fb_li_l">
 					<!-- <text>*</text> -->
 					98号汽油
 				</view>
-				<input class="fb_li_r" type="number" v-model="fb_pri" placeholder="请填写价格">
+				<input class="fb_li_r" type="number" v-model="price_98" placeholder="请填写价格">
 			</view>
 			<view class="fb_li">
 				<view class="fb_li_l">
 					<!-- <text>*</text> -->
 					0号柴油
 				</view>
-				<input class="fb_li_r" type="number" v-model="fb_pri" placeholder="请填写价格">
+				<input class="fb_li_r" type="number" v-model="price_0" placeholder="请填写价格">
 			</view>
 			<!-- <view class="fb_li">
 				<view class="fb_li_l">
@@ -130,8 +130,43 @@
 </template>
 
 <script>
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	export default {
-		name:"fb_car",
+		name:"fb_jyz",
+		props: {
+			type1:{
+				type: String,
+				default: ''
+			},
+			options:{
+				type: Object,
+				default: function(){
+					return {}
+				}
+			},
+		},
+		computed: {
+				
+				...mapState(['loginDatas','p_config','car_info','car_info_hot','car_info_all']),
+		},
+		mounted() {
+			if(this.loginDatas.store.id){
+				console.log(this.loginDatas.store.id)
+				// this.getdata()
+				this.price_92=this.loginDatas.store.price_92
+				this.price_95=this.loginDatas.store.price_95
+				this.price_98=this.loginDatas.store.price_98
+				this.price_0=this.loginDatas.store.price_0
+			}
+			// if(this.car_info_all){
+			// 	this.pp_list=this.car_info_all
+			// 	console.log(this.car_info_all)
+			// 	this.getdata1()
+			// }
+		},
 		data() {
 			return {
 				fb_tit:'', //*服务标题
@@ -141,7 +176,13 @@
 				fb_content1:'', //*服务详情
 				goodsxq_img:[],
 				dz_type:false,
-				mt_video:[]
+				mt_video:[],
+				
+				
+				price_92:'',
+				price_95:'',
+				price_98:'',
+				price_0:'',
 			};
 		},
 		methods:{
@@ -149,18 +190,72 @@
 			dzchange(e){
 				console.log(e)
 			},
+			getdata(){
+				var that=this
+				var datas={
+					id: this.loginDatas.store.id,
+					is_my:1
+				}
+				var jkurl='/detail/store'
+				
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						// that.fb_tit_mt=datas.title
+						
+						// that.fb_pri_cj_mt=datas.y_price
+						// that.fb_pri_mt=datas.price
+						// that.mt_content=datas.content
+						
+						// that.mt_img=datas.banner||[]
+						// that.mt_video=datas.banner_video||[]
+						// that.mtxq_img=datas.content_img||[]
+						// that.dz_typ=datas.is_top==1?true:false
+						
+						
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
+			
 			sub_fuc(){
 				var that=this
-				var goods_img=that.goods_img.join(',')
-				var goodsxq_img=that.goodsxq_img.join(',')
 				var datas={
-					fb_tit:that.fb_tit,
-					fb_pri:that.fb_pri,
-					fb_content:that.fb_content,
-					goods_img:goods_img,
-					fb_content1:that.fb_content1,
-					goodsxq_img:goodsxq_img,
-					dz_type:that.dz_type
+					price_92:that.price_92,
+					price_95:that.price_95,
+					price_98:that.price_98,
+					price_0:that.price_0,
+					
 				}
 				
 				// if(!that.fb_tit){
@@ -170,13 +265,13 @@
 				// 	})
 				// 	return
 				// }
-				// if(!that.fb_pri){
-				// 	uni.showToast({
-				// 		icon:'none',
-				// 		title:'请填写价格'
-				// 	})
-				// 	return
-				// }
+				if(!that.price_92&&!that.price_95&&!that.price_98&&!that.price_0){
+					uni.showToast({
+						icon:'none',
+						title:'请填写价格'
+					})
+					return
+				}
 				// if(!that.fb_content){
 				// 	uni.showToast({
 				// 		icon:'none',
@@ -205,17 +300,103 @@
 				// 	})
 				// 	return
 				// }
+				if(this.loginDatas.store.id){
+					console.log(this.loginDatas.store.id)
+					datas={
+						id:this.loginDatas.store.id,
+						...datas
+					}
+				}
+				
+				
+				
+				
+				
 				console.log(datas)
-				uni.showToast({
-					icon:'none',
-					title:'发布成功'
-				})
-				setTimeout(function(){
-					uni.redirectTo({
-						// url:'/pages_my/my_fabu/my_fabu'
-						url:'/pages_my/store_fb_ok/store_fb_ok?type=3'
+				// return
+				var jkurl='/sub/gasoline'
+				
+				if(that.btnkg==1){
+					return
+				}
+				that.btnkg=1
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						// if (typeof datas == 'string') {
+						// 	datas = JSON.parse(datas)
+						// }
+						console.log(res)
+						
+						uni.showToast({
+							icon:'none',
+							title:'提交成功'
+						})
+						setTimeout(function(){
+							uni.$emit('login_fuc', {
+								title: ' 刷新信息 ',
+								content: 'item.id'
+							});
+							that.btnkg=0
+							uni.redirectTo({
+								// url:'/pages_my/my_fabu/my_fabu'
+								url:'/pages_my/store_fb_ok/store_fb_ok?edit=1&type=3&type1='+that.type1
+							})
+							return
+							if(that.options.id){
+								uni.redirectTo({
+									// url:'/pages_my/my_fabu/my_fabu'
+									url:'/pages_my/store_fb_ok/store_fb_ok?edit=1&type=3&type1='+that.type1
+								})
+								return
+							}
+							uni.redirectTo({
+								// url:'/pages_my/my_fabu/my_fabu'
+								url:'/pages_my/store_fb_ok/store_fb_ok?type=3&type1='+that.type1
+							})
+						},1000)
+					} else {
+							that.btnkg=0
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
 					})
-				},1000)
+				})
+				
+				// console.log(datas)
+				// uni.showToast({
+				// 	icon:'none',
+				// 	title:'发布成功'
+				// })
+				// setTimeout(function(){
+				// 	uni.redirectTo({
+				// 		// url:'/pages_my/my_fabu/my_fabu'
+				// 		url:'/pages_my/store_fb_ok/store_fb_ok?type=3'
+				// 	})
+				// },1000)
 			},
 			upimg_fuc(e){
 				var that=this

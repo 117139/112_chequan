@@ -79,15 +79,16 @@
 					<image src="/static/images/icon_mycollect.png" mode="aspectFit"></image>
 					<text>我的收藏</text>
 				</view>
-				<view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/store_join/store_join"  :data-login="true">
+				<view v-if="loginDatas.store&&loginDatas.store.id" class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/store_join1/store_join1"  :data-login="true">
+					<image src="/static/images/icon_enter.png" mode="aspectFit"></image>
+					<text>商家入驻</text>
+				</view>
+				<view v-else class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/store_join/store_join"  :data-login="true">
 					<!-- <image  src="/static/images/iti3.png" mode="aspectFit"></image> -->
 					<image src="/static/images/icon_enter.png" mode="aspectFit"></image>
 					<text>商家入驻</text>
 				</view>
-				<!-- <view class="fuwu_li dis_flex_c aic ju_c" @tap="$service.jump" data-url="/pages_my/store_join1/store_join1" >
-					<image src="/static/images/icon_enter.png" mode="aspectFit"></image>
-					<text>已入驻</text>
-				</view> -->
+				
 				<view class="fuwu_li dis_flex_c aic ju_c"  @click="kf_open" >
 					<!-- <image  src="/static/images/iti3.png" mode="aspectFit"></image> -->
 					<image src="/static/images/icon_mykefu.png" mode="aspectFit"></image>

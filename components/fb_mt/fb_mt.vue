@@ -1,61 +1,67 @@
 <template>
-	<view class="wrap_box">
-		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
-		<view v-if="type1!=1" class="fb_tabs">
-			<view class="tabs_li" v-for="(item,index) in tabs" :class="{active:active==index}" @click="setcur_fuc(index)">{{item.title}}</view>
-		</view>
-		<view v-if="active==0" class="fb_tip">
-			<text>发布服务</text>
-			<text class="hztip">汽车美容仅能免费上架{{p_config.show_num1}}条</text>
-		</view>
-		<view v-if="active==1" class="fb_tip">
-			<text>发布摩托车</text>
-			<text class="hztip">摩托车仅能免费上架{{p_config.show_num2}}条</text>
-		</view>
-		<view v-if="active==2" class="fb_tip">
-			<text>发布二手车</text>
-			<text class="hztip">二手车仅能免费上架{{p_config.show_num3}}条</text>
-		</view>
-		<view v-if="active==3" class="fb_tip">
-			<text>发布服务</text>
-			<text class="hztip">需开通商家会员后才能发布</text>
-		</view>
-		<!-- 汽车美容 -->
-		<view class="fb_box" v-if="active==0">
+	<view>
+		<view class="fb_box">
 			<view class="fb_li">
 				<view class="fb_li_l">
-					<text>*</text>服务标题
+					<text>*</text>摩托名称
 				</view>
-				<input class="fb_li_r" type="text" v-model="fb_tit" placeholder="请填写服务标题">
+				<input class="fb_li_r" type="text" v-model="fb_tit_mt" placeholder="请填写摩托名称">
+			</view>
+			<view class="fb_li">
+				<view class="fb_li_l">
+					<text>*</text>厂商价
+				</view>
+				<input class="fb_li_r" type="number" v-model="fb_pri_cj_mt" placeholder="请填写厂商价">
 			</view>
 			<view class="fb_li">
 				<view class="fb_li_l">
 					<text>*</text>价格
 				</view>
-				<input class="fb_li_r" type="number" v-model="fb_pri" placeholder="请填写价格">
+				<input class="fb_li_r" type="number" v-model="fb_pri_mt" placeholder="请填写价格">
 			</view>
-			<view class="fb_li">
+			<!-- <view class="fb_li">
 				<view class="fb_li_l">
 					<text>*</text>
 					商品描述
 				</view>
 				<textarea class="fb_li_area" v-model="fb_content" placeholder="请填写商品描述" maxlength="-1"></textarea>
-			</view>
+			</view> -->
 			<view class="fb_li">
 				<view class="fb_li_l">
 					<text>*</text>
-					上传商品图片
+					上传摩托图片
 				</view>
 				<view class="imgs_list">
 					<view class="imgs_li">
-						<view class="imgs_li_box" @click="upimg_fuc" data-type="1"  data-idx="0">
+						<view class="imgs_li_box" @click="upimg_fuc" data-type="3"  data-idx="0">
 							<text class="iconfont icon-paizhao-xianxing"></text>
 						</view>
 					</view>
-					<view class="imgs_li"  v-for="(item,index) in goods_img">
+					<view class="imgs_li"  v-for="(item,index) in mt_img">
 						<view class="imgs_li_box">
 							<image class="imgs_li_img" :src="$service.getimg(item)" mode="aspectFill"></image>
-							<view class="imgs_li_del dis_flex aic ju_c"  @click="delimg_fuc"  data-type="1" :data-idx="index">
+							<view class="imgs_li_del dis_flex aic ju_c"  @click="delimg_fuc"  data-type="3" :data-idx="index">
+								<image src="/static/images/del_img.png" mode="aspectFit"></image>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="fb_li">
+				<view class="fb_li_l">
+					<!-- <text>*</text> -->
+					上传摩托视频
+				</view>
+				<view class="imgs_list">
+					<view class="imgs_li">
+						<view class="imgs_li_box" @click="upvideo_fuc" data-type="v1"  data-idx="0">
+							<text class="iconfont icon-paizhao-xianxing"></text>
+						</view>
+					</view>
+					<view class="imgs_li"  v-for="(item,index) in mt_video">
+						<view class="imgs_li_box">
+							<image class="imgs_li_img" :src="$service.getimg(item)" mode="aspectFill"></image>
+							<view class="imgs_li_del dis_flex aic ju_c"  @click="delimg_fuc1"  data-type="v1" :data-idx="index">
 								<image src="/static/images/del_img.png" mode="aspectFit"></image>
 							</view>
 						</view>
@@ -65,25 +71,25 @@
 			<view class="fb_li">
 				<view class="fb_li_l">
 					<text>*</text>
-					服务详情
+					摩托详情
 				</view>
-				<textarea class="fb_li_area" v-model="fb_content1" placeholder="请填写服务详情" maxlength="-1"></textarea>
+				<textarea class="fb_li_area" v-model="mt_content" placeholder="请填写摩托详情" maxlength="-1"></textarea>
 			</view>
 			<view class="fb_li">
 				<view class="fb_li_l">
 					<text>*</text>
-					上传服务详情图片
+					上传摩托详情图片
 				</view>
 				<view class="imgs_list">
 					<view class="imgs_li">
-						<view class="imgs_li_box" @click="upimg_fuc" data-type="2"  data-idx="0">
+						<view class="imgs_li_box" @click="upimg_fuc" data-type="4"  data-idx="0">
 							<text class="iconfont icon-paizhao-xianxing"></text>
 						</view>
 					</view>
-					<view class="imgs_li"  v-for="(item,index) in goodsxq_img">
+					<view class="imgs_li"  v-for="(item,index) in mtxq_img">
 						<view class="imgs_li_box">
 							<image class="imgs_li_img" :src="$service.getimg(item)" mode="aspectFill"></image>
-							<view class="imgs_li_del dis_flex aic ju_c"  @click="delimg_fuc"  data-type="2" :data-idx="index">
+							<view class="imgs_li_del dis_flex aic ju_c"  @click="delimg_fuc"  data-type="4" :data-idx="index">
 								<image src="/static/images/del_img.png" mode="aspectFit"></image>
 							</view>
 						</view>
@@ -104,71 +110,41 @@
 				</view>
 				<view class="flex_1 fb_hyzk"><!-- 商家会员85折 --></view>
 				<view class="fb_mon">
-					￥{{p_config.top_price1}}
+					￥{{p_config.top_price2}}
 				</view>
 			</view>
 		</view>
-		<!-- 摩托车 -->
-		<!-- 二手车 -->
-		<!-- 加油站 -->
-		
-		<view class="b_box" v-if="active==0">
+		<view class="b_box">
 			<view class="b_box1">
 				<view class="b_btn" @click="sub_fuc">确认发布</view>
 			</view>
 		</view>
-		<fbMt v-if="active==1" :type1="options.type1" :options="options"></fbMt>
-		<fbCar v-if="active==2" :type1="options.type1" :options="options"></fbCar>
-		<fbJyz  v-if="active==3" :type1="options.type1" :options="options"></fbJyz>
-		<!-- 阻止滑动 -->
-		<!-- <view @touchmove.stop.prevent='test'></view> -->
 	</view>
 </template>
 
 <script>
-	import Vue from 'vue'
-	import fbMt from '@/components/fb_mt/fb_mt.vue'
-	import fbCar from '@/components/fb_car/fb_car.vue'
-	import fbJyz from '@/components/fb_jyz/fb_jyz.vue'
-	
 	import {
 		mapState,
 		mapMutations
 	} from 'vuex'
-	var that 
 	export default {
-		components:{fbMt,fbCar,fbJyz },
+		name:"fb_mt",
+		props: {
+			type1:{
+				type: String,
+				default: ''
+			},
+			options:{
+				type: Object,
+				default: function(){
+					return {}
+				}
+			},
+		},
 		data() {
 			return {
-				options:'',
+				btnkg:0,
 				datas:'',
-				page:1,
-				tabs:[
-					{
-						title:'汽车美容',
-						id:1
-					},
-					{
-						title:'摩托车',
-						id:2
-					},
-					{
-						title:'二手车',
-						id:3
-					},
-					{
-						title:'加油站',
-						id:4
-					},
-				],
-				active:0,
-				fb_tit:'', //*服务标题
-				fb_pri:'',//*价格
-				fb_content:'', //商品描述
-				goods_img:[],
-				fb_content1:'', //*服务详情
-				goodsxq_img:[],
-				dz_type:false,
 				
 				fb_tit_mt:'',
 				fb_pri_cj_mt:'',
@@ -177,38 +153,26 @@
 				mt_video:[],
 				mt_content:'',
 				mtxq_img:[],
-				type1:4,
-				btnkg:0,
-			}
+				
+				dz_type:false
+			};
 		},
 		computed: {
-		...mapState(['hasLogin', 'forcedLogin', 'userName', 'userinfo','loginDatas','p_config']),
+				
+				...mapState(['loginDatas','p_config','car_info','car_info_hot','car_info_all']),
 		},
-		// onReachBottom() {
-		// 	that.getdata()
-		// },
-		onLoad(e) {
-			that=this
-			that.options=e||{}
-			if(e.type){
-				that.active=e.type
-			}
-			if(e.type1){
-				that.type1=e.type1
-			}
-			console.log(e)
+		mounted() {
 			if(this.options.id){
 				console.log(this.options.id)
 				this.getdata()
 			}
-			// that.getdata()
+			// if(this.car_info_all){
+			// 	this.pp_list=this.car_info_all
+			// 	console.log(this.car_info_all)
+			// 	this.getdata1()
+			// }
 		},
-		onShow() {
-			// that.onRetry()
-		},
-		
-		methods: {
-			// ...mapMutations(['wxshouquan','login']),
+		methods:{
 			test(){},
 			dzchange(e){
 				console.log(e)
@@ -219,7 +183,7 @@
 					id: that.options.id,
 					is_my:1
 				}
-				var jkurl='/detail/car_beauty'
+				var jkurl='/detail/motorcycle'
 				
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
@@ -233,12 +197,15 @@
 							datas = JSON.parse(datas)
 						}
 						console.log(res)
-						that.fb_tit=datas.title
-						that.fb_pri=datas.price
-						that.fb_content=datas.sub_title
-						that.goods_img=datas.banner
-						that.fb_content1=datas.content
-						that.goodsxq_img=datas.content_img
+						that.fb_tit_mt=datas.title
+						
+						that.fb_pri_cj_mt=datas.y_price
+						that.fb_pri_mt=datas.price
+						that.mt_content=datas.content
+						
+						that.mt_img=datas.banner||[]
+						that.mt_video=datas.banner_video||[]
+						that.mtxq_img=datas.content_img||[]
 						that.dz_typ=datas.is_top==1?true:false
 						
 						
@@ -269,63 +236,66 @@
 			},
 			
 			sub_fuc(){
-				var goods_img=that.goods_img.join(',')
-				var goodsxq_img=that.goodsxq_img.join(',')
-				var datas={
-					title:that.fb_tit,
-					price:that.fb_pri,
-					sub_title:that.fb_content,
-					banner:goods_img,
-					content:that.fb_content1,
-					content_img:goodsxq_img,
-					is_top:that.dz_type?1:2
-				}
+				var that=this
+				// var goods_img=that.goods_img.join(',')
+				// var goodsxq_img=that.goodsxq_img.join(',')
 				
-				if(that.active==0){
-					if(!that.fb_tit){
+				
+					if(!that.fb_tit_mt){
 						uni.showToast({
 							icon:'none',
-							title:'请填写服务标题'
+							title:'请填写摩托名称'
 						})
 						return
 					}
-					if(!that.fb_pri){
+					if(!that.fb_pri_cj_mt){
+						uni.showToast({
+							icon:'none',
+							title:'请填写厂商价'
+						})
+						return
+					}
+					if(!that.fb_pri_mt){
 						uni.showToast({
 							icon:'none',
 							title:'请填写价格'
 						})
 						return
 					}
-					if(!that.fb_content){
-						uni.showToast({
-							icon:'none',
-							title:'请填写商品描述'
-						})
-						return
-					}
-					if(that.goods_img.length==0){
+					if(that.mt_img.length==0){
 						uni.showToast({
 							icon:'none',
 							title:'请上传商品图'
 						})
 						return
 					}
-					if(!that.fb_content1){
+					if(!that.mt_content){
 						uni.showToast({
 							icon:'none',
-							title:'请填写服务详情'
+							title:'请填写摩托详情'
 						})
 						return
 					}
-					if(that.goodsxq_img.length==0){
+					if(that.mtxq_img.length==0){
 						uni.showToast({
 							icon:'none',
-							title:'请上传服务详情图片'
+							title:'请上传摩托详情图片'
 						})
 						return
 					}
-				}
-				
+					var mt_img=that.mt_img.join(',')
+					var mt_video=that.mt_video.join(',')
+					var mtxq_img=that.mtxq_img.join(',')
+					var datas={
+						title:that.fb_tit_mt,
+						y_price:that.fb_pri_cj_mt,
+						price:that.fb_pri_mt,
+						banner:mt_img,
+						banner_video:mt_video,
+						content:that.mt_content,
+						content_img:mtxq_img,
+						is_top:that.dz_type?1:2
+					}
 				if(this.options.id){
 					console.log(this.options.id)
 					datas={
@@ -340,7 +310,7 @@
 				
 				console.log(datas)
 				// return
-				var jkurl='/sub/car_beauty'
+				var jkurl='/sub/motorcycle'
 				
 				if(that.btnkg==1){
 					return
@@ -358,29 +328,26 @@
 						// 	datas = JSON.parse(datas)
 						// }
 						console.log(res)
-						
+						if(that.dz_type){
+							that.pay_fuc(datas)
+							return
+						}
 						uni.showToast({
 							icon:'none',
 							title:'提交成功'
 						})
 						setTimeout(function(){
-							
 							that.btnkg=0
-							// uni.redirectTo({
-							// 	// url:'/pages_my/my_fabu/my_fabu'
-							// 	url:'/pages_my/store_fb_ok/store_fb_ok?edit=1&type=3&type1='+that.type1
-							// })
-							// return
 							if(that.options.id){
 								uni.redirectTo({
 									// url:'/pages_my/my_fabu/my_fabu'
-									url:'/pages_my/store_fb_ok/store_fb_ok?edit=1&type=0&type1='+that.type1
+									url:'/pages_my/store_fb_ok/store_fb_ok?edit=1&type=1&type1='+that.type1
 								})
 								return
 							}
 							uni.redirectTo({
 								// url:'/pages_my/my_fabu/my_fabu'
-								url:'/pages_my/store_fb_ok/store_fb_ok?type=0&type1='+that.type1
+								url:'/pages_my/store_fb_ok/store_fb_ok?type=1&type1='+that.type1
 							})
 						},1000)
 					} else {
@@ -408,131 +375,22 @@
 						title: '获取数据失败，请检查您的网络连接'
 					})
 				})
-				
-				
-				
-			},
-			setcur_fuc(index){
-				that.active=index
-			},
-			onRetry(){
-				that.page=1
-				that.datas=[]
-				that.getdata()
-			},
-			getdata2(){
-				
-				var datas={
-					// day:that.date,
-					page: that.page
-				}
-				uni.showLoading({
-					mask:true,
-					title:'正在获取数据'
-				})
-				var jkurl='/history'
-				var nowpage=that.page
-				that.$service.P_post(jkurl, datas).then(res => {
-					that.btnkg = 0
-					console.log(res)
-					if (res.code == 1) {
-						that.htmlReset = 0
-						var datas = res.data
-						console.log(typeof datas)
-				
-						if (typeof datas == 'string') {
-							datas = JSON.parse(datas)
-						}
-						console.log(res)
-						if(nowpage==1){
-							that.datas=datas.data
-						}else{
-							if(datas.data.length==0){
-								return
-							}
-							that.datas=that.datas.concat(datas.data)
-						}
-						if(datas.data.length==0){
-							return
-						}
-						that.page++
-					} else {
 					
-						if (res.msg) {
-							uni.showToast({
-								icon: 'none',
-								title: res.msg
-							})
-						} else {
-							uni.showToast({
-								icon: 'none',
-								title: '获取数据失败'
-							})
-						}
-					}
-				}).catch(e => {
-					that.htmlReset = 1
-					that.btnkg = 0
-					// that.$refs.htmlLoading.htmlReset_fuc(1)
-					console.log(e)
-					uni.showToast({
-						icon: 'none',
-						title: '获取数据失败，请检查您的网络连接'
-					})
-				})
+				// console.log(datas)
+				// uni.showToast({
+				// 	icon:'none',
+				// 	title:'发布成功'
+				// })
+				// setTimeout(function(){
+				// 	uni.redirectTo({
+				// 		// url:'/pages_my/my_fabu/my_fabu'
+				// 		url:'/pages_my/store_fb_ok/store_fb_ok?type='+that.options.type+'&type1='+that.options.type1
+				// 	})
+				// },1000)
 			},
-			// 单条数据
-			getdata1(){
-				
-				var datas={
-					id: that.options.id
-				}
-				var jkurl='/news_detail'
-				
-				that.$service.P_post(jkurl, datas).then(res => {
-					that.btnkg = 0
-					console.log(res)
-					if (res.code == 1) {
-						that.htmlReset = 0
-						var datas = res.data
-						console.log(typeof datas)
-				
-						if (typeof datas == 'string') {
-							datas = JSON.parse(datas)
-						}
-						console.log(res)
-						that.datas=datas.content
-						// if(datas.title){
-						// 	uni.setNavigationBarTitle({
-						// 		title:datas.title
-						// 	})
-						// }
-					} else {
-					
-						if (res.msg) {
-							uni.showToast({
-								icon: 'none',
-								title: res.msg
-							})
-						} else {
-							uni.showToast({
-								icon: 'none',
-								title: '获取数据失败'
-							})
-						}
-					}
-				}).catch(e => {
-					that.htmlReset = 1
-					that.btnkg = 0
-					// that.$refs.htmlLoading.htmlReset_fuc(1)
-					console.log(e)
-					uni.showToast({
-						icon: 'none',
-						title: '获取数据失败，请检查您的网络连接'
-					})
-				})
-			},
+			
 			upimg_fuc(e){
+				var that=this
 				var edatas=e.currentTarget.dataset
 				uni.showActionSheet({
 					itemList: ['拍照', '相册选择'],
@@ -567,6 +425,7 @@
 			},
 			upimg(imgs, i,e) {
 			  
+			  	var that=this
 				var edatas=e.currentTarget.dataset
 				if(that.$service.appVN==0){
 					var datas=imgs[i]
@@ -609,7 +468,7 @@
 						}else if(edatas.type==3){ //工作照片
 							that.mt_img.push(datas)
 						}else if(edatas.type==4){ //工作照片
-							that.self_img.push(datas)
+							that.mtxq_img.push(datas)
 						}else if(edatas.type==5){ //身份证
 							that.certificate.push(datas)
 						}
@@ -651,6 +510,7 @@
 				
 			},
 			delimg_fuc(e){
+				var that=this
 				console.log(e.currentTarget.dataset.idx)
 				var datas=e.currentTarget.dataset
 				wx.showModal({
@@ -753,7 +613,7 @@
 						// that.img_arr.push(datas)
 						
 						if(edatas.type==1){ //上传商品图
-							that.goods_img=datas
+							that.goods_img.push(datas)
 						}else if(edatas.type==2){ //商品详情图
 							 that.goodsxq_img.push(datas)
 						}else if(edatas.type==3){ //工作照片
@@ -823,12 +683,6 @@
 				})
 			},
 			
-			goback(){
-			  uni.navigateBack()
-			},
-			func(){
-				// that.$store.commit('setSystem',datas.system)
-			}
 		}
 	}
 </script>

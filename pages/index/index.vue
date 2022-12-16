@@ -141,7 +141,10 @@
 			<view class="i_tit_li" :class="{active:cur==1}" @click="setcur(1)"><text>汽车美容</text></view>
 			<view class="i_tit_li" :class="{active:cur==4}" @click="setcur(4)"><text>加油站</text></view>
 			<view class="flex_1"></view>
-			<view class="i_tit_r dis_flex aic ju_b" @tap="$service.jump" data-url="/pages_my/store_join/store_join">
+			<view v-if="loginDatas.store" class="i_tit_r dis_flex aic ju_b" @tap="$service.jump" data-url="/pages_my/store_join1/store_join1" :data-login="true">
+				快速入驻<image src="/static/images/i_tit_r.png" mode="aspectFit"></image>
+			</view>
+			<view v-else class="i_tit_r dis_flex aic ju_b" @tap="$service.jump" data-url="/pages_my/store_join/store_join" :data-login="true">
 				快速入驻<image src="/static/images/i_tit_r.png" mode="aspectFit"></image>
 			</view>
 		</view>
@@ -204,12 +207,13 @@
 					<image class="car_li_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 					<view class="car_li_msg">
 						<view class="car_li_tit oh2">{{item.title}}</view>
-						<view class="car_li_jl oh1">{{item.brand_time||''}}年/0.80万公里</view>
+						<view class="car_li_jl oh1">{{item.brand_time||''}}年/{{item.km}}万公里</view>
 						<view class="car_li_num">{{$service.getnum(item.price)||''}}</view>
 					</view>
 				</view>
 			</view>
 		</view>
+		<uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more>
 	</view>
 </template>
 
@@ -482,7 +486,7 @@
 				}
 				var jkurl='/index/usedcar'
 				that.listc_status='loading'
-				that.datas=[]
+				
 				var nowpage=that.page
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
@@ -498,6 +502,7 @@
 						console.log(res)
 						
 						if(nowpage==1){
+							that.datas_car=[]
 							that.datas_car=datas.data
 						}else{
 							that.datas_car=that.datas_car.concat(datas.data)

@@ -21,7 +21,9 @@ Vue.component('avatar',avatar)
 // 导航
 import topbar from "./components/top_bar/top_bar.vue";
 Vue.component('topbar',topbar)
-
+// 图片懒加载
+import myLazyLoad from "./components/my_lazy_load/my_lazy_load.vue";
+Vue.component('myLazyLoad',myLazyLoad)
 
 import kfewm from './components/kf_ewm/kf_ewm.vue'
 Vue.component('kfewm',kfewm)

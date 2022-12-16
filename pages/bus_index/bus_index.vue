@@ -9,32 +9,24 @@
 		<view class="main_box">
 			<view class="main_top">
 				<view class="bus_top">
-					<image class="bus_logo" src="/static/images/car1.png" mode="aspectFill"></image>
+					<!-- <image class="bus_logo" src="/static/images/car1.png" mode="aspectFill"></image> -->
+					<image class="bus_logo" :src="$service.getimg(datas.img)" mode="aspectFill"></image>
 				</view>
-				<view v-if="options.type==1" class="bus_name">
-					北京国潮摩托车行 <image src="/static/images/shop_vip.png" mode="aspectFit"></image>
-				</view>
-				<view v-else-if="options.type==2" class="bus_name">
-					北京淘车二手车 <image src="/static/images/shop_vip.png" mode="aspectFit"></image>
-				</view>
-				<view v-else-if="options.type==3" class="bus_name">
-					南中环加油站 <image src="/static/images/shop_vip.png" mode="aspectFit"></image>
-				</view>
-				<view v-else class="bus_name">
-					南中环美容洗车店 <image src="/static/images/shop_vip.png" mode="aspectFit"></image>
+				<view class="bus_name">
+					{{datas.title||''}} <image v-if="datas.is_vip==1" src="/static/images/shop_vip.png" mode="aspectFit"></image>
 				</view>
 				<view class="bus_jj">
-					这里是30个字以内的服务介绍，这里是30个字以内的服 务介绍……
+					{{datas.content||''}}
 				</view>
 				<view class="bus_tbox dis_flex ju_b">
 					<view class="bus_add">
-						北京朝阳区来广营乡北园东路顾家庄桥北 300米路西
+						{{datas.address||''}}
 					</view>
 					<view class="bus_bb" @click="go_add">
 						<image src="/static/images/bus_dh.png" mode="aspectFit"></image>
 						<view>导航</view>
 					</view>
-					<view class="bus_bb" @click="$service.call" :data-tel="18300000000">
+					<view class="bus_bb" @click="$service.call" :data-tel="datas.phone">
 						<image src="/static/images/bus_tel.png" mode="aspectFit"></image>
 						<view>电话</view>
 					</view>
@@ -48,8 +40,8 @@
 								indicator-color="rgba(255, 255, 255, .51)" 
 								indicator-active-color="#ffffff" 
 								:duration="duration">
-					<swiper-item v-for="(item,index) in list1">
-						<image :src="item" mode="aspectFill"></image>
+					<swiper-item v-for="(item,index) in datas.banner">
+						<image :src="$service.getimg(item)" mode="aspectFill"></image>
 					</swiper-item>
 				</swiper>
 				<picker @change="confirm" :value="active" :range="columns" range-key="title">
@@ -66,37 +58,40 @@
 			</view>
 			
 			<view  v-if="active==0" class="car_list dis_flex fww">
-				<view class="car_li" v-for="(item,index) in 20" @click.stop="$service.jump" data-url="/pages/details_qcmr/details_qcmr">
+				<view class="car_li" v-for="(item,index) in datas_list" @click.stop="$service.jump" :data-url="'/pages/details_qcmr/details_qcmr?id='+item.id">
 					<view class="car_li_box">
-						<image class="car_li_img" src="/static/images/car1.png" mode="aspectFit"></image>
+						<!-- <image class="car_li_img" src="/static/images/car1.png" mode="aspectFit"></image> -->
+						<image class="car_li_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 						<view class="car_li_msg">
-							<view class="car_li_tit oh2">标准洗车-五座汽车 整车清洁</view>
-							<view class="car_li_jl oh1">整车泡沫冲洗擦干、轮胎轮</view>
-							<view class="car_li_num">43元</view>
+							<view class="car_li_tit oh2">{{item.title}}</view>
+							<view class="car_li_jl oh1">{{item.sub_title}}</view>
+							<view class="car_li_num">{{item.price}}元</view>
 						</view>
 					</view>
 				</view>
 			</view>
-			<view  v-if="active==1" class="car_list dis_flex fww" @click.stop="$service.jump" data-url="/pages/details_motor/details_motor">
-				<view class="car_li" v-for="(item,index) in 20">
+			<view  v-if="active==1" class="car_list dis_flex fww" @click.stop="$service.jump" :data-url="'/pages/details_motor/details_motor?id='+item.id">
+				<view class="car_li" v-for="(item,index) in datas_list">
 					<view class="car_li_box">
-						<image class="car_li_img" src="/static/images/motor1.png" mode="aspectFit"></image>
+						<!-- <image class="car_li_img" src="/static/images/motor1.png" mode="aspectFit"></image> -->
+						<image class="car_li_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 						<view class="car_li_msg">
-							<view class="car_li_tit oh2">QJMOTOR 壹米150国 潮探班复古水冷摩托</view>
-							<view class="car_li_jl oh1">整车泡沫冲洗擦干、轮胎轮</view>
-							<view class="car_li_num">43元</view>
+							<view class="car_li_tit oh2">{{item.title}}</view>
+							<view class="car_li_jl oh1">官方指导价：{{$service.getnum(item.price)||''}}</view>
+							<view class="car_li_num">{{$service.getnum(item.price)||''}}</view>
 						</view>
 					</view>
 				</view>
 			</view>
-			<view  v-if="active==2" class="car_list dis_flex fww" @click.stop="$service.jump" data-url="/pages/details_car/details_car">
-				<view class="car_li" v-for="(item,index) in 20">
+			<view  v-if="active==2" class="car_list dis_flex fww" @click.stop="$service.jump" :data-url="'/pages/details_car/details_car?id='+item.id">
+				<view class="car_li" v-for="(item,index) in datas_list">
 					<view class="car_li_box">
-						<image class="car_li_img" src="/static/images/car1.png" mode="aspectFit"></image>
+						<!-- <image class="car_li_img" src="/static/images/car1.png" mode="aspectFit"></image> -->
+						<image class="car_li_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 						<view class="car_li_msg">
-							<view class="car_li_tit oh2">标准洗车-五座汽车 整车清洁</view>
-							<view class="car_li_jl oh1">整车泡沫冲洗擦干、轮胎轮</view>
-							<view class="car_li_num">43元</view>
+							<view class="car_li_tit oh2">{{item.title}}</view>
+							<view class="car_li_jl oh1">{{item.brand_time||''}}年/{{item.km}}万公里</view>
+							<view class="car_li_num">{{item.price}}万</view>
 						</view>
 					</view>
 				</view>
@@ -129,9 +124,11 @@
 					<view class="data_sli_r">￥<text>8.18</text></view>
 				</view>
 			</view>
+			
+			<uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more>
 		</view>
 		<view class="b_box">
-			<view class="b_box_btn" @click="$service.call" :data-tel="18300000000">联系商家</view>
+			<view class="b_box_btn" @click="$service.call" :data-tel="datas.phone">联系商家</view>
 		</view>
 		<!-- 阻止滑动 -->
 		<!-- <view @touchmove.stop.prevent='test'></view> -->
@@ -163,18 +160,25 @@
 				columns:[
 					{
 						title:' 汽车美容',
+						id:1
 					},
 					{
 						title:'摩托车',
+						id:2
 					},
 					{
 						title:'二手车',
+						id:3
 					},
 					{
 						title:'加油站',
+						id:4
 					},
 				],
-				active:0
+				active:0,
+				datas_list:[],
+				listc_status:'loading',
+				contentText:{contentdown: "上拉显示更多",contentrefresh: "正在加载...",contentnomore: "暂无数据"},
 			}
 		},
 		computed: {
@@ -191,29 +195,32 @@
 			}
 			console.log(e)
 			
-			// that.getdata()
+			that.getdata()
 		},
 		onShow() {
 			// that.onRetry()
 		},
-		
+		onReachBottom() {
+			that.getlist()
+		},
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
 			confirm(e) { //选择性别 确定
 				console.log(e)
 				this.active =e.detail.value
+				that.onRetry()
 			},
 			go_add(){
-				// const latitude = Number(that.datas.list.lat); //纬度
-				// const longitude = Number(that.datas.list.lng); //经度
-				var latitude=39.920243
-				var longitude=116.460634
+				const latitude = Number(that.datas.lat); //纬度
+				const longitude = Number(that.datas.lng); //经度
+				// var latitude=39.920243
+				// var longitude=116.460634
 				uni.openLocation({
 					latitude: latitude,
 					longitude: longitude,
 					scale: 15,
-					// name: that.datas.list.name,
+					name: that.datas.address,
 					// address: that.datas.list.address,
 					success: function (res) {
 						console.log('success');
@@ -225,23 +232,14 @@
 					}
 				});
 			},
-			onRetry(){
-				that.page=1
-				that.datas=[]
-				that.getdata()
-			},
+			// 单条数据
 			getdata(){
 				
 				var datas={
-					// day:that.date,
-					page: that.page
+					id: that.options.id
 				}
-				uni.showLoading({
-					mask:true,
-					title:'正在获取数据'
-				})
-				var jkurl='/history'
-				var nowpage=that.page
+				var jkurl='/detail/store'
+				
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
 					console.log(res)
@@ -254,18 +252,71 @@
 							datas = JSON.parse(datas)
 						}
 						console.log(res)
-						if(nowpage==1){
-							that.datas=datas.data
+						that.datas=datas
+						if(datas.status==1){
+							that.columns=[
+								{
+									title:' 汽车美容',
+									id:1
+								},
+								{
+									title:'摩托车',
+									id:2
+								},
+								{
+									title:'二手车',
+									id:3
+								},
+								// {
+								// 	title:'加油站',
+								// 	id:4
+								// },
+							]
+						}else if(datas.status==4){
+							that.columns=[
+								// {
+								// 	title:' 汽车美容',
+								// 	id:1
+								// },
+								{
+									title:'摩托车',
+									id:2
+								},
+								{
+									title:'二手车',
+									id:3
+								},
+								{
+									title:'加油站',
+									id:4
+								},
+							]
 						}else{
-							if(datas.data.length==0){
-								return
-							}
-							that.datas=that.datas.concat(datas.data)
+							that.columns=[
+								// {
+								// 	title:' 汽车美容',
+								// 	id:1
+								// },
+								{
+									title:'摩托车',
+									id:2
+								},
+								{
+									title:'二手车',
+									id:3
+								},
+								// {
+								// 	title:'加油站',
+								// 	id:4
+								// },
+							]
 						}
-						if(datas.data.length==0){
-							return
-						}
-						that.page++
+						that.onRetry()
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
 					} else {
 					
 						if (res.msg) {
@@ -291,14 +342,39 @@
 					})
 				})
 			},
-			// 单条数据
-			getdata1(){
-				
+			onRetry(){
+					that.page=1
+					that.datas_list=[]
+					that.getlist()
+			},
+			/**
+			 * 列表
+			 */
+			getlist(){
+				// /index/store
 				var datas={
-					id: that.options.id
+					store_id:that.options.id,
+					// lat:that.addmsg.latitude||'',
+					// lng:that.addmsg.longitude||'',
+					// is_hot:'',//是否热门推荐 1、是 2、否
+					// search:'',
+					page:that.page,
+					limit:20
 				}
-				var jkurl='/news_detail'
+				var jkurl='/index/carbeauty'
+				if(that.columns[that.active].id==2){
+					jkurl='/index/motorcycle'
+				}
+				if(that.columns[that.active].id==3){
+					jkurl='/index/usedcar'
+				}
+				if(that.columns[that.active].id==4){
+					return
+					// jkurl='/index/motorcycle'
+				}
+				that.listc_status='loading'
 				
+				var nowpage=that.page
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
 					console.log(res)
@@ -311,7 +387,24 @@
 							datas = JSON.parse(datas)
 						}
 						console.log(res)
-						that.datas=datas.content
+						
+						if(nowpage==1){
+							that.datas_list=[]
+							that.datas_list=datas.data
+						}else{
+							that.datas_list=that.datas_list.concat(datas.data)
+						}
+						
+						if(datas.total==0){
+							that.listc_status='noMore'
+							
+						}else{
+							that.listc_status=''
+						}
+						if(datas.data>length>0){
+							that.page++
+						}
+						// that.getdata_tz()
 						// if(datas.title){
 						// 	uni.setNavigationBarTitle({
 						// 		title:datas.title

@@ -10,46 +10,36 @@
 				</view>
 				
 			</view>
-			<!-- <picker @change="bindPickerChange_pp" :value="pp_index" :range="pp_list" range-key="name"> -->
-			<view class="fb_li fb_li2" @tap="$service.jump" data-url="/pagesA/ctpe_list/ctpe_list?type=1">
+			<picker @change="bindPickerChange_pp" :value="pp_index" :range="pp_list" range-key="name">
+			<view class="fb_li fb_li2">
 				<view class="fb_li_l">
 					<text>*</text>品牌
 				</view>
 				<!-- <input class="fb_li_r" type="number" v-model="ct_array[ct_index].title" placeholder="请选择车型" disabled="true"> -->
-				<view  class="fb_li_r fb_li_r2">{{pp_msg.name||'请选择品牌'}}</view>
+				<view v-if="pp_list.length==0" class="fb_li_r fb_li_r2">请选择品牌</view>
+				<view v-else class="fb_li_r fb_li_r2">{{pp_list[pp_index].name||'请选择品牌'}}</view>
 				<text class="iconfont icon-31xiala"></text>
 			</view>
-			<!-- </picker> -->
-			<picker v-if="pp_msg" @change="bindPickerChange" :value="ct_index" :range="ct_array" range-key="name">
+			</picker>
+			<picker @change="bindPickerChange" :value="ct_index" :range="ct_array" range-key="name">
 			<view class="fb_li fb_li2">
 				<view class="fb_li_l">
 					<text>*</text>品牌型号
 				</view>
 				<!-- <input class="fb_li_r" type="number" v-model="ct_array[ct_index].title" placeholder="请选择车型" disabled="true"> -->
-				<view v-if="ct_msg" class="fb_li_r fb_li_r2">{{$service.LNum(ct_msg.name,20)}}</view>
-				<view v-else class="fb_li_r fb_li_r2">请选择品牌型号</view>
+				<view v-if="ct_array.length==0" class="fb_li_r fb_li_r2">请选择品牌型号</view>
+				<view v-else class="fb_li_r fb_li_r2">{{ct_array[ct_index].name||'请选择品牌型号'}}</view>
 				<text class="iconfont icon-31xiala"></text>
 			</view>
 			</picker>
-			<picker v-if="ct_msg&&cx_list.length>0" @change="bindPickerChange_cx" :value="cx_index" :range="cx_list" range-key="name">
+			<picker @change="bindPickerChange" :value="ct_index" :range="ct_array" range-key="name">
 			<view class="fb_li fb_li2">
 				<view class="fb_li_l">
 					<text>*</text>车型
 				</view>
 				<!-- <input class="fb_li_r" type="number" v-model="ct_array[ct_index].title" placeholder="请选择车型" disabled="true"> -->
-				<view v-if="cx_msg" class="fb_li_r fb_li_r2">{{$service.LNum(cx_msg.name,20)}}</view>
-				<view v-else class="fb_li_r fb_li_r2">请选择车型</view>
-				<text class="iconfont icon-31xiala"></text>
-			</view>
-			</picker>
-			<picker v-if="cx_msg&&ks_list.length>0" @change="bindPickerChange_ks" :value="ks_index" :range="ks_list" range-key="name">
-			<view class="fb_li fb_li2">
-				<view class="fb_li_l">
-					<text>*</text>款式
-				</view>
-				<!-- <input class="fb_li_r" type="number" v-model="ct_array[ct_index].title" placeholder="请选择车型" disabled="true"> -->
-				<view v-if="ks_msg" class="fb_li_r fb_li_r2">{{$service.LNum(ks_msg.name,20)}}</view>
-				<view v-else class="fb_li_r fb_li_r2">请选择款式</view>
+				<view v-if="ct_array.length==0" class="fb_li_r fb_li_r2">请选择车型</view>
+				<view v-else class="fb_li_r fb_li_r2">{{ct_array[ct_index].name||'请选择车型'}}</view>
 				<text class="iconfont icon-31xiala"></text>
 			</view>
 			</picker>
@@ -58,7 +48,7 @@
 				<view class="fb_li_l">
 					<text>*</text>颜色
 				</view>
-				<input class="fb_li_r" type="text" v-model="color" placeholder="请填写车辆颜色">
+				<input class="fb_li_r" type="number" v-model="color" placeholder="请填写车辆颜色">
 				<!-- <view class="fb_li_r fb_li_r2">{{cc_array[cc_index].title||'请选择车身颜色'}}</view>
 				<text class="iconfont icon-31xiala"></text> -->
 			</view>
@@ -252,23 +242,11 @@
 				<view class="fb_li_l">
 					扣除金额
 				</view>
-				<view class="flex_1 fb_hyzk">
-					<!-- 商家会员85折 -->
-				</view>
+				<view class="flex_1 fb_hyzk">商家会员85折</view>
 				<view class="fb_mon">
-					￥{{p_config.top_price3}}
+					￥20
 				</view>
 			</view>
-			<picker v-if="dz_type" @change="bindPickerChange_pay" :value="pay_index" :range="pay_array" range-key="title">
-			<view class="fb_li fb_li2">
-				<view class="fb_li_l">
-					<text>*</text>支付方式
-				</view>
-				<!-- <input class="fb_li_r" type="text" v-model="color" placeholder="请填写车辆颜色"> -->
-				<view class="fb_li_r fb_li_r2">{{pay_array[pay_index].title||'请选择支付方式'}}</view>
-				<text class="iconfont icon-31xiala"></text>
-			</view>
-			</picker>
 		</view>
 		
 		<view class="b_box">
@@ -295,12 +273,7 @@
 				type: String,
 				default: ''
 			},
-			options:{
-				type: Object,
-				default: function(){
-					return {}
-				}
-			},
+			
 		},
 		data() {
 			const currentDate = this.getDate({
@@ -317,6 +290,8 @@
 				dz_type:false,
 				mt_video:[],
 				
+				ct_array:[],
+				ct_index:0,
 				cc_array:[
 					{
 						title:'白色'
@@ -348,36 +323,9 @@
 				btnkg:0,
 				pp_list:[],
 				pp_index:0,
-				
-				
-				
-				pp_msg:'',
-				
-				ct_array:[],
-				ct_index:0,
-				ct_msg:'',
-				cx_list:[],
-				cx_index:0,
-				cx_msg:'',
-				
-				ks_list:[],
-				ks_index:0,
-				ks_msg:'',
-				pay_array:[
-					{
-						title:'微信支付',
-						id:1
-					},
-					{
-						title:'支付宝',
-						id:2
-					},
-				],
-				pay_index:0,
-				datas:''
 			};
 		},
-		computed: {
+		 computed: {
 				startDate() {
 						return this.getDate('start');
 				},
@@ -387,144 +335,33 @@
 				endDate1() {
 						return this.getDate('end1');
 				},
-				...mapState(['loginDatas','p_config','car_info','car_info_hot','car_info_all']),
+				...mapState(['loginDatas','car_info','car_info_hot','car_info_all']),
 		},
 		mounted() {
-			uni.$on('carpp_fuc', (data) => {
-					console.log('标题：' + data.title)
-					console.log('内容：' )
-					console.log(data.content)
-					this.pp_msg=data.content
-					this.ct_msg = ''
-					this.cx_msg = ''
-					this.ks_msg=''
-					this.getdata1()
-					// that.getbasedata()
-					// that.$service.wxlogin('token')
-			})
-			if(this.options.id){
-				console.log(this.options.id)
-				this.getdata()
+			if(this.car_info_all){
+				this.pp_list=this.car_info_all
+				console.log(this.car_info_all)
+				this.getdata1()
 			}
-			// if(this.car_info_all){
-			// 	this.pp_list=this.car_info_all
-			// 	console.log(this.car_info_all)
-			// 	this.getdata1()
-			// }
 		},
-		// watch:{
-		// 	car_info_all(val){
-		// 		console.log(val)
-		// 		this.pp_list=this.car_info_all
-		// 		this.getdata1()
-		// 	},
-		// 	pp_index(val){
-		// 		console.log(val)
-		// 		this.getdata1()
-		// 		// this.pp_list=this.car_info.list[0]
-		// 	},
-		// },
+		watch:{
+			car_info_all(val){
+				console.log(val)
+				this.pp_list=this.car_info_all
+				this.getdata1()
+			},
+			pp_index(val){
+				console.log(val)
+				this.getdata1()
+				// this.pp_list=this.car_info.list[0]
+			},
+		},
 		methods:{
 			test(){},
-			getdata(){
-				var that=this
-				var datas={
-					id: that.options.id,
-					is_my:1
-				}
-				var jkurl='/detail/usedcar'
-				
-				that.$service.P_post(jkurl, datas).then(res => {
-					that.btnkg = 0
-					console.log(res)
-					if (res.code == 1) {
-						that.htmlReset = 0
-						var datas = res.data
-						console.log(typeof datas)
-				
-						if (typeof datas == 'string') {
-							datas = JSON.parse(datas)
-						}
-						console.log(res)
-						that.fb_tit=datas.title
-						// car_type:that.pp_msg.id||'',
-						var car_params=datas.car_params
-						that.pp_msg={
-							name:car_params.brandname,
-							id:datas.car_type
-						}
-						that.datas=datas
-						that.getdata1()
-						// that.ct_msg={
-						// 	id:datas.car_status,
-						// 	name:''
-						// }
-						that.color=datas.color
-						that.car_sf=datas.first_price
-						that.car_pri=datas.price
-						that.car_gh=datas.is_gh==1?true:false
-						that.car_xslc=datas.km
-						that.car_sp=datas.brand_time_
-						that.car_sp_add=datas.brand_add.split(',')
-						that.car_sz_add=datas.brand_address.split(',')
-						that.car_ghnum=datas.gh_num
-						that.car_bxdq=datas.bx_end_
-						that.car_njdq=datas.nj_end_
-						that.fb_content=datas.content
-						
-						that.goods_img=datas.banner||[]
-						that.mt_video=datas.banner_video||[]
-						that.dz_typ=datas.is_top==1?true:false
-						
-						
-						
-						
-						// is_top:that.dz_type?1:2
-						
-						// that.ct_array=datas
-						// if(datas[0].carlist.length>0){
-						// 	that.cx_list=datas[0].carlist
-							
-						// 	that.cx_msg=that.cx_list[0]
-						// 	if(that.cx_list[0].list.length>0){
-						// 		that.ks_list=that.cx_list[0].list
-						// 		that.ks_msg=that.ks_list[0]
-						// 	}
-						// }
-						// if(datas.title){
-						// 	uni.setNavigationBarTitle({
-						// 		title:datas.title
-						// 	})
-						// }
-					} else {
-					
-						if (res.msg) {
-							uni.showToast({
-								icon: 'none',
-								title: res.msg
-							})
-						} else {
-							uni.showToast({
-								icon: 'none',
-								title: '获取数据失败'
-							})
-						}
-					}
-				}).catch(e => {
-					that.htmlReset = 1
-					that.btnkg = 0
-					// that.$refs.htmlLoading.htmlReset_fuc(1)
-					console.log(e)
-					uni.showToast({
-						icon: 'none',
-						title: '获取数据失败，请检查您的网络连接'
-					})
-				})
-			},
 			getdata1(){
 				var that=this
 				var datas={
-					id: that.pp_msg.id
+					id: that.pp_list[that.pp_index].id
 				}
 				var jkurl='/publics/carbrand'
 				
@@ -541,52 +378,6 @@
 						}
 						console.log(res)
 						that.ct_array=datas
-						// car_status:that.ct_msg.id||'',
-						// car_lx:that.cx_msg.id||'',
-						// car_info:that.ks_msg.id||'',
-						for (var i = 0; i < datas.length; i++) {
-							if(datas[i].id==that.datas.car_status){
-								that.ct_msg={
-									id:datas[i].id,
-									name:datas[i].name
-								}
-								that.cx_list=datas[i].carlist
-								var cx_list=that.cx_list
-								for (var c = 0; c < cx_list.length; c++) {
-									if(cx_list[c].id==that.datas.car_lx){
-										that.cx_msg = {
-											id:cx_list[c].id,
-											name:cx_list[c].name,
-										}
-										that.ks_list=cx_list[c].list
-										var ks_list=cx_list[c].list
-										if(ks_list.length>0){
-											for (var k = 0; k < ks_list.length; k++) {
-												if(ks_list[k].id==that.datas.car_info){
-													that.ks_msg = {
-														id:ks_list[k].id,
-														name:ks_list[k].name,
-													}
-												}
-											}
-										}
-										
-									}
-								}
-							}
-						}
-						// that.ct_msg = ''
-						// that.cx_msg = ''
-						// that.ks_msg=''
-						// if(datas[0].carlist.length>0){
-						// 	that.cx_list=datas[0].carlist
-							
-						// 	that.cx_msg=that.cx_list[0]
-						// 	if(that.cx_list[0].list.length>0){
-						// 		that.ks_list=that.cx_list[0].list
-						// 		that.ks_msg=that.ks_list[0]
-						// 	}
-						// }
 						// if(datas.title){
 						// 	uni.setNavigationBarTitle({
 						// 		title:datas.title
@@ -626,22 +417,6 @@
 			bindPickerChange: function(e) {
 					console.log('picker发送选择改变，携带值为', e.detail.value)
 					this.ct_index = e.detail.value
-					this.ct_msg = this.ct_array[e.detail.value]
-					this.cx_list = this.ct_array[e.detail.value].carlist
-					this.cx_msg = ''
-					this.ks_msg=''
-			},
-			bindPickerChange_cx: function(e) {
-					console.log('picker发送选择改变，携带值为', e.detail.value)
-					this.cx_index = e.detail.value
-					this.cx_msg = this.cx_list[e.detail.value]
-					this.ks_list = this.cx_list[e.detail.value].list||[]
-					this.ks_msg=''
-			},
-			bindPickerChange_ks: function(e) {
-					console.log('picker发送选择改变，携带值为', e.detail.value)
-					this.ks_index = e.detail.value
-					this.ks_msg = this.ks_list[e.detail.value]
 			},
 			// 颜色
 			bindPickerChange_c: function(e) {
@@ -656,9 +431,6 @@
 			},
 			bindDateChange_njdq: function(e) {
 					this.car_njdq = e.detail.value
-			},
-			bindPickerChange_pay: function(e) {
-					this.pay_index = e.detail.value
 			},
 			getDate(type) {
 					const date = new Date();
@@ -700,37 +472,6 @@
 					})
 					return
 				}
-				if(!that.pp_msg){
-					uni.showToast({
-						icon:'none',
-						title:'请选择车辆品牌'
-					})
-					return
-				}
-				if(!that.ct_msg){
-					uni.showToast({
-						icon:'none',
-						title:'请选择品牌型号'
-					})
-					return
-				}
-				if(!that.cx_msg){
-					uni.showToast({
-						icon:'none',
-						title:'请选择车型'
-					})
-					return
-				}
-				if(that.ks_list.length>0){
-					if(!that.ks_msg){
-						uni.showToast({
-							icon:'none',
-							title:'请选择款式'
-						})
-						return
-					}
-				}
-				
 				if(!that.color){
 					uni.showToast({
 						icon:'none',
@@ -812,10 +553,7 @@
 				var datas={
 					title:that.fb_tit,
 					
-					car_type:that.pp_msg.id||'',
-					car_status:that.ct_msg.id||'',
-					car_lx:that.cx_msg.id||'',
-					car_info:that.ks_msg.id||'',
+					ct_index:that.ct_array[that.ct_index].title,
 					color:that.color,
 					
 					first_price:that.car_sf,
@@ -826,34 +564,28 @@
 					brand_time:that.car_sp,
 					brand_add:that.car_sp_add.join(','),
 					brand_address:that.car_sz_add.join(','),
-					gh_num:that.car_ghnum,
+					car_ghnum:that.car_ghnum,
 					bx_end:that.car_bxdq,
 					nj_end:that.car_njdq,
 					
 					content:that.fb_content,
 					banner:goods_img,
 					banner_video:mt_video,
-					is_top:that.dz_type?1:2
+					is_top:that.dz_type
 				}
 				
 				
 				
 				
-				if(this.options.id){
-					console.log(this.options.id)
-					datas={
-						id:this.options.id,
-						...datas
-					}
-				}
+				
 				
 				
 				
 				
 				
 				console.log(datas)
-				// return
-				var jkurl='/sub/usedcar'
+				return
+				var jkurl='/detail/store'
 				
 				if(that.btnkg==1){
 					return
@@ -867,27 +599,16 @@
 						var datas = res.data
 						console.log(typeof datas)
 				
-						// if (typeof datas == 'string') {
-						// 	datas = JSON.parse(datas)
-						// }
-						console.log(res)
-						if(that.dz_type){
-							that.pay_fuc(datas)
-							return
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
 						}
+						console.log(res)
 						uni.showToast({
 							icon:'none',
-							title:'提交成功'
+							title:'发布成功'
 						})
 						setTimeout(function(){
 							that.btnkg=0
-							if(that.options.id){
-								uni.redirectTo({
-									// url:'/pages_my/my_fabu/my_fabu'
-									url:'/pages_my/store_fb_ok/store_fb_ok?edit=1&type=2&type1='+that.type1
-								})
-								return
-							}
 							uni.redirectTo({
 								// url:'/pages_my/my_fabu/my_fabu'
 								url:'/pages_my/store_fb_ok/store_fb_ok?type=2&type1='+that.type1
@@ -919,94 +640,6 @@
 					})
 				})
 				
-			},
-			pay_fuc(code){
-				var that =this
-				var jkurl='/sub/usedcar'
-				var datas={
-					code :code,
-					type:that.pay_array[that.pay_index].id
-				}
-				if(that.btnkg==1){
-					return
-				}
-				that.btnkg=1
-				that.$service.P_post(jkurl, datas).then(res => {
-					that.btnkg = 0
-					console.log(res)
-					if (res.code == 1) {
-						that.htmlReset = 0
-						var datas = res.data
-						console.log(typeof datas)
-						var provider=''
-						// 支付宝
-						if (that.pay_type == 2) {
-							provider='alipay'
-							
-						}
-						//微信
-						if (that.pay_type == 1) {
-							console.log('datas----------------------------------------->')
-							console.log(typeof datas)
-							console.log(datas)
-							provider='wxpay'
-							
-						}
-						uni.requestPayment({
-							provider: provider,
-							orderInfo: datas, //微信、支付宝订单数据
-							success: function(res) {
-								console.log('success:' + JSON.stringify(res));
-								that.gook_fuc()
-							},
-							fail: function(err) {
-								that.btnkg = 0
-								console.log('fail:' + JSON.stringify(err));
-								uni.showModal({
-									content: "支付失败",
-									showCancel: false
-								})
-							}
-						});
-						
-					} else {
-							that.btnkg=0
-					
-						if (res.msg) {
-							uni.showToast({
-								icon: 'none',
-								title: res.msg
-							})
-						} else {
-							uni.showToast({
-								icon: 'none',
-								title: '获取数据失败'
-							})
-						}
-					}
-				}).catch(e => {
-					that.htmlReset = 1
-					that.btnkg = 0
-					// that.$refs.htmlLoading.htmlReset_fuc(1)
-					console.log(e)
-					uni.showToast({
-						icon: 'none',
-						title: '获取数据失败，请检查您的网络连接'
-					})
-				})
-			},
-			gook_fuc(){
-				uni.showToast({
-					icon:'none',
-					title:'发布成功'
-				})
-				setTimeout(function(){
-					that.btnkg=0
-					uni.redirectTo({
-						// url:'/pages_my/my_fabu/my_fabu'
-						url:'/pages_my/store_fb_ok/store_fb_ok?type=2&type1='+that.type1
-					})
-				},1000)
 			},
 			upimg_fuc(e){
 				var that=this
@@ -1082,7 +715,7 @@
 						// that.img_arr.push(datas)
 						
 						if(edatas.type==1){ //上传商品图
-							that.goods_img.push(datas)
+							that.goods_img=datas
 						}else if(edatas.type==2){ //商品详情图
 							 that.goodsxq_img.push(datas)
 						}else if(edatas.type==3){ //工作照片

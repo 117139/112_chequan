@@ -2,7 +2,7 @@
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
 		<view class="details_tbox">
-			<u-swiper
+			<!-- <u-swiper
 							:list="list4"
 							keyName="url"
 							@change="e => currentNum = e.current"
@@ -18,21 +18,37 @@
 					>
 							<text class="indicator-num__text">{{ currentNum + 1 }}/{{ list4.length }}</text>
 					</view>
-			</u-swiper>
+			</u-swiper> -->
+			<view class="swiper_box">
+				<swiper class="swiper" circular :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
+					:duration="duration" @change="swiper_fuc">
+					<!-- <swiper-item>
+						<view class="swiper-item uni-bg-red">A</view>
+					</swiper-item> -->
+					<swiper-item v-for="(item,index) in datas.banner">
+						<view class="swiper-item">
+							<image :src="$service.getimg(item)" mode="aspectFill"></image>
+						</view>
+					</swiper-item>
+				</swiper>
+				<view class="indicator-num" >
+						<text v-if="datas.banner" class="indicator-num__text">{{ currentNum + 1 }}/{{ datas.banner.length }}</text>
+				</view>
+			</view>
 			<view class="details_top">
 				<view class="flex_1">
 					<view class="details_top_l1">
-						43<text>元</text> 
+						{{datas.price}}<text>元</text> 
 						<!-- <view class="ghf_tag">包含过户费</view> -->
 					</view>
-					<view class="details_top_l2">标准洗车-五座汽车</view>
+					<view class="details_top_l2">{{datas.title}}</view>
 				</view>
-				<view class="xq_xzdj" @click="$service.call" :data-tel="18300000000">联系商家</view>
+				<view v-if="datas.store" class="xq_xzdj" @click="$service.call" :data-tel="datas.store.phone">联系商家</view>
 			</view>
 			<view class="details_top_f">
-				<view class="xq_name">标准洗车-五座汽车</view>
+				<view class="xq_name">{{datas.title}}</view>
 				<view class="xq_tpri dis_flex aic">
-					整车泡沫冲洗擦干、轮胎轮毂冲洗清洁、车内吸尘、内 饰脚垫等简单除尘
+					{{datas.sub_title}}
 				</view>
 			</view>
 		</view>
@@ -44,39 +60,42 @@
 				</view> -->
 			</view>
 			<view class="carmsg_ms">
-				<image src="/static/images/mrxq.jpg" style="width: 100%;" mode="widthFix"></image>
-				<image src="/static/images/mrxq1.png" style="width: 100%;" mode="widthFix"></image>
+				<!-- <image src="/static/images/mrxq.jpg" style="width: 100%;" mode="widthFix"></image>
+				<image src="/static/images/mrxq1.png" style="width: 100%;" mode="widthFix"></image> -->
+				<block v-for="(item,index) in datas.content_img">
+					<image :src="$service.getimg(item)" style="width: 100%;" mode="widthFix"></image>
+				</block>
 			</view>
 		</view>
-		<view class="main_box">
+		<view v-if="datas.store" class="main_box">
 			<view class="main_box_tit">
 				<view class="main_tl">商家信息</view>
 			</view>
-			<view class="dp_msg"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=3'">
+			<view class="dp_msg"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+datas.store.id">
 				<image class="dp_msgbg" src="/static/images/bg_shop.png" mode="aspectFill"></image>
 				<view class="dp_msg_box dis_flex">
-					<image class="dp_msg_tl" src="/static/images/shop_vip.png" mode="aspectFill"></image>
+					<image v-if="datas.store.is_vip==1" class="dp_msg_tl" src="/static/images/shop_vip.png" mode="aspectFill"></image>
 					<view class="dp_msg_i">
 						<text class="iconfont icon-shangpu"></text>
 					</view>
 					<view class="flex_1">
-						<view class="dp_msg_name">北京南中环洗车<text class="iconfont icon-next"></text></view>
-						<view class="dp_msg_add">北京朝阳区来广营乡北园东路顾家庄桥北300米路西</view>
+						<view class="dp_msg_name">{{datas.store.title}}<text class="iconfont icon-next"></text></view>
+						<view class="dp_msg_add">{{datas.store.address}}</view>
 					</view>
 				</view>
 			</view>
 			<view class="dp_bmsg dis_flex aic">
 				<view class="dp_bmsg_l flex_1">
-					<view class="dp_bmsg_l1">标准洗车-五座洗车</view>
-					<view class="dp_bmsg_l2">价格: 43元</view>
+					<view class="dp_bmsg_l1">{{datas.title}}</view>
+					<view class="dp_bmsg_l2">价格: {{datas.price}}元</view>
 				</view>
-				<view class="dp_bmsg_r" @click="$service.call" :data-tel="18300000000">立即咨询</view>
+				<view class="dp_bmsg_r" @click="$service.call" :data-tel="datas.store.phone">立即咨询</view>
 			</view>
 		</view>
 		<view class="bbox"></view>
 		<view class="xq_bbox">
 			<view class="xq_bbox1 dis_flex">
-				<view class="xq_bli" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=3'">
+				<view  v-if="datas.store" class="xq_bli" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+datas.store.id">
 					<text class="iconfont icon-gongsi"></text>
 					<text>商家</text>
 				</view>
@@ -92,7 +111,7 @@
 					<text class="iconfont icon-zhuanfa3"></text>
 					<text>转发</text>
 				</view>
-				<view class="xq_b_btn"  @click="$service.call" :data-tel="18300000000">
+				<view v-if="datas.store" class="xq_b_btn"  @click="$service.call" :data-tel="datas.store.phone">
 					联系商家
 				</view>
 			</view>
@@ -133,7 +152,11 @@
 						title: '谁念西风独自凉，萧萧黄叶闭疏窗，沉思往事立残阳'
 				}],
 				currentNum:0,
-				sc_type:false
+				sc_type:false,
+				indicatorDots: false,
+				autoplay: false,
+				interval: 2000,
+				duration: 500
 			}
 		},
 		computed: {
@@ -147,7 +170,7 @@
 			that.options=e||{}
 			console.log(e)
 			
-			// that.getdata()
+			that.getdata()
 		},
 		onShow() {
 			// that.onRetry()
@@ -156,6 +179,10 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			swiper_fuc(e){
+				console.log(e.detail.current)
+				that.currentNum=e.detail.current
+			},
 			share_fuc(){
 				var code=''
 				// if(that.loginDatas.identification_id){
@@ -193,79 +220,12 @@
 			sc_fuc(){
 				that.sc_type=!that.sc_type
 			},
-			onRetry(){
-				that.page=1
-				that.datas=[]
-				that.getdata()
-			},
 			getdata(){
-				
+				var that=this
 				var datas={
-					// day:that.date,
-					page: that.page
+					id: that.options.id,
 				}
-				uni.showLoading({
-					mask:true,
-					title:'正在获取数据'
-				})
-				var jkurl='/history'
-				var nowpage=that.page
-				that.$service.P_post(jkurl, datas).then(res => {
-					that.btnkg = 0
-					console.log(res)
-					if (res.code == 1) {
-						that.htmlReset = 0
-						var datas = res.data
-						console.log(typeof datas)
-				
-						if (typeof datas == 'string') {
-							datas = JSON.parse(datas)
-						}
-						console.log(res)
-						if(nowpage==1){
-							that.datas=datas.data
-						}else{
-							if(datas.data.length==0){
-								return
-							}
-							that.datas=that.datas.concat(datas.data)
-						}
-						if(datas.data.length==0){
-							return
-						}
-						that.page++
-					} else {
-					
-						if (res.msg) {
-							uni.showToast({
-								icon: 'none',
-								title: res.msg
-							})
-						} else {
-							uni.showToast({
-								icon: 'none',
-								title: '获取数据失败'
-							})
-						}
-					}
-				}).catch(e => {
-					that.htmlReset = 1
-					that.btnkg = 0
-					// that.$refs.htmlLoading.htmlReset_fuc(1)
-					console.log(e)
-					uni.showToast({
-						icon: 'none',
-						title: '获取数据失败，请检查您的网络连接'
-					})
-				})
-			},
-			// 单条数据
-			getdata1(){
-				
-				var datas={
-					id: that.options.id
-				}
-				var jkurl='/news_detail'
+				var jkurl='/detail/car_beauty'
 				
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
@@ -279,12 +239,9 @@
 							datas = JSON.parse(datas)
 						}
 						console.log(res)
-						that.datas=datas.content
-						// if(datas.title){
-						// 	uni.setNavigationBarTitle({
-						// 		title:datas.title
-						// 	})
-						// }
+						that.datas=datas
+						
+						
 					} else {
 					
 						if (res.msg) {
@@ -355,7 +312,10 @@
 	width: 35px;
 	@include flex;
 	justify-content: center;
-
+	position: absolute;
+	bottom: 30rpx;
+	right: 30rpx;
+	z-index: 999999;
 	&__text {
 			 color: #FFFFFF;
 			 font-size: 12px;
@@ -794,6 +754,24 @@
 		height: 72rpx;
 		background: #E2382F;
 		border-radius: 8rpx;
+	}
+}
+.swiper_box{
+	width: 100%;
+	height:500rpx;
+	position: relative;
+	.swiper{
+		height: 100%;
+		position: relative;
+		z-index: 900;
+		.swiper-item{
+			width: 100%;
+			height: 100%;
+			image{
+				width: 100%;
+				height: 100%;
+			}
+		}
 	}
 }
 </style>
