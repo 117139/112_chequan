@@ -12,9 +12,11 @@ var ck_url=uni.getStorageSync('jkurl')
 
 if (process.env.NODE_ENV === 'development') {
 	console.log('开发环境');
-	baseurl='http://10.10.66.102:8000/'
+	// baseurl='http://10.10.66.102:8000/'
+	baseurl='http://car.gxp88.top/'
 } else {
 	console.log('生产环境');
+	baseurl='http://car.gxp88.top/'
 }
 let imgurl = baseurl
 // let imgurl = ''
