@@ -2,7 +2,7 @@
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
 		<view class="details_tbox">
-			<u-swiper
+			<!-- <u-swiper
 							:list="list4"
 							keyName="url"
 							@change="e => currentNum = e.current"
@@ -18,22 +18,37 @@
 					>
 							<text class="indicator-num__text">{{ currentNum + 1 }}/{{ list4.length }}</text>
 					</view>
-			</u-swiper>
+			</u-swiper> -->
+			<view class="swiper_box">
+				<swiper class="swiper" circular :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
+					:duration="duration" @change="swiper_fuc">
+					<!-- <swiper-item>
+						<view class="swiper-item uni-bg-red">A</view>
+					</swiper-item> -->
+					<swiper-item v-for="(item,index) in datas.banner">
+						<view class="swiper-item">
+							<image :src="$service.getimg(item)" mode="aspectFill"></image>
+						</view>
+					</swiper-item>
+				</swiper>
+				<view class="indicator-num" >
+						<text v-if="datas.banner" class="indicator-num__text">{{ currentNum + 1 }}/{{ datas.banner.length }}</text>
+				</view>
+			</view>
 			<view class="details_top">
 				<view class="flex_1">
 					<view class="details_top_l1">
-						11.80<text>万</text> 
-						<!-- <view class="ghf_tag">包含过户费</view> -->
+						{{$service.getnum(datas.price)}}<!-- <text>万</text> -->
 					</view>
-					<view class="details_top_l2">官方指导价：13.8万</view>
+					<view class="details_top_l2">官方指导价：{{$service.getnum(datas.y_price)}}</view>
 				</view>
-				<view class="xq_xzdj" @click="$service.call" :data-tel="18300000000">联系商家</view>
+				<view v-if="datas.store" class="xq_xzdj" @click="$service.call" :data-tel="datas.store.phone">联系商家</view>
 			</view>
 			<view class="details_top_f">
-				<view class="xq_name">雅马哈MT-09 STD</view>
+				<view class="xq_name">{{datas.title}}</view>
 				<view class="xq_tpri dis_flex aic">
-					<view class="ghf_tag">今日上新</view>
-					<view class="ghf_tag ghf_tag1">品质甄选</view>
+					<!-- <view class="ghf_tag">今日上新</view> -->
+					<!-- <view class="ghf_tag ghf_tag1">品质甄选</view> -->
 				</view>
 			</view>
 		</view>
@@ -45,38 +60,42 @@
 				</view> -->
 			</view>
 			<view class="carmsg_ms">
-				<image src="/static/images/mtxq.jpg" style="width: 100%;" mode="widthFix"></image>
+				<!-- <image src="/static/images/mtxq.jpg" style="width: 100%;" mode="widthFix"></image> -->
+				<text v-html="datas.content"></text>
+				<block v-for="(item,index) in datas.content_img">
+					<image :src="$service.getimg(item)" style="width: 100%;" mode="widthFix"></image>
+				</block>
 			</view>
 		</view>
-		<view class="main_box">
+		<view v-if="datas.store&&datas.store.id" class="main_box">
 			<view class="main_box_tit">
 				<view class="main_tl">商家信息</view>
 			</view>
-			<view class="dp_msg"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=1'">
+			<view class="dp_msg"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+datas.store.id">
 				<image class="dp_msgbg" src="/static/images/bg_shop.png" mode="aspectFill"></image>
 				<view class="dp_msg_box dis_flex">
-					<image class="dp_msg_tl" src="/static/images/shop_vip.png" mode="aspectFill"></image>
+					<image  v-if="datas.store.is_vip==1" class="dp_msg_tl" src="/static/images/shop_vip.png" mode="aspectFill"></image>
 					<view class="dp_msg_i">
 						<text class="iconfont icon-shangpu"></text>
 					</view>
 					<view class="flex_1">
-						<view class="dp_msg_name">北京新潮摩托行<text class="iconfont icon-next"></text></view>
-						<view class="dp_msg_add">北京朝阳区来广营乡北园东路顾家庄桥北300米路西</view>
+						<view class="dp_msg_name">{{$service.LNum(datas.store.title,15)}}<text class="iconfont icon-next"></text></view>
+						<view class="dp_msg_add">{{datas.store.address}}</view>
 					</view>
 				</view>
 			</view>
 			<view class="dp_bmsg dis_flex aic">
 				<view class="dp_bmsg_l flex_1">
-					<view class="dp_bmsg_l1">北京新潮摩托行</view>
-					<view class="dp_bmsg_l2">价格: 12.6万</view>
+					<view class="dp_bmsg_l1">{{$service.LNum(datas.title,15)}}</view>
+					<view class="dp_bmsg_l2">价格: {{$service.getnum(datas.price)}}</view>
 				</view>
-				<view class="dp_bmsg_r" @click="$service.call" :data-tel="18300000000">立即咨询</view>
+				<view class="dp_bmsg_r" @click="$service.call" :data-tel="datas.store.phone">立即咨询</view>
 			</view>
 		</view>
 		<view class="bbox"></view>
 		<view class="xq_bbox">
-			<view class="xq_bbox1 dis_flex">
-				<view class="xq_bli" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=1'">
+			<view v-if="datas.store" class="xq_bbox1 dis_flex">
+				<view v-if="datas.store.id" class="xq_bli" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+datas.store.id">
 					<text class="iconfont icon-gongsi"></text>
 					<text>店铺</text>
 				</view>
@@ -92,7 +111,7 @@
 					<text class="iconfont icon-zhuanfa3"></text>
 					<text>转发</text>
 				</view>
-				<view class="xq_b_btn"  @click="$service.call" :data-tel="18300000000">
+				<view class="xq_b_btn"  @click="$service.call" :data-tel="datas.store.phone">
 					联系商家
 				</view>
 			</view>
@@ -115,21 +134,14 @@
 				options:'',
 				datas:'',
 				page:1,
-				list4: [{
-				// 		url: 'https://cdn.uviewui.com/uview/resources/video.mp4',
-				// 		title: '昨夜星辰昨夜风，画楼西畔桂堂东',
-				// 		poster: 'https://cdn.uviewui.com/uview/swiper/swiper1.png',
-				// 		type: 'video'
-				// },{
-						url: '/static/images/car.jpg',
-						title: '身无彩凤双飞翼，心有灵犀一点通',
-						type: 'image'
-				},{
-						url: '/static/images/car.jpg',
-						title: '谁念西风独自凉，萧萧黄叶闭疏窗，沉思往事立残阳'
-				}],
+				list4: [],
+				
 				currentNum:0,
-				sc_type:false
+				sc_type:false,
+				indicatorDots: false,
+				autoplay: false,
+				interval: 2000,
+				duration: 500
 			}
 		},
 		computed: {
@@ -143,7 +155,7 @@
 			that.options=e||{}
 			console.log(e)
 			
-			// that.getdata()
+			that.getdata()
 		},
 		onShow() {
 			// that.onRetry()
@@ -152,6 +164,58 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			swiper_fuc(e){
+				console.log(e.detail.current)
+				that.currentNum=e.detail.current
+			},
+			getdata(){
+				var that=this
+				var datas={
+					id: that.options.id,
+				}
+				var jkurl='/detail/motorcycle'
+				
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.datas=datas
+						
+						
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
+			
 			share_fuc(){
 				var code=''
 				// if(that.loginDatas.identification_id){
@@ -194,7 +258,7 @@
 				that.datas=[]
 				that.getdata()
 			},
-			getdata(){
+			getdata2(){
 				
 				var datas={
 					// day:that.date,
@@ -318,45 +382,8 @@
 </script>
 
 <style lang="scss" scoped>
-	.wrap_box{
-		width: 100%;
-		min-height: 100vh;
-		background: #F8F8F8;
-		padding-bottom: 0;
-		padding-bottom: constant(safe-area-inset-bottom);
-		padding-bottom: env(safe-area-inset-bottom);
-	}
-.indicator {
-	@include flex(row);
-	justify-content: center;
+@import "@/common/css/fwxq.scss";
 
-	&__dot {
-			 height: 6px;
-			 width: 6px;
-			 border-radius: 100px;
-			 background-color: rgba(255, 255, 255, 0.35);
-			 margin: 0 5px;
-			 transition: background-color 0.3s;
-
-			&--active {
-					 background-color: #ffffff;
-			 }
-	}
-}
-
-.indicator-num {
-	padding: 2px 0;
-	background-color: rgba(0, 0, 0, 0.35);
-	border-radius: 100px;
-	width: 35px;
-	@include flex;
-	justify-content: center;
-
-	&__text {
-			 color: #FFFFFF;
-			 font-size: 12px;
-	 }
-}
 .details_tbox{
 	width: 100%;
 	background: #fff;
@@ -441,6 +468,7 @@
 	border-radius: 4rpx;
 	padding: 0 10rpx;
 	margin-left: 10rpx;
+	line-height: 32rpx;
 	&.ghf_tag1{
 		background: linear-gradient(90deg, #808CD0 1%, #4B4F9B 97%);
 	}

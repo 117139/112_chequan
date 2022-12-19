@@ -2,7 +2,7 @@
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
 		<view class="details_tbox">
-			<u-swiper
+			<!-- <u-swiper
 							:list="list4"
 							keyName="url"
 							@change="e => currentNum = e.current"
@@ -18,19 +18,35 @@
 					>
 							<text class="indicator-num__text">{{ currentNum + 1 }}/{{ list4.length }}</text>
 					</view>
-			</u-swiper>
+			</u-swiper> -->
+			<view class="swiper_box">
+				<swiper class="swiper" circular :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
+					:duration="duration" @change="swiper_fuc">
+					<!-- <swiper-item>
+						<view class="swiper-item uni-bg-red">A</view>
+					</swiper-item> -->
+					<swiper-item v-for="(item,index) in datas.banner">
+						<view class="swiper-item">
+							<image :src="$service.getimg(item)" mode="aspectFill"></image>
+						</view>
+					</swiper-item>
+				</swiper>
+				<view class="indicator-num" >
+						<text v-if="datas.banner" class="indicator-num__text">{{ currentNum + 1 }}/{{ datas.banner.length }}</text>
+				</view>
+			</view>
 			<view class="details_top">
 				<view class="flex_1">
 					<view class="details_top_l1">
-						11.80<text>万</text> <view class="ghf_tag">包含过户费</view>
+						{{datas.price}}<text>万</text> <view v-if="datas.is_gh==1" class="ghf_tag">包含过户费</view>
 					</view>
-					<view class="details_top_l2">新车价:14.58万</view>
+					<view class="details_top_l2">新车价:{{datas.car_params.price}}</view>
 				</view>
-				<view class="xq_xzdj" @click="$service.call" :data-tel="18300000000">咨询底价</view>
+				<view v-if="datas.store" class="xq_xzdj" @click="$service.call" :data-tel="datas.store.phone">咨询底价</view>
 			</view>
 			<view class="details_top_f">
-				<view class="xq_name">本田缤智 2020款 220TURBO CVT精英版</view>
-				<view class="xq_tpri">首付<text>3.54</text>万</view>
+				<view class="xq_name">{{datas.title}}</view>
+				<view class="xq_tpri">首付<text>{{datas.first_price}}</text>万</view>
 			</view>
 		</view>
 		<view class="main_box">
@@ -39,50 +55,50 @@
 			</view>
 			<view class="carmsg1">
 				<view class="carmsg1_li">
-					<view class="carmsg1_li_d1">2021年01月</view>
+					<view class="carmsg1_li_d1">{{datas.brand_time||''}}</view>
 					<view class="carmsg1_li_d2">上牌时间</view>
 				</view>
 				<view class="carmsg1_li">
-					<view class="carmsg1_li_d1">1.6万公里</view>
+					<view class="carmsg1_li_d1">{{datas.km}}万公里</view>
 					<view class="carmsg1_li_d2">行驶里程</view>
 				</view>
 				<view class="carmsg1_li">
-					<view class="carmsg1_li_d1">国六</view>
+					<view class="carmsg1_li_d1">{{datas.car_params.environmentalstandards||''}}</view>
 					<view class="carmsg1_li_d2">排放标准</view>
 				</view>
 			</view>
 			<view class="carmsg2">
 				<view class="carmsg2_li">
 					<view class="carmsg2_li_name">上牌地</view>
-					<view class="carmsg2_li_v oh1">北京</view>
+					<view class="carmsg2_li_v oh1">{{getcityadd(datas.brand_add)}}</view>
 				</view>
 				<view class="carmsg2_li">
 					<view class="carmsg2_li_name">所在地</view>
-					<view class="carmsg2_li_v oh1">北京</view>
+					<view class="carmsg2_li_v oh1">{{getcityadd(datas.brand_address)}}</view>
 				</view>
 				<view class="carmsg2_li">
 					<view class="carmsg2_li_name">排量</view>
-					<view class="carmsg2_li_v oh1">1.5L</view>
+					<view class="carmsg2_li_v oh1">{{datas.car_params.displacement||''}}</view>
 				</view>
 				<view class="carmsg2_li">
 					<view class="carmsg2_li_name">变速箱</view>
-					<view class="carmsg2_li_v oh1">CVT无级变速</view>
+					<view class="carmsg2_li_v oh1">{{datas.car_params.gearbox.gearbox||''}}</view>
 				</view>
 				<view class="carmsg2_li">
 					<view class="carmsg2_li_name">过户次数</view>
-					<view class="carmsg2_li_v oh1">0</view>
+					<view class="carmsg2_li_v oh1">{{datas.gh_num||''}}</view>
 				</view>
 				<view class="carmsg2_li">
 					<view class="carmsg2_li_name">颜色</view>
-					<view class="carmsg2_li_v oh1">白色</view>
+					<view class="carmsg2_li_v oh1">{{datas.color||''}}</view>
 				</view>
 				<view class="carmsg2_li">
 					<view class="carmsg2_li_name">保险到期</view>
-					<view class="carmsg2_li_v oh1">2023-01</view>
+					<view class="carmsg2_li_v oh1">{{datas.bx_end||''}}</view>
 				</view>
 				<view class="carmsg2_li">
 					<view class="carmsg2_li_name">年检到期</view>
-					<view class="carmsg2_li_v oh1">2023-01</view>
+					<view class="carmsg2_li_v oh1">{{datas.nj_end||''}}</view>
 				</view>
 			</view>
 			<scroll-view scroll-x="true" class="carmsg3 scroll_x">
@@ -115,12 +131,12 @@
 		<view class="main_box">
 			<view class="main_box_tit">
 				<view class="main_tl">车况描述</view>
-				<view class="main_tr_btn" @click="$service.call" :data-tel="18300000000">
+				<view class="main_tr_btn" @click="$service.call"  :data-tel="datas.store.phone">
 					询问车况
 				</view>
 			</view>
 			<view class="carmsg_ms">
-				二十三年品牌老店汇众车行，长期经营中高端精品二手车，车源充足，加个油，车况明，退还有保障。本店所售卖车源：无事故无水泡无火烧，所有车辆均可提供第三方检测报告，车源售后支持7天内退车，15天可换服务。车源id：8094236
+				<text>{{datas.content}}</text>
 			</view>
 		</view>
 		<view class="main_box">
@@ -128,11 +144,11 @@
 				<view class="main_tl">车辆实拍</view>
 			</view>
 			<view class="xq_imgs dis_flex fww">
-				<view class="xqimg_box" v-for="(item,index) in 3">
-					<image src="/static/images/car2.png" mode="aspectFill"></image>
+				<view v-if="index<showNum" class="xqimg_box" v-for="(item,index) in datas.banner">
+					<image :src="$service.getimg(item)" mode="aspectFill"></image>
 				</view>
 			</view>
-			<view class="carmsg_more">查看全部9张车图</view>
+			<view v-if="datas.banner.length>showNum" class="carmsg_more" @click="showNum=10000">查看全部{{datas.banner.length}}张车图</view>
 		</view>
 		<view class="main_box">
 			<view class="main_box_tit">
@@ -141,29 +157,29 @@
 			<view class="dp_msg"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=2'">
 				<image class="dp_msgbg" src="/static/images/bg_shop.png" mode="aspectFill"></image>
 				<view class="dp_msg_box dis_flex">
-					<image class="dp_msg_tl" src="/static/images/shop_vip.png" mode="aspectFill"></image>
+					<image v-if="datas.store.is_vip==1" class="dp_msg_tl" src="/static/images/shop_vip.png" mode="aspectFill"></image>
 					<view class="dp_msg_i">
 						<text class="iconfont icon-shangpu"></text>
 					</view>
 					<view class="flex_1">
-						<view class="dp_msg_name">北京淘车二手车<text class="iconfont icon-next"></text></view>
-						<view class="dp_msg_add">北京朝阳区来广营乡北园东路顾家庄桥北300米路西</view>
+						<view class="dp_msg_name">{{$service.LNum(datas.store.title,15)}}<text class="iconfont icon-next"></text></view>
+						<view class="dp_msg_add">{{datas.store.address}}</view>
 					</view>
 				</view>
 			</view>
 			<view class="dp_bmsg dis_flex aic">
 				
 				<view class="dp_bmsg_l flex_1">
-					<view class="dp_bmsg_l1">本车卖价: <text>10.90万</text></view>
-					<view class="dp_bmsg_l2">首付: 3.54万</view>
+					<view class="dp_bmsg_l1">本车卖价: <text>{{datas.price}}万</text></view>
+					<view class="dp_bmsg_l2">首付: {{datas.first_price}}万</view>
 				</view>
-				<view class="dp_bmsg_r" @click="$service.call" :data-tel="18300000000">立即咨询</view>
+				<view class="dp_bmsg_r" @click="$service.call"  :data-tel="datas.store.phone">立即咨询</view>
 			</view>
 		</view>
 		<view class="bbox"></view>
 		<view class="xq_bbox">
-			<view class="xq_bbox1 dis_flex">
-				<view class="xq_bli" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=2'">
+			<view v-if="datas.store" class="xq_bbox1 dis_flex">
+				<view v-if="datas.store.id" class="xq_bli" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+datas.store.id">
 					<text class="iconfont icon-gongsi"></text>
 					<text>商家</text>
 				</view>
@@ -179,7 +195,7 @@
 					<text class="iconfont icon-zhuanfa3"></text>
 					<text>转发</text>
 				</view>
-				<view class="xq_b_btn" @click="$service.call" :data-tel="18300000000">
+				<view class="xq_b_btn" @click="$service.call"  :data-tel="datas.store.phone">
 					联系商家
 				</view>
 			</view>
@@ -202,22 +218,14 @@
 				options:'',
 				datas:'',
 				page:1,
-				list4: [
-					{
-				// 		url: 'https://cdn.uviewui.com/uview/resources/video.mp4',
-				// 		title: '昨夜星辰昨夜风，画楼西畔桂堂东',
-				// 		poster: 'https://cdn.uviewui.com/uview/swiper/swiper1.png',
-				// 		type: 'video'
-				// },{
-						url: '/static/images/car2.png',
-						title: '身无彩凤双飞翼，心有灵犀一点通',
-						type: 'image'
-				},{
-						url: '/static/images/car2.png',
-						title: '谁念西风独自凉，萧萧黄叶闭疏窗，沉思往事立残阳'
-				}],
+				list4: [],
 				currentNum:0,
-				sc_type:false
+				sc_type:false,
+				indicatorDots: false,
+				autoplay: false,
+				interval: 2000,
+				duration: 500,
+				showNum:3
 			}
 		},
 		computed: {
@@ -231,7 +239,7 @@
 			that.options=e||{}
 			console.log(e)
 			
-			// that.getdata()
+			that.getdata()
 		},
 		onShow() {
 			// that.onRetry()
@@ -274,6 +282,66 @@
 				// 	}
 				// });
 			},
+			getcityadd(str){
+				str=str.split(',')
+				if(str[1]=='市辖区'){
+					return str[0]
+				}else{
+					return str[1]
+				}
+			},
+			swiper_fuc(e){
+				console.log(e.detail.current)
+				that.currentNum=e.detail.current
+			},
+			getdata(){
+				var that=this
+				var datas={
+					id: that.options.id,
+				}
+				var jkurl='/detail/usedcar'
+				
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.datas=datas
+						
+						
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
+			
 			sc_fuc(){
 				that.sc_type=!that.sc_type
 			},
@@ -282,7 +350,7 @@
 				that.datas=[]
 				that.getdata()
 			},
-			getdata(){
+			getdata2(){
 				
 				var datas={
 					// day:that.date,
@@ -406,45 +474,8 @@
 </script>
 
 <style lang="scss" scoped>
-	.wrap_box{
-		width: 100%;
-		min-height: 100vh;
-		background: #F8F8F8;
-		padding-bottom: 0;
-		padding-bottom: constant(safe-area-inset-bottom);
-		padding-bottom: env(safe-area-inset-bottom);
-	}
-.indicator {
-	@include flex(row);
-	justify-content: center;
+@import "@/common/css/fwxq.scss";
 
-	&__dot {
-			 height: 6px;
-			 width: 6px;
-			 border-radius: 100px;
-			 background-color: rgba(255, 255, 255, 0.35);
-			 margin: 0 5px;
-			 transition: background-color 0.3s;
-
-			&--active {
-					 background-color: #ffffff;
-			 }
-	}
-}
-
-.indicator-num {
-	padding: 2px 0;
-	background-color: rgba(0, 0, 0, 0.35);
-	border-radius: 100px;
-	width: 35px;
-	@include flex;
-	justify-content: center;
-
-	&__text {
-			 color: #FFFFFF;
-			 font-size: 12px;
-	 }
-}
 .details_tbox{
 	width: 100%;
 	background: #fff;

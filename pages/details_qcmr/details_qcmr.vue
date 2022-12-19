@@ -60,6 +60,7 @@
 				</view> -->
 			</view>
 			<view class="carmsg_ms">
+				<text v-html="datas.content"></text>
 				<!-- <image src="/static/images/mrxq.jpg" style="width: 100%;" mode="widthFix"></image>
 				<image src="/static/images/mrxq1.png" style="width: 100%;" mode="widthFix"></image> -->
 				<block v-for="(item,index) in datas.content_img">
@@ -134,23 +135,7 @@
 				options:'',
 				datas:'',
 				page:1,
-				list4: [{
-						url: '/static/images/car.jpg',
-						title: '身无彩凤双飞翼，心有灵犀一点通',
-						type: 'image'
-				},{
-				// 		url: 'https://cdn.uviewui.com/uview/resources/video.mp4',
-				// 		title: '昨夜星辰昨夜风，画楼西畔桂堂东',
-				// 		poster: 'https://cdn.uviewui.com/uview/swiper/swiper1.png',
-				// 		type: 'video'
-				// },{
-						url: '/static/images/car2.png',
-						title: '身无彩凤双飞翼，心有灵犀一点通',
-						type: 'image'
-				},{
-						url: '/static/images/car2.png',
-						title: '谁念西风独自凉，萧萧黄叶闭疏窗，沉思往事立残阳'
-				}],
+				list4: [],
 				currentNum:0,
 				sc_type:false,
 				indicatorDots: false,
@@ -279,48 +264,8 @@
 </script>
 
 <style lang="scss" scoped>
-	.wrap_box{
-		width: 100%;
-		min-height: 100vh;
-		background: #F8F8F8;
-		padding-bottom: 0;
-		padding-bottom: constant(safe-area-inset-bottom);
-		padding-bottom: env(safe-area-inset-bottom);
-	}
-.indicator {
-	@include flex(row);
-	justify-content: center;
-
-	&__dot {
-			 height: 6px;
-			 width: 6px;
-			 border-radius: 100px;
-			 background-color: rgba(255, 255, 255, 0.35);
-			 margin: 0 5px;
-			 transition: background-color 0.3s;
-
-			&--active {
-					 background-color: #ffffff;
-			 }
-	}
-}
-
-.indicator-num {
-	padding: 2px 0;
-	background-color: rgba(0, 0, 0, 0.35);
-	border-radius: 100px;
-	width: 35px;
-	@include flex;
-	justify-content: center;
-	position: absolute;
-	bottom: 30rpx;
-	right: 30rpx;
-	z-index: 999999;
-	&__text {
-			 color: #FFFFFF;
-			 font-size: 12px;
-	 }
-}
+@import "@/common/css/fwxq.scss";
+	
 .details_tbox{
 	width: 100%;
 	background: #fff;
@@ -756,22 +701,5 @@
 		border-radius: 8rpx;
 	}
 }
-.swiper_box{
-	width: 100%;
-	height:500rpx;
-	position: relative;
-	.swiper{
-		height: 100%;
-		position: relative;
-		z-index: 900;
-		.swiper-item{
-			width: 100%;
-			height: 100%;
-			image{
-				width: 100%;
-				height: 100%;
-			}
-		}
-	}
-}
+
 </style>

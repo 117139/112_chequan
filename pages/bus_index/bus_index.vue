@@ -70,8 +70,8 @@
 					</view>
 				</view>
 			</view>
-			<view  v-if="active==1" class="car_list dis_flex fww" @click.stop="$service.jump" :data-url="'/pages/details_motor/details_motor?id='+item.id">
-				<view class="car_li" v-for="(item,index) in datas_list">
+			<view  v-if="active==1" class="car_list dis_flex fww">
+				<view class="car_li" v-for="(item,index) in datas_list" @click.stop="$service.jump" :data-url="'/pages/details_motor/details_motor?id='+item.id">
 					<view class="car_li_box">
 						<!-- <image class="car_li_img" src="/static/images/motor1.png" mode="aspectFit"></image> -->
 						<image class="car_li_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
@@ -83,8 +83,8 @@
 					</view>
 				</view>
 			</view>
-			<view  v-if="active==2" class="car_list dis_flex fww" @click.stop="$service.jump" :data-url="'/pages/details_car/details_car?id='+item.id">
-				<view class="car_li" v-for="(item,index) in datas_list">
+			<view  v-if="active==2" class="car_list dis_flex fww">
+				<view class="car_li" v-for="(item,index) in datas_list" @click.stop="$service.jump" :data-url="'/pages/details_car/details_car?id='+item.id">
 					<view class="car_li_box">
 						<!-- <image class="car_li_img" src="/static/images/car1.png" mode="aspectFit"></image> -->
 						<image class="car_li_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
