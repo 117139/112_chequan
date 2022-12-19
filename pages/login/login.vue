@@ -882,7 +882,7 @@
 					if (!that.tel) {
 						wx.showToast({
 							icon: 'none',
-							title: '请输入账号(邮箱/手机号)'
+							title: '请输入账号手机号'
 						})
 						return
 					}
