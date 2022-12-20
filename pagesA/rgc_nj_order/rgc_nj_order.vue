@@ -50,7 +50,8 @@
 			<view class="shop_vip_btn">去开通</view>
 			<view class="shop_vip_msg">
 				<view class="sd1">开通会员</view>
-				<view class="sd2">年检办理服务费立减98元</view>
+				<!-- <view class="sd2">年检办理服务费立减98元</view> -->
+				<view class="sd2">免费查车型/查状态/查违章</view>
 			</view>
 		</view>
 		<view v-if="nj_index==1" class="xx_txm">

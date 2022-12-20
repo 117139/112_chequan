@@ -9,10 +9,10 @@
 		</view>
 		</u-sticky>
 		<view class="zan_list" v-if="active==0">
-			<view class="zan_li" v-for="(item,index) in 10" @click="$service.jump" :data-url="'/pages/lx_details/lx_details?id='+1">
-				<image class="zan_img" src="/static/images/car1.png" mode="aspectFill"></image>
+			<view class="zan_li" v-for="(item,index) in datas" @click="$service.jump" :data-url="'/pages/lx_details/lx_details?id='+item.id">
+				<image class="zan_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 				<view class="zan_msg">
-					 <view class="zan_tit">入驻泉州最著名的西街旁 | 安 静清幽的小阁楼</view>
+					 <view class="zan_tit oh2">{{item.title}}</view>
 					 <view class="lx_num dis_flex aic" >
 						<!-- <view v-if="index==1" class="car_li_sc car_li_sc1 dis_flex aic" >
 							<text class="icon icon-xihuan1"></text>
@@ -20,13 +20,14 @@
 						</view> v-else -->
 						<view class="car_li_sc dis_flex aic" >
 							<text class="icon icon-xihuan"></text>
-							256
+							{{item.zan||0}}
 						</view>
 						<view class="li_cz">编辑</view>
 						<view class="li_cz" @click="del_fuc">删除</view>
 					 </view>
 				</view>
 			</view>
+			<uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more>
 		</view>
 		<view class="fb_box" v-if="active==1">
 			<view class="fb_imgs"  @click="upimg_fuc" data-type="2"  data-idx="0">
@@ -80,7 +81,9 @@
 		data() {
 			return {
 				options:'',
-				datas:'',
+				listc_status:'loading',
+				contentText:{contentdown: "上拉显示更多",contentrefresh: "正在加载...",contentnomore: "暂无数据"},
+				datas:[],
 				page:1,
 				tabs:[
 					{
@@ -113,12 +116,103 @@
 			// that.getdata()
 		},
 		onShow() {
-			// that.onRetry()
+			that.onRetry()
+		},
+		onReachBottom() {
+			if(that.active==0){
+				that.getdatas()
+			}
+			
+			
 		},
 		
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			onRetry(){
+					that.page=1
+					that.datas=[]
+					that.getdatas()
+			},
+			/**
+			 * 列表
+			 */
+			getdatas(){
+				// /index/store
+				var datas={
+					// store_id:'',
+					// lat:that.addmsg.latitude||'',
+					// lng:that.addmsg.longitude||'',
+					// is_hot:'',//是否热门推荐 1、是 2、否
+					// search:'',
+					page:that.page,
+					limit:16
+				}
+				var jkurl='/index/routes'
+				that.listc_status='loading'
+				
+				var nowpage=that.page
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						
+						if(nowpage==1){
+							that.datas=[]
+							that.datas=datas.data
+						}else{
+							that.datas=that.datas.concat(datas.data)
+						}
+						
+						if(datas.total==0){
+							that.listc_status='noMore'
+							
+						}else{
+							that.listc_status=''
+						}
+						if(datas.data>length>0){
+							that.page++
+						}
+						// that.getdata_tz()
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
+			
 			fub_fuc(){
 				uni.showToast({
 					icon:'none',
@@ -271,72 +365,6 @@
 			
 			setcur(index){
 				that.active=index
-			},
-			onRetry(){
-				that.page=1
-				that.datas=[]
-				that.getdata()
-			},
-			getdata(){
-				
-				var datas={
-					// day:that.date,
-					page: that.page
-				}
-				uni.showLoading({
-					mask:true,
-					title:'正在获取数据'
-				})
-				var jkurl='/history'
-				var nowpage=that.page
-				that.$service.P_post(jkurl, datas).then(res => {
-					that.btnkg = 0
-					console.log(res)
-					if (res.code == 1) {
-						that.htmlReset = 0
-						var datas = res.data
-						console.log(typeof datas)
-				
-						if (typeof datas == 'string') {
-							datas = JSON.parse(datas)
-						}
-						console.log(res)
-						if(nowpage==1){
-							that.datas=datas.data
-						}else{
-							if(datas.data.length==0){
-								return
-							}
-							that.datas=that.datas.concat(datas.data)
-						}
-						if(datas.data.length==0){
-							return
-						}
-						that.page++
-					} else {
-					
-						if (res.msg) {
-							uni.showToast({
-								icon: 'none',
-								title: res.msg
-							})
-						} else {
-							uni.showToast({
-								icon: 'none',
-								title: '获取数据失败'
-							})
-						}
-					}
-				}).catch(e => {
-					that.htmlReset = 1
-					that.btnkg = 0
-					// that.$refs.htmlLoading.htmlReset_fuc(1)
-					console.log(e)
-					uni.showToast({
-						icon: 'none',
-						title: '获取数据失败，请检查您的网络连接'
-					})
-				})
 			},
 			// 单条数据
 			getdata1(){

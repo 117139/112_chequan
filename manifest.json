@@ -95,6 +95,12 @@
                     "key" : "XLXBZ-BMQCO-HYQWC-SKVJE-KYFLO-6NBPL"
                 }
             }
+        },
+        "devServer" : {
+            "https" : false
+        },
+        "router" : {
+            "base" : ""
         }
     }
 }

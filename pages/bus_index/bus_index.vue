@@ -57,7 +57,7 @@
 				</picker>
 			</view>
 			
-			<view  v-if="active==0" class="car_list dis_flex fww">
+			<view  v-if="columns[active].id==1" class="car_list dis_flex fww">
 				<view class="car_li" v-for="(item,index) in datas_list" @click.stop="$service.jump" :data-url="'/pages/details_qcmr/details_qcmr?id='+item.id">
 					<view class="car_li_box">
 						<!-- <image class="car_li_img" src="/static/images/car1.png" mode="aspectFit"></image> -->
@@ -70,20 +70,20 @@
 					</view>
 				</view>
 			</view>
-			<view  v-if="active==1" class="car_list dis_flex fww">
+			<view  v-if="columns[active].id==2" class="car_list dis_flex fww">
 				<view class="car_li" v-for="(item,index) in datas_list" @click.stop="$service.jump" :data-url="'/pages/details_motor/details_motor?id='+item.id">
 					<view class="car_li_box">
 						<!-- <image class="car_li_img" src="/static/images/motor1.png" mode="aspectFit"></image> -->
 						<image class="car_li_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 						<view class="car_li_msg">
 							<view class="car_li_tit oh2">{{item.title}}</view>
-							<view class="car_li_jl oh1">官方指导价：{{$service.getnum(item.price)||''}}</view>
+							<view class="car_li_jl oh1">官方指导价：{{$service.getnum(item.y_price)||''}}</view>
 							<view class="car_li_num">{{$service.getnum(item.price)||''}}</view>
 						</view>
 					</view>
 				</view>
 			</view>
-			<view  v-if="active==2" class="car_list dis_flex fww">
+			<view  v-if="columns[active].id==3" class="car_list dis_flex fww">
 				<view class="car_li" v-for="(item,index) in datas_list" @click.stop="$service.jump" :data-url="'/pages/details_car/details_car?id='+item.id">
 					<view class="car_li_box">
 						<!-- <image class="car_li_img" src="/static/images/car1.png" mode="aspectFit"></image> -->
@@ -97,7 +97,7 @@
 				</view>
 			</view>
 			<!-- <view v-if="active==3" class="car_list dis_flex fww" @click.stop="$service.jump" data-url="/pages/details_jyz/details_jyz"> -->
-			<view v-if="active==3" class="car_list dis_flex fww">
+			<view v-if="columns[active].id==4" class="car_list dis_flex fww">
 				<!-- <view class="car_li" v-for="(item,index) in 20">
 					<view class="car_li_box">
 						<image class="car_li_img" src="/static/images/car.jpg" mode="aspectFit"></image>
@@ -272,6 +272,8 @@
 								// 	id:4
 								// },
 							]
+							that.active=0
+							that.onRetry()
 						}else if(datas.status==4){
 							that.columns=[
 								// {
@@ -291,6 +293,7 @@
 									id:4
 								},
 							]
+							that.active=2
 						}else{
 							that.columns=[
 								// {
@@ -310,8 +313,11 @@
 								// 	id:4
 								// },
 							]
+							
+							that.active=datas.status-2
+							that.onRetry()
 						}
-						that.onRetry()
+						
 						// if(datas.title){
 						// 	uni.setNavigationBarTitle({
 						// 		title:datas.title

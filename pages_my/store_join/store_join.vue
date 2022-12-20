@@ -265,7 +265,7 @@
 							uni.redirectTo({
 								url:'/pages_my/store_join1/store_join1'
 							})
-						},1000)
+						},2000)
 					} else {
 						that.btnkg=0
 					

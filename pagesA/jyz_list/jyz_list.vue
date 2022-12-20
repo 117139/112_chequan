@@ -16,7 +16,7 @@
 			<image v-if="navdata[0].banner" class="main_bg" :src="$service.getimg(navdata[0].banner)" mode="aspectFill"></image>
 			<image v-else class="main_bg" src="/static/images/bg_addoil.png" mode="widthFix"></image>
 			<view class="data_list">
-				<view class="data_li" v-for="(item,index) in 3"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=3&id='+1">
+				<!-- <view class="data_li" v-for="(item,index) in datas"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=3&id='+1">
 					<view class="datali_top">
 						<image class="datali_top_img" src="/static/images/banner_car.png" mode="aspectFill"></image>
 						<view class="datali_top_msg">
@@ -28,7 +28,6 @@
 							</view>
 						</view>
 					</view>
-					<!-- <view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_jyz/details_jyz"> -->
 					<view class="data_sli dis_flex aic">
 						<text class="data_sli_l"></text>
 						<view class="flex_1 data_sli_c">90#汽油</view>
@@ -45,8 +44,28 @@
 						<view class="data_sli_r">￥<text>8.18</text></view>
 					</view>
 					<view class="datasli_more">查看全部<text class="icon icon-next"></text></view>
+				</view> -->
+				<view class="data_li" v-for="(item,index) in datas" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=3&id='+item.id">
+					<view class="datali_top">
+						<image class="datali_top_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
+						<view class="datali_top_msg">
+							<view class="datalimsg_tit">{{item.title||''}}</view>
+							<view class="datalimsg_add">{{item.address||''}}</view>
+							<view class="dis_flex aic ju_b">
+								<view class="datalimsg_dh"><image src="/static/images/iaddicon.png" mode="aspectFit"></image>导航</view>
+								<view class="datalimsg_jl">{{item.juli||'--'}}</view>
+							</view>
+						</view>
+					</view>
+					<view class="data_sli dis_flex aic" v-for="(item1,index1) in item.child">
+						<text class="data_sli_l"></text>
+						<view class="flex_1 data_sli_c">{{item1.title}}</view>
+						<view class="data_sli_r">￥<text>{{item1.price}}</text></view>
+					</view>
+					<view class="datasli_more">查看全部<text class="icon icon-next"></text></view>
 				</view>
 				<!-- <view class="go_more">查看更多洗车店<text class="icon icon-next"></text></view> -->
+				<uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more>
 			</view>
 		</view>
 		<!-- 阻止滑动 -->
@@ -86,6 +105,10 @@
 				],
 				index:0,
 				show_sx:false,
+				listc_status:'loading',
+				contentText:{contentdown: "上拉显示更多",contentrefresh: "正在加载...",contentnomore: "暂无数据"},
+				datas:[],
+				page:1
 			}
 		},
 		computed: {
@@ -99,12 +122,15 @@
 			that.options=e||{}
 			console.log(e)
 			
-			// that.getdata()
+			that.onRetry()
 		},
 		onShow() {
 			// that.onRetry()
 		},
 		
+		onReachBottom() {
+			that.getdatas()
+		},
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
@@ -124,21 +150,26 @@
 				this.show_sx = false;
 			},
 			onRetry(){
-				that.page=1
-				that.datas=[]
-				that.getdata()
+					that.page=1
+					that.datas=[]
+					that.getdatas()
 			},
-			getdata(){
-				
+			/**
+			 * 店铺列表
+			 * @param  status = [1|2|3|4] 类型 1、汽车美容 2、摩托车 3、二手车 4、加油站
+			 */
+			getdatas(){
+				// /index/store
 				var datas={
-					// day:that.date,
-					page: that.page
+					status:4,
+					lat:that.addmsg.latitude||'',
+					lng:that.addmsg.longitude||'',
+					page:that.page,
+					limit:10
 				}
-				uni.showLoading({
-					mask:true,
-					title:'正在获取数据'
-				})
-				var jkurl='/history'
+				var jkurl='/index/store'
+				that.listc_status='loading'
+				
 				var nowpage=that.page
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
@@ -152,18 +183,29 @@
 							datas = JSON.parse(datas)
 						}
 						console.log(res)
+						
 						if(nowpage==1){
+							that.datas=[]
 							that.datas=datas.data
 						}else{
-							if(datas.data.length==0){
-								return
-							}
 							that.datas=that.datas.concat(datas.data)
 						}
-						if(datas.data.length==0){
-							return
+						
+						if(datas.total==0){
+							that.listc_status='noMore'
+							
+						}else{
+							that.listc_status=''
 						}
-						that.page++
+						if(datas.data>length>0){
+							that.page++
+						}
+						// that.getdata_tz()
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
 					} else {
 					
 						if (res.msg) {

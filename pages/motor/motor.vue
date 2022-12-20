@@ -46,22 +46,24 @@
 				<image src="/static/images/fbi_xl.png" mode="aspectFill"></image>
 			</view>
 		</view>
-		<view class="mt_cbox">
+		<view v-if="datas.length>0" class="mt_cbox">
 			<view class="mt_cboxtit dis_flex aic">
 				<view class="mt_cboxtit_l">附近经销商</view>
 				<view class="flex_1">/  甄选优质经销商 省心又省钱</view>
 				<view @click="$service.jump" data-url="/pagesA/mt_list/mt_list">更多<text class="icon icon-next"></text></view>
 			</view>
-			<view class="mt_msg dis_flex aic" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=1&id='+1">
-				<image class="mt_msg_l" src="/static/images/banner_motor.png" mode="aspectFill"></image>
+			<block v-for="(item,index) in datas">
+			<view class="mt_msg dis_flex aic" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=1&id='+item.id">
+				<image class="mt_msg_l" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 				<view class="mt_msg_r">
-					<view class="mt_msg_r1">北京国潮摩托车行</view>
+					<view class="mt_msg_r1">{{item.title||''}}</view>
 					<view class="mt_msg_r2">
 							<image class="h_add" src="/static/images/icon_address_h.png" mode="aspectFit">
-							</image>北京朝阳区来广营乡北园东路 顾家庄桥北300米路西
+							</image>{{item.address||''}}
 					</view>
 				</view>
 			</view>
+			</block>
 		</view>
 		
 		<view class="index_main_tit dis_flex aic">
@@ -70,36 +72,37 @@
 			<view class="flex_1"></view>
 		</view>
 		<view v-if="cur==0" class="car_list dis_flex fww">
-			<view class="car_li" v-for="(item,index) in 20" @click="$service.jump" data-url="/pages/details_motor/details_motor">
+			<view class="car_li" v-for="(item,index) in datas_car" @click="$service.jump" :data-url="'/pages/details_motor/details_motor?id='+item.id">
 				<view class="car_li_box">
-					<image class="car_li_img" src="/static/images/motor.jpg" mode="aspectFit"></image>
+					<image class="car_li_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 					<view class="car_li_msg">
-						<view class="car_li_tit oh2">QJMOTOR 壹米150国 潮探班复古水冷摩托</view>
-						<view class="car_li_jl oh1">官方指导价：2.9万</view>
-						<view class="car_li_num">1.66万</view>
+						<view class="car_li_tit oh2">{{item.title}}</view>
+						<view class="car_li_jl oh1">官方指导价：{{$service.getnum(item.y_price)||''}}</view>
+						<view class="car_li_num">{{$service.getnum(item.price)||''}}</view>
 					</view>
 				</view>
 			</view>
 		</view>
 		<view v-if="cur==1" class="car_list dis_flex fww">
-			<view class="car_li" v-for="(item,index) in 20"  @click="$service.jump" :data-url="'/pages/lx_details/lx_details?id='+1">
+			<view class="car_li" v-for="(item,index) in datas_car"  @click="$service.jump" :data-url="'/pages/lx_details/lx_details?id='+item.id">
 				<view class="car_li_box">
-					<image class="car_li_img" src="/static/images/motor_lx.jpg" mode="aspectFit"></image>
+					<image class="car_li_img"  :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 					<view class="car_li_msg">
-						<view class="car_li_tit oh2">皖南川藏线摩托骑行 罗陵湾摩友驿站</view>
+						<view class="car_li_tit oh2">{{item.title}}</view>
 						
-						<view v-if="index==1" class="car_li_sc car_li_sc1 dis_flex aic" >
+						<view v-if="item.is_zan==1" class="car_li_sc car_li_sc1 dis_flex aic" >
 							<text class="icon icon-xihuan1"></text>
-							256
+							{{item.zan||0}}
 						</view>
 						<view v-else class="car_li_sc dis_flex aic" >
 							<text class="icon icon-xihuan"></text>
-							256
+							{{item.zan||0}}
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
+		<uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more>
 	</view>
 </template>
 
@@ -118,14 +121,185 @@
 						// '/static/images/banner_motor.png',
 						// '/static/images/banner_motor.png',
 				],
-				cur:0
+				cur:0,
+				datas:[],
+				
+				listc_status:'loading',
+				contentText:{contentdown: "上拉显示更多",contentrefresh: "正在加载...",contentnomore: "暂无数据"},
+				datas_car:[],
+				page:1
 			}
+		},
+		computed: {
+			...mapState(['hasLogin', 'forcedLogin','loginDatas','addmsg','p_config','navdata']),
 		},
 		onLoad() {
 			that =this
+			that.getlist(2)
 			that.getbanner()
+			that.onRetry()
+		},
+		onReachBottom() {
+			that.getlist_car()
+			
 		},
 		methods: {
+			/**
+			 * 店铺列表
+			 * @param  status = [1|2|3|4] 类型 1、汽车美容 2、摩托车 3、二手车 4、加油站
+			 */
+			getlist(status){
+				// /index/store
+				var datas={
+					status:status,
+					lat:that.addmsg.latitude||'',
+					lng:that.addmsg.longitude||'',
+					page:1,
+					limit:1
+				}
+				var jkurl='/index/store'
+				that.list_status='loading'
+				that.datas=[]
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.datas=datas.data
+						// if(datas.total==0){
+						// 	that.list_status='noMore'
+							
+						// }else{
+						// 	that.list_status=''
+						// }
+						// that.getdata_tz()
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
+			onRetry(){
+					that.page=1
+					that.datas_car=[]
+					that.getlist_car()
+			},
+			/**
+			 * 列表
+			 */
+			getlist_car(){
+				// /index/store
+				var datas={
+					// store_id:'',
+					// lat:that.addmsg.latitude||'',
+					// lng:that.addmsg.longitude||'',
+					// is_hot:'',//是否热门推荐 1、是 2、否
+					// search:'',
+					page:that.page,
+					limit:16
+				}
+				var jkurl='/index/motorcycle'
+				if(that.cur==0){
+					jkurl='/index/motorcycle'
+					
+				}else{
+					jkurl='/index/routes'
+				}
+				that.listc_status='loading'
+				
+				var nowpage=that.page
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						
+						if(nowpage==1){
+							that.datas_car=[]
+							that.datas_car=datas.data
+						}else{
+							that.datas_car=that.datas_car.concat(datas.data)
+						}
+						
+						if(datas.total==0){
+							that.listc_status='noMore'
+							
+						}else{
+							that.listc_status=''
+						}
+						if(datas.data>length>0){
+							that.page++
+						}
+						// that.getdata_tz()
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
+			
 			getbanner(){
 				var datas={
 					type:2,
@@ -186,6 +360,7 @@
 			},
 			setcur(index){
 				that.cur=index
+				that.onRetry()
 			},
 			click_fuc(e){
 				console.log(e)

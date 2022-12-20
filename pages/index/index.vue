@@ -208,7 +208,7 @@
 					<view class="car_li_msg">
 						<view class="car_li_tit oh2">{{item.title}}</view>
 						<view class="car_li_jl oh1">{{item.brand_time||''}}年/{{item.km}}万公里</view>
-						<view class="car_li_num">{{$service.getnum(item.price)||''}}</view>
+						<view class="car_li_num">{{item.price}}万</view>
 					</view>
 				</view>
 			</view>
@@ -237,7 +237,7 @@
 				list_status:'loading',
 				listc_status:'loading',
 				contentText:{contentdown: "上拉显示更多",contentrefresh: "正在加载...",contentnomore: "暂无数据"},
-				
+				datas_car:[],
 				page:1
 			}
 		},
@@ -482,7 +482,7 @@
 					// is_hot:'',//是否热门推荐 1、是 2、否
 					// search:'',
 					page:that.page,
-					limit:3
+					limit:16
 				}
 				var jkurl='/index/usedcar'
 				that.listc_status='loading'

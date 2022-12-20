@@ -17,39 +17,40 @@
 			<!-- <view class="br_box">{{cur_swiper}}/{{goodsData.img.length}}</view> -->
 			<view v-if="goodsData.imageList.length>0" class="br_box">{{cur_swiper}}/{{goodsData.imageList.length}}</view>
 		</view>
-		<view class="xq_tmsg dis_flex aic">
-			<image class="xq_ttx" src="/static/images/lx1.jpg" mode="aspectFill"></image>
+		<view v-if="datas.userInfo" class="xq_tmsg dis_flex aic">
+			<image class="xq_ttx" :src="$service.getimg(datas.userInfo.img)" mode="aspectFill"></image>
 			<view class="flex_1">
-				<view class="xq_tname">Nicy</view>
+				<view class="xq_tname">{{datas.userInfo.nick}}</view>
 				<view class="xq_ttime">2022.06.08发布</view>
 			</view>
-			<view v-if="sc_type" class="car_li_sc car_li_sc1 dis_flex aic" >
+			<view v-if="datas.is_zan" class="car_li_sc car_li_sc1 dis_flex aic" >
 				<text class="icon icon-xihuan1"></text>
-				256
+				{{datas.zan}}
 			</view>
 			<view v-else class="car_li_sc dis_flex aic" >
 				<text class="icon icon-xihuan"></text>
-				256
+				{{datas.zan}}
 			</view>
 			<text class="iconfont icon-zhuanfa3" @click="share_fuc"></text>
 		</view>
 		<view class="xq_tmsg">
 			<view class="xq_add">
-				<image class="xq_add_i" src="/static/images/icon_address.png" mode="aspectFit"></image>南京溧水石臼湖
+				<image class="xq_add_i" src="/static/images/icon_address.png" mode="aspectFit"></image>{{datas.address}}
 			</view>
 			<view class="xq_tit">
-				骑着摩托去看石臼湖，那片天空之境 长啥样
+				{{datas.title}}
 			</view>
 			<view class="xq_tags dis_flex aic">
-				<view class="xq_tag">
+				<!-- <view class="xq_tag">
 					<image src="/static/images/icon_Wechat.png" mode="aspectFit"></image> 微信
-				</view>
+				</view> -->
 				<view class="xq_tag" @click="$service.jump" :data-url="'/pagesA/jubao/jubao'">
 					<text class="iconfont icon-xinfangjubao"></text> 举报
 				</view>
 			</view>
 			<view class="xq_text">
-				20年刷爆网络的南京“天空之镜”石臼湖，到了最佳观赏期，每年11到1月中旬的秋冬色是一-年中最美的时期 
+				<text>{{datas.content}}</text>
+				<!-- 20年刷爆网络的南京“天空之镜”石臼湖，到了最佳观赏期，每年11到1月中旬的秋冬色是一-年中最美的时期 
 				<br>推荐这几个观赏地 
 				<br>
 				<br>◆>明觉地铁站旁四岔路口 
@@ -61,7 +62,7 @@
 				<br>一般两个时间段来这里，一是一大早，二是日落前，两个时间段各有各的美 
 				<br>春天的时候这里会有大片细长的野草，随风摆.动的样子很像龙猫里的场景 
 				<br>旁边是有一条长长的栈桥，站桥头还有一个嘹望塔，这里是在石臼湖看日落的最佳地，日落时刻的石臼湖唯美如画，充满诗意 
-				<br>其实旁边的嘹望塔也是不错的观赏地，不过长期无人管理，已经封起来不让
+				<br>其实旁边的嘹望塔也是不错的观赏地，不过长期无人管理，已经封起来不让 -->
 			</view>
 		</view>
 		<!-- 阻止滑动 -->
@@ -118,7 +119,7 @@
 			that.options=e||{}
 			console.log(e)
 			
-			// that.getdata()
+			that.getdata()
 		},
 		onShow() {
 			// that.onRetry()
@@ -127,7 +128,53 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
-			
+			getdata(){
+				var that=this
+				var datas={
+					id: that.options.id,
+				}
+				var jkurl='/detail/routes'
+				
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.datas=datas
+						// that.car_params=datas.car_params
+						
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
 			share_fuc(){
 				var code='111'
 				uni.shareWithSystem({
@@ -151,7 +198,7 @@
 				that.datas=[]
 				that.getdata()
 			},
-			getdata(){
+			getdata2(){
 				
 				var datas={
 					// day:that.date,

@@ -1,54 +1,335 @@
 <template>
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
-		<scroll-view scroll-x="true" class="scroll_x topZ_box">
-			<view class="topZ_li" :class="{active:active==index}" @click="active=index" v-for="(item,index) in tabs">{{item.title}}</view>
+		<scroll-view scroll-x="true" class="scroll_x topZ_box"  :scroll-into-view="'t'+active">
+			<view class="topZ_li" :id="'t'+index" :class="{active:active==index}" @click="active=index" v-for="(item,index) in tabs">{{item.title}}</view>
 		</scroll-view>
-		<scroll-view scroll-y="true" class="scroll_y" :scroll-into-view="'a'+active">
+		<scroll-view v-if="car_params" scroll-y="true" class="scroll_y" :scroll-into-view="'a'+active">
 			<view class="msg_box" id="a0">
 				<view class="msg_box_li">
 					<view class="msg_box_li1">长*宽*高[mm]</view>
-					<view class="msg_box_li2">4933*1836*1469</view>
+					<view class="msg_box_li2">{{car_params.body.len||'--'}}*{{car_params.body.weight||'--'}}*{{car_params.body.height||'--'}}</view>
 				</view>
 				<view class="msg_box_li">
-					<view class="msg_box_li1">成员人数[个]</view>
-					<view class="msg_box_li2">5</view>
+					<view class="msg_box_li1">乘员人数[个]</view>
+					<view class="msg_box_li2">{{car_params.seatnum||0}}</view>
 				</view>
 				<view class="msg_box_li">
 					<view class="msg_box_li1">发动机</view>
-					<view class="msg_box_li2">2.0L/186马力/直列</view>
+					<view class="msg_box_li2">{{car_params.engine.displacement||''}}/{{car_params.engine.maxhorsepower||''}}马力/{{car_params.engine.fuelmethod||''}}</view>
 				</view>
 				<view class="msg_box_li">
 					<view class="msg_box_li1">最大扭矩[N.m]</view>
-					<view class="msg_box_li2">320</view>
+					<view class="msg_box_li2">{{car_params.engine.maxtorque||''}}</view>
 				</view>
 				<view class="msg_box_li">
 					<view class="msg_box_li1">燃料类型</view>
-					<view class="msg_box_li2">汽油</view>
+					<view class="msg_box_li2">{{car_params.engine.fueltype||''}}</view>
 				</view>
 				<view class="msg_box_li">
 					<view class="msg_box_li1">混合工况油耗[L/100km]</view>
-					<view class="msg_box_li2">6.3</view>
+					<view class="msg_box_li2">{{car_params.basic.comfuelconsumption||''}}</view>
 				</view>
 				<view class="msg_box_li">
 					<view class="msg_box_li1">变速箱类型</view>
-					<view class="msg_box_li2">双离合</view>
+					<view class="msg_box_li2">{{car_params.gearbox.gearbox||''}}</view>
 				</view>
 				<view class="msg_box_li">
 					<view class="msg_box_li1">环保标准</view>
-					<view class="msg_box_li2">国五</view>
+					<view class="msg_box_li2">{{car_params.environmentalstandards||''}}</view>
 				</view>
 			</view>
-			<view class="msg_box1" :id="item.id" v-for="(item,index) in datas_list">
+			<view v-if="car_params.body" class="msg_box1" id="a1" >
+				<view class="msg_box1_tit">车身尺寸</view>
+				<view class="msg_box1_li">
+					<view>长*宽*高[mm]</view>
+					<view>{{car_params.body.len||'--'}}*{{car_params.body.weight||'--'}}*{{car_params.body.height||'--'}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>燃料类型</view>
+					<view>{{car_params.engine.fueltype||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>轴距[mm]</view>
+					<view>{{car_params.body.wheelbase||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>整备质量[kg]</view>
+					<view>{{car_params.body.weight||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>乘员人数[个]</view>
+					<view>{{car_params.seatnum||0}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>行李箱容积[L]</view>
+					<view>{{car_params.body.luggagevolume||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>前轮胎规格</view>
+					<view>{{car_params.wheel.fronttiresize||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>后轮胎规格</view>
+					<view>{{car_params.wheel.reartiresize||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>备胎类型</view>
+					<view>{{car_params.wheel.sparetiretype||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>整车质保</view>
+					<view>{{car_params.basic.warrantypolicy||''}}</view>
+				</view>
+			</view>
+			
+			<view v-if="car_params.engine" class="msg_box1" id="a2">
+				<view class="msg_box1_tit">动力系统</view>
+				<view class="msg_box1_li">
+					<view>排气量[mL]</view>
+					<view>{{car_params.engine.displacementml||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>排气量[L]</view>
+					<view>{{car_params.engine.displacement||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>最大马力[Ps]</view>
+					<view>{{car_params.engine.maxhorsepower||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>最大功率[kW]</view>
+					<view>{{car_params.engine.maxpower||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>最大扭矩[N.m]</view>
+					<view>{{car_params.engine.maxtorque||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>最大扭矩转速[rpm]</view>
+					<view>{{car_params.engine.maxtorquespeed||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>气缸排列型式</view>
+					<view>{{car_params.engine.cylinderarrangetype||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>气缸数</view>
+					<view>{{car_params.engine.cylindernum||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>进气型式</view>
+					<view>{{car_params.engine.intakeform||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>供油方式</view>
+					<view>{{car_params.engine.fuelmethod||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>燃油标号</view>
+					<view>{{car_params.engine.fuelgrade||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>变速箱类型</view>
+					<view>{{car_params.gearbox.gearbox||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>档位个数</view>
+					<view>{{car_params.gearbox.gearnum||''}}</view>
+				</view>
+			</view>
+			
+			<view v-if="car_params.drivingauxiliary" class="msg_box1" id="a3">
+				<view class="msg_box1_tit">驾驶辅助</view>
+				<view class="msg_box1_li">
+					<view>巡航系统</view>
+					<view>{{car_params.drivingauxiliary.cruisecontrol||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>碰撞预警/主动刹车</view>
+					<view>{{car_params.drivingauxiliary.activebraking||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>自动泊车</view>
+					<view>{{car_params.drivingauxiliary.automaticparkingintoplace||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>自动驻车</view>
+					<view>{{car_params.drivingauxiliary.automaticparking||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>上坡辅助</view>
+					<view>{{car_params.drivingauxiliary.hillstartassist||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>陡坡缓降</view>
+					<view>{{car_params.drivingauxiliary.hilldescent||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>夜视系统</view>
+					<view>{{car_params.drivingauxiliary.nightvisionsystem||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>盲点检测</view>
+					<view>{{car_params.drivingauxiliary.blindspotdetection||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>车辆偏离预警系统</view>
+					<view>{{car_params.drivingauxiliary.ldws||''}}</view>
+				</view>
+			</view>
+			<view v-if="car_params.safe" class="msg_box1" id="a4" key="safe">
+				<view class="msg_box1_tit">安全配置</view>
+				<view class="msg_box1_li">
+					<view>刹车防抱死(ABS)</view>
+					<view>{{car_params.drivingauxiliary.abs||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>刹车辅助(EBA/BAS/BA/EVA等)</view>
+					<view>{{car_params.drivingauxiliary.brakeassist||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>牵引力控制(ASR/TCS/TRC/ATC等)</view>
+					<view>{{car_params.drivingauxiliary.tractioncontrol||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>动态稳定控制系统(ESP/DSC等)</view>
+					<view>{{car_params.drivingauxiliary.esp||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>驾驶位安全气囊</view>
+					<view>{{car_params.safe.airbagdrivingposition||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>副驾驶位安全气囊</view>
+					<view>{{car_params.safe.airbagfrontpassenger||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>前排侧安全气囊</view>
+					<view>{{car_params.safe.airbagfrontside||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>后排侧安全气囊</view>
+					<view>{{car_params.safe.airbagrearside||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>膝部安全气囊</view>
+					<view>{{car_params.safe.airbagknee||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>零压续行</view>
+					<view>{{car_params.safe.zeropressurecontinued||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>儿童座位固定装置</view>
+					<view>{{car_params.seat.childseatfixdevice||''}}</view>
+				</view>
+			</view>
+			<view v-if="car_params.internalconfig" class="msg_box1" id="a5" key="internalconfig">
+				<view class="msg_box1_tit">内部配置</view>
+				<view class="msg_box1_li">
+					<view>车内氛围灯</view>
+					<view>{{car_params.light.interiorairlight||''}}</view>
+				</view>
+				
+				<view class="msg_box1_li">
+					<view>后排独立空调</view>
+					<view>{{car_params.aircondrefrigerator.rearairconditioning||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>车载冰箱</view>
+					<view>{{car_params.aircondrefrigerator.carrefrigerator||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>方向盘调节</view>
+					<view>{{car_params.internalconfig.steeringwheeladjustmentmode||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>方向盘加热</view>
+					<view>{{car_params.internalconfig.steeringwheelheating||''}}</view>
+				</view>
+			</view>
+			<view v-if="car_params.entcom" class="msg_box1" id="a6" key="entcom">
+				<view class="msg_box1_tit">信息娱乐</view>
+				<view class="msg_box1_li">
+					<view>中控台液晶屏</view>
+					<view>{{car_params.entcom.consolelcdscreen||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>行车电脑显示器</view>
+					<view>{{car_params.internalconfig.computerscreen||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>HUD显示</view>
+					<view>{{car_params.entcom.huddisplay||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>CD</view>
+					<view>{{car_params.entcom.cd||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>DVD</view>
+					<view>{{car_params.entcom.dvd||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>车载电视</view>
+					<view>{{car_params.entcom.cartv||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>蓝牙系统</view>
+					<view>{{car_params.entcom.bluetooth||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>后排液晶屏</view>
+					<view>{{car_params.entcom.rearlcdscreen||''}}</view>
+				</view>
+			</view>
+			<view v-if="car_params.seat" class="msg_box1" id="a7" key="seat">
+				<view class="msg_box1_tit">座椅配置</view>
+				<view class="msg_box1_li">
+					<view>座椅材质</view>
+					<view>{{car_params.seat.seatmaterial||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>运动座椅</view>
+					<view>{{car_params.seat.sportseat||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>主座椅调节</view>
+					<view>{{car_params.seat.driverseatelectricadjustment||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>副座椅调节</view>
+					<view>{{car_params.seat.auxiliaryseatelectricadjustment||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>后排座椅调节</view>
+					<view>{{car_params.seat.rearseatadjustmentmode||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>座椅通风</view>
+					<view>{{car_params.seat.seatventilation||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>座椅加热</view>
+					<view>{{car_params.seat.seatheating||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>座椅按摩</view>
+					<view>{{car_params.seat.seatmassage||''}}</view>
+				</view>
+			</view>
+			
+			<!-- <view class="msg_box1" :id="item.id" v-for="(item,index) in datas_list">
 				<view class="msg_box1_tit">{{item.title}}</view>
 				<view class="msg_box1_li" v-for="(item1,index1) in item.list">
 					<view>{{item1.title}}</view>
 					<view>{{item1.value}}</view>
 				</view>
-			</view>
+			</view> -->
 		</scroll-view>
-		<view class="bb_box">
-			<view class="bb_box_btn">联系商家</view>
+		<view v-if="datas.store" class="bb_box">
+			<view class="bb_box_btn" @click="$service.call"  :data-tel="datas.store.phone">联系商家</view>
 		</view>
 		<!-- 阻止滑动 -->
 		<!-- <view @touchmove.stop.prevent='test'></view> -->
@@ -71,26 +352,57 @@
 				tabs:[
 					{
 						title:'车辆参数',
+						key:'basic',
 						id:1
 					},
 					{
 						title:'车身尺寸',
+						key:'body',
 						id:2
 					},
 					{
 						title:'动力系统',
+						key:'engine',
 						id:2
 					},
 					{
 						title:'底盘制动',
+						key:'chassisbrake',
 						id:2
 					},
 					{
 						title:'驾驶辅助',
+						key:'drivingauxiliary',
+						id:2
+					},
+					{
+						title:'安全配置',
+						key:'safe',
+						id:2
+					},
+					{
+						title:'内部配置',
+						key:'internalconfig',
+						id:2
+					},
+					// {
+					// 	title:'外部配置',
+					// 	key:'safe',
+					// 	id:2
+					// },
+					{
+						title:'信息娱乐',
+						key:'entcom',
+						id:2
+					},
+					{
+						title:'座椅配置',
+						key:'seat',
 						id:2
 					},
 				],
 				active:0,
+				car_params:{},
 				datas_list:[
 					{
 						title:'车身尺寸',
@@ -272,10 +584,11 @@
 		// },
 		onLoad(e) {
 			that=this
+			
 			that.options=e||{}
 			console.log(e)
 			
-			// that.getdata()
+			that.getdata()
 		},
 		onShow() {
 			// that.onRetry()
@@ -284,79 +597,12 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
-			onRetry(){
-				that.page=1
-				that.datas=[]
-				that.getdata()
-			},
 			getdata(){
-				
+				var that=this
 				var datas={
-					// day:that.date,
-					page: that.page
+					id: that.options.id,
 				}
-				uni.showLoading({
-					mask:true,
-					title:'正在获取数据'
-				})
-				var jkurl='/history'
-				var nowpage=that.page
-				that.$service.P_post(jkurl, datas).then(res => {
-					that.btnkg = 0
-					console.log(res)
-					if (res.code == 1) {
-						that.htmlReset = 0
-						var datas = res.data
-						console.log(typeof datas)
-				
-						if (typeof datas == 'string') {
-							datas = JSON.parse(datas)
-						}
-						console.log(res)
-						if(nowpage==1){
-							that.datas=datas.data
-						}else{
-							if(datas.data.length==0){
-								return
-							}
-							that.datas=that.datas.concat(datas.data)
-						}
-						if(datas.data.length==0){
-							return
-						}
-						that.page++
-					} else {
-					
-						if (res.msg) {
-							uni.showToast({
-								icon: 'none',
-								title: res.msg
-							})
-						} else {
-							uni.showToast({
-								icon: 'none',
-								title: '获取数据失败'
-							})
-						}
-					}
-				}).catch(e => {
-					that.htmlReset = 1
-					that.btnkg = 0
-					// that.$refs.htmlLoading.htmlReset_fuc(1)
-					console.log(e)
-					uni.showToast({
-						icon: 'none',
-						title: '获取数据失败，请检查您的网络连接'
-					})
-				})
-			},
-			// 单条数据
-			getdata1(){
-				
-				var datas={
-					id: that.options.id
-				}
-				var jkurl='/news_detail'
+				var jkurl='/detail/usedcar'
 				
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
@@ -370,12 +616,9 @@
 							datas = JSON.parse(datas)
 						}
 						console.log(res)
-						that.datas=datas.content
-						// if(datas.title){
-						// 	uni.setNavigationBarTitle({
-						// 		title:datas.title
-						// 	})
-						// }
+						that.datas=datas
+						var car_params=datas.car_params
+						that.car_params=car_params
 					} else {
 					
 						if (res.msg) {
