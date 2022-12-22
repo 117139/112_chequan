@@ -8,8 +8,8 @@
 			<image v-else class="my_head" src="/static/images/pic_head.png" mode="aspectFill"></image>
 			<view class="my_name  dis_flex aic ">
 				{{loginDatas.name}}
-				<image src="/static/images/user_vip.png" mode="heightFix"></image>
-				<image src="/static/images/shop_vip.png" mode="heightFix"></image>
+				<image v-if="loginDatas.user_vip.length>0" src="/static/images/user_vip.png" mode="heightFix"></image>
+				<image v-if="loginDatas.store_vip.length>0" src="/static/images/shop_vip.png" mode="heightFix"></image>
 			</view>
 			<text @click="$service.jump" data-url="/pages_my/my_msg/my_msg" class="iconfont icon-shezhi my_shehzi"></text>
 		</view>

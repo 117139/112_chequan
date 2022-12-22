@@ -88,7 +88,8 @@
 				}else{
 					that.bg_color='#FF9E54'
 				}
-			}
+			},
+			
 			// getviplist(){
 			// 	var datas={
 			// 		dtProdID:'1'

@@ -16,9 +16,9 @@
 		</view>
 		<view class="cz_box">
 			<view class="car_li fww">
-				<view class="car_li_l">上传驾驶证</view>
+				<view class="car_li_l">邮寄地址</view>
 			</view>
-			<view class="yh_add">北京市朝阳区望京东路8号锐创国际A座</view>
+			<view class="yh_add">{{datas.master_addcontent}}</view>
 		</view>
 		
 	
@@ -80,7 +80,7 @@
 			that.nj_index=e.type||0
 			console.log(e)
 			
-			// that.getdata()
+			that.getdata()
 		},
 		onShow() {
 			// that.onRetry()
@@ -89,6 +89,59 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			// 单条数据
+			getdata(){
+				
+				var datas={
+					code: that.options.code
+				}
+				var jkurl='/order/yearlydetail'
+				
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.datas=datas
+						that.nj_index=datas.nj_type==2?1:0
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
+			
 			next_fuc(){
 				// if(!that.sfz1){
 				// 	uni.showToast({
@@ -259,123 +312,7 @@
 				}
 				
 			},
-			onRetry(){
-				that.page=1
-				that.datas=[]
-				that.getdata()
-			},
-			getdata(){
-				
-				var datas={
-					// day:that.date,
-					page: that.page
-				}
-				uni.showLoading({
-					mask:true,
-					title:'正在获取数据'
-				})
-				var jkurl='/history'
-				var nowpage=that.page
-				that.$service.P_post(jkurl, datas).then(res => {
-					that.btnkg = 0
-					console.log(res)
-					if (res.code == 1) {
-						that.htmlReset = 0
-						var datas = res.data
-						console.log(typeof datas)
-				
-						if (typeof datas == 'string') {
-							datas = JSON.parse(datas)
-						}
-						console.log(res)
-						if(nowpage==1){
-							that.datas=datas.data
-						}else{
-							if(datas.data.length==0){
-								return
-							}
-							that.datas=that.datas.concat(datas.data)
-						}
-						if(datas.data.length==0){
-							return
-						}
-						that.page++
-					} else {
-					
-						if (res.msg) {
-							uni.showToast({
-								icon: 'none',
-								title: res.msg
-							})
-						} else {
-							uni.showToast({
-								icon: 'none',
-								title: '获取数据失败'
-							})
-						}
-					}
-				}).catch(e => {
-					that.htmlReset = 1
-					that.btnkg = 0
-					// that.$refs.htmlLoading.htmlReset_fuc(1)
-					console.log(e)
-					uni.showToast({
-						icon: 'none',
-						title: '获取数据失败，请检查您的网络连接'
-					})
-				})
-			},
-			// 单条数据
-			getdata1(){
-				
-				var datas={
-					id: that.options.id
-				}
-				var jkurl='/news_detail'
-				
-				that.$service.P_post(jkurl, datas).then(res => {
-					that.btnkg = 0
-					console.log(res)
-					if (res.code == 1) {
-						that.htmlReset = 0
-						var datas = res.data
-						console.log(typeof datas)
-				
-						if (typeof datas == 'string') {
-							datas = JSON.parse(datas)
-						}
-						console.log(res)
-						that.datas=datas.content
-						// if(datas.title){
-						// 	uni.setNavigationBarTitle({
-						// 		title:datas.title
-						// 	})
-						// }
-					} else {
-					
-						if (res.msg) {
-							uni.showToast({
-								icon: 'none',
-								title: res.msg
-							})
-						} else {
-							uni.showToast({
-								icon: 'none',
-								title: '获取数据失败'
-							})
-						}
-					}
-				}).catch(e => {
-					that.htmlReset = 1
-					that.btnkg = 0
-					// that.$refs.htmlLoading.htmlReset_fuc(1)
-					console.log(e)
-					uni.showToast({
-						icon: 'none',
-						title: '获取数据失败，请检查您的网络连接'
-					})
-				})
-			},
+			
 			
 			goback(){
 			  uni.navigateBack()
