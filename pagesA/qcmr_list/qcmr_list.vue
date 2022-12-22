@@ -7,7 +7,8 @@
 				<text class="bus_title">洗车店</text>
 				<picker @change="confirm" :value="index" :range="columns" range-key="title">
 					<!-- <view class="bus_jl"  @click="showpick">{{columns[index].title}} <image src="/static/images/icon_dropdown.png" mode="aspectFit"></image></view> -->
-					<view class="bus_jl"  >{{columns[index].title}} <image src="/static/images/icon_dropdown.png" mode="aspectFit"></image></view>
+					<view v-if="index==-1" class="bus_jl"  >请选择 <image src="/static/images/icon_dropdown.png" mode="aspectFit"></image></view>
+					<view v-else class="bus_jl"  >{{columns[index].title}} <image src="/static/images/icon_dropdown.png" mode="aspectFit"></image></view>
 				</picker>
 			</view>
 		</topbar>
@@ -74,7 +75,7 @@
 						title:'20km'
 					},
 				],
-				index:0,
+				index:-1,
 				show_sx:false,
 				listc_status:'loading',
 				contentText:{contentdown: "上拉显示更多",contentrefresh: "正在加载...",contentnomore: "暂无数据"},
@@ -131,11 +132,15 @@
 			 * @param  status = [1|2|3|4] 类型 1、汽车美容 2、摩托车 3、二手车 4、加油站
 			 */
 			getdatas(){
-				// /index/store
+				var km=''
+				if(that.index!=-1){
+					km=that.columns[that.index].id
+				}
 				var datas={
 					status:1,
 					lat:that.addmsg.latitude||'',
 					lng:that.addmsg.longitude||'',
+					km:km,
 					page:that.page,
 					limit:10
 				}

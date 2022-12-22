@@ -1,6 +1,6 @@
 <template>
 	<view class="wrap_box">
-		<topbar>
+		<!-- <topbar>
 			<view class="search_box dis_flex aic">
 				<text class="iconfont icon-back" @click="$service.back"></text>
 				<view class="search_b">
@@ -10,9 +10,9 @@
 				</view>
 				<view class="reset_btn" @click="$service.back">取消</view>
 			</view>
-		</topbar>
+		</topbar> -->
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
-		<u-sticky>
+		<!-- <u-sticky>
 		<scroll-view class="tab_list scroll_x" scroll-x="true">
 			<view>
 				<view class="tab_li" :class="{active:active==index}" @click="setcur(index)" v-for="(item,index) in tabs">
@@ -20,19 +20,43 @@
 				</view>
 			</view>
 		</scroll-view>
-		</u-sticky>
+		</u-sticky> -->
+		<view class="header_pof">
+			<view class="my_status_bar"></view>
+			<view class="dh_top">
+				<view class="search_box dis_flex aic">
+					<text class="iconfont icon-back" @click="$service.back"></text>
+					<view class="search_b">
+						<text class="iconfont icon-sousuo"></text>
+						<input type="text" placeholder="请输入" v-model="keyword" @confirm="onRetry">
+						<text class="iconfont icon-shanchu" @click="keyword=''"></text>
+					</view>
+					<view class="reset_btn" @click="$service.back">取消</view>
+				</view>
+			</view>
+			<view class="tab_list">
+				<view class="tab_li" :class="{active:active==index}" @click="setcur(index)" v-for="(item,index) in tabs">
+					{{item.title}}
+				</view>
+			</view>
+		</view>
+		<view class="my_status_bar"></view>
 		<view class="zan_list">
-			<view class="zan_li" v-for="(item,index) in 10" @click.stop="jump_fuc" data-url="/pages/details_jyz/details_jyz">
-				<image class="zan_img" src="/static/images/car1.png" mode="aspectFill"></image>
+			<view class="zan_li" v-for="(item,index) in datas" @click.stop="jump_fuc(item)" data-url="/pages/details_jyz/details_jyz">
+				<image class="zan_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 				<view class="zan_msg">
-					 <view class="zan_tit">入驻泉州最著名的西街旁 | 安 静清幽的小阁楼</view>
+					 <view class="zan_tit">{{item.title}}</view>
 					 <view class="car_li_sc car_li_sc1 dis_flex aic" >
-						<view class="li_num flex_1">12万</view>
+						<!-- <view class="li_num flex_1">12万</view> -->
+						<view v-if="active==0" class="li_num flex_1">{{item.price}}元</view>
+						<view v-if="active==1" class="li_num flex_1">{{$service.getnum(item.price)||''}}</view>
+						<view v-if="active==2" class="li_num flex_1">{{item.price}}万</view>
 						<!-- <view class="li_cz">编辑</view>
 						<view class="li_cz" @click="del_fuc">删除</view> -->
 					 </view>
 				</view>
 			</view>
+			<uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more>
 		</view>
 		
 		<!-- 阻止滑动 -->
@@ -63,20 +87,20 @@
 					{
 						title:'二手车',
 					},
-					{
-						title:'加油站',
-					},
+					// {
+					// 	title:'加油站',
+					// },
 				],
 				active:0,
-				keyword:''
+				keyword:'',
+				listc_status:'noMore',
+				contentText:{contentdown: "上拉显示更多",contentrefresh: "正在加载...",contentnomore: "暂无数据"},
 			}
 		},
 		computed: {
 		...mapState(['hasLogin', 'forcedLogin', 'userName', 'userinfo','loginDatas']),
 		},
-		// onReachBottom() {
-		// 	that.getdata()
-		// },
+		
 		onLoad(e) {
 			that=this
 			that.options=e||{}
@@ -84,33 +108,38 @@
 			that.active=e.type||0
 			that.keyword=e.key||''
 			// that.getdata()
+			if(e.key){
+				that.onRetry()
+			}
 		},
 		onShow() {
 			// that.onRetry()
 		},
-		
+		onReachBottom() {
+			that.getlist()
+		},
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
-			jump_fuc(){
+			jump_fuc(item){
 				if(that.active==0){
 					uni.navigateTo({
-						url:'/pages/details_qcmr/details_qcmr'
+						url:'/pages/details_qcmr/details_qcmr?id='+item.id
 					})
 				}
 				if(that.active==1){
 					uni.navigateTo({
-						url:'/pages/details_motor/details_motor'
+						url:'/pages/details_motor/details_motor?id='+item.id
 					})
 				}
 				if(that.active==2){
 					uni.navigateTo({
-						url:'/pages/details_car/details_car'
+						url:'/pages/details_car/details_car?id='+item.id
 					})
 				}
 				if(that.active==3){
 					uni.navigateTo({
-						url:'/pages/details_jyz/details_jyz'
+						url:'/pages/details_jyz/details_jyz?id='+item.id
 					})
 				}
 			},
@@ -133,23 +162,42 @@
 			},
 			setcur(index){
 				that.active=index
+				that.onRetry()
 			},
 			onRetry(){
-				that.page=1
-				that.datas=[]
-				that.getdata()
+					that.page=1
+					that.datas=[]
+					that.getlist()
 			},
-			getdata(){
-				
+			/**
+			 * 列表
+			 */
+			getlist(){
+				// /index/store
 				var datas={
-					// day:that.date,
-					page: that.page
+					// store_id:'',
+					// lat:that.addmsg.latitude||'',
+					// lng:that.addmsg.longitude||'',
+					// is_hot:'',//是否热门推荐 1、是 2、否
+					search:that.keyword,
+					page:that.page,
+					limit:20,
 				}
-				uni.showLoading({
-					mask:true,
-					title:'正在获取数据'
-				})
-				var jkurl='/history'
+				var jkurl='/index/carbeauty'
+				if(that.active==0){
+					jkurl='/index/carbeauty'
+				}
+				if(that.active==1){
+					jkurl='/index/motorcycle'
+				}
+				if(that.active==2){
+					jkurl='/index/usedcar'
+				}
+				if(that.active==3){
+					jkurl='/index/routes'
+				}
+				that.listc_status='loading'
+				
 				var nowpage=that.page
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
@@ -163,18 +211,29 @@
 							datas = JSON.parse(datas)
 						}
 						console.log(res)
+						
 						if(nowpage==1){
+							that.datas=[]
 							that.datas=datas.data
 						}else{
-							if(datas.data.length==0){
-								return
-							}
 							that.datas=that.datas.concat(datas.data)
 						}
-						if(datas.data.length==0){
-							return
+						
+						if(datas.total==0){
+							that.listc_status='noMore'
+							
+						}else{
+							that.listc_status=''
 						}
-						that.page++
+						if(datas.data>length>0){
+							that.page++
+						}
+						// that.getdata_tz()
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
 					} else {
 					
 						if (res.msg) {
@@ -266,6 +325,22 @@
 page{
 	// background: #fff;
 }
+.header_pof{
+	width: 100%;
+	position: fixed;
+	top: 0;
+	
+	z-index: 900;
+	.dh_top{
+		width: 100%;
+		height: 90rpx;
+		background: #fff;
+		padding: 0px 14rpx 0;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+}
 .search_box{
 	width: 100%;
 	padding: 0 14rpx;
@@ -315,6 +390,10 @@ page{
 	padding: 0 28rpx;
 	background: #fff;
 	border-bottom: 1px solid #eee;
+
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
 	.tab_li{
 		display: inline-flex;
 		height: 100rpx;
@@ -325,7 +404,7 @@ page{
 		font-weight: 400;
 		color: #666666;
 		&+.tab_li{
-			margin-left: 88rpx;
+			// margin-left: 88rpx;
 		}
 		&.active{
 			color: #4680E6;
@@ -348,9 +427,10 @@ page{
 	width: 100%;
 	min-height: 100vh;
 	// #ifdef H5
-	min-height: calc(100vh -  44px);
+	// min-height: calc(100vh -  44px);
 	// #endif
 	background: #fff;
+	padding-top: 190rpx;
 }
 .zan_list{
 	width: 100%;
@@ -395,5 +475,8 @@ page{
 			}
 		}
 	}
+}
+/deep/ .uni-load-more{
+	height: 140rpx;
 }
 </style>

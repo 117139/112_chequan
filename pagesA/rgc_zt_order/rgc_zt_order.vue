@@ -4,94 +4,108 @@
 		<view class="cz_box">
 			<view class="cz_tip"><text class="iconfont icon-jinggao"></text>请核对输入信息，如有误请修改</view>
 			<view class="car_li">
-				<view class="car_li_l">京NTP686</view>
+				<view class="car_li_l">{{datas_cs.province}}{{datas_cs.car_code}}</view>
 				<view class="car_li_r" @click="$service.back">重新编辑</view>
 			</view>
 			<view class="cm_li">
 				<view class="cm_l">车辆识别号</view>
-				<view class="cm_r">LSVWY4180KN246094</view>
+				<view class="cm_r">{{datas_cs.car_number}}</view>
 			</view>
 			<view class="cm_li">
 				<view class="cm_l">发动机型号</view>
-				<view class="cm_r">0N2185</view>
+				<view class="cm_r">{{datas_cs.engine}}</view>
 			</view>
 			<view class="cm_li">
 				<view class="cm_l">车辆类型</view>
-				<view class="cm_r">小型轿车</view>
+				<view class="cm_r">{{datas_cs.car_type}}</view>
 			</view>
 			
 		</view>
-		<view class="shop_vip_box" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=0"  :data-login="true">
-			<image class="shop_vip_bg" src="/static/images/uservurl.png" mode="aspectFill"></image>
-			<view class="shop_vip_btn">去开通</view>
-		</view>
-		<view class="fwf_tit">
-			服务费
-		</view>
-		<view class="fw_list">
-			<view class="fw_li">
-				<view class="fw_r1">查北京地区</view>
-				<view class="fw_r2">￥5.00</view>
-				<view class="fw_box" :class="{active:fw_type==0}" @click="fw_type=0">
-					<text class="iconfont icon-duigou2"></text>
+		<block v-if="datas_cs.code">
+			<view class="b_box">
+				<view class="b_box1">
+					
+					<view class="b_btn flex_1" @click="reset_fuc">提交</view>
 				</view>
 			</view>
-			<view class="fw_li">
-				<view class="fw_r1">查全国地区</view>
-				<view class="fw_r2">￥20.00</view>
-				<view class="fw_box" :class="{active:fw_type==1}" @click="fw_type=1">
-					<text class="iconfont icon-duigou2"></text>
+		</block>
+		<block v-else>
+			<view class="shop_vip_box" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=0"  :data-login="true">
+				<image class="shop_vip_bg" src="/static/images/uservurl.png" mode="aspectFill"></image>
+				<view class="shop_vip_btn">去开通</view>
+			</view>
+			<view class="fwf_tit">
+				服务费
+			</view>
+			<view class="fw_list">
+				<view class="fw_li">
+					<view class="fw_r1">{{p_config.fw_title||''}}</view>
+					<view class="fw_r2">￥{{bj_price||'0'}}</view>
+					<view class="fw_box" :class="{active:fw_type==0}" @click="fw_type=0">
+						<text class="iconfont icon-duigou2"></text>
+					</view>
+				</view>
+				<view class="fw_li">
+					<view class="fw_r1">{{p_config.fw_title1||''}}</view>
+					<view class="fw_r2">￥{{or_price||'0'}}</view>
+					<view class="fw_box" :class="{active:fw_type==1}" @click="fw_type=1">
+						<text class="iconfont icon-duigou2"></text>
+					</view>
 				</view>
 			</view>
-		</view>
-		<view class="fwf_tit">
-			选择支付方式
-		</view>
-		<view class="fw_list">
-			<view class="fw_li">
-				<image class="fw_img" src="/static/images/icon_Wechat.png" mode="aspectFit"></image>
-				<view class="fw_r1">微信</view>
-				<view class="fw_r2"></view>
-				<view class="fw_box" :class="{active:pay_type==0}" @click="pay_type=0">
-					<text class="iconfont icon-duigou2"></text>
+			<view class="fwf_tit">
+				选择支付方式
+			</view>
+			<view class="fw_list">
+				<view class="fw_li">
+					<image class="fw_img" src="/static/images/icon_Wechat.png" mode="aspectFit"></image>
+					<view class="fw_r1">微信</view>
+					<view class="fw_r2"></view>
+					<view class="fw_box" :class="{active:pay_type==1}" @click="pay_type=1">
+						<text class="iconfont icon-duigou2"></text>
+					</view>
+				</view>
+				<view class="fw_li">
+					<image class="fw_img" src="/static/images/icon_Alipay.png" mode="aspectFit"></image>
+					<view class="fw_r1">支付宝</view>
+					<view class="fw_r2"></view>
+					<view class="fw_box" :class="{active:pay_type==2}" @click="pay_type=2">
+						<text class="iconfont icon-duigou2"></text>
+					</view>
+				</view>
+				<view class="fw_li"  v-if="pp_datas.is_pay==1">
+					<image class="fw_img" src="/static/images/icon_vippay.png" mode="aspectFit"></image>
+					<view class="fw_r1">会员支付</view>
+					<view class="fw_r_num">今日免费还剩10次</view>
+					<view class="fw_r2"></view>
+					<view class="fw_box" :class="{active:pay_type==3}" @click="pay_type=3">
+						<text class="iconfont icon-duigou2"></text>
+					</view>
 				</view>
 			</view>
-			<view class="fw_li">
-				<image class="fw_img" src="/static/images/icon_Alipay.png" mode="aspectFit"></image>
-				<view class="fw_r1">支付宝</view>
-				<view class="fw_r2"></view>
-				<view class="fw_box" :class="{active:pay_type==1}" @click="pay_type=1">
-					<text class="iconfont icon-duigou2"></text>
+			<checkbox-group @change="checkboxChange">
+				<view class="xieyi_box">
+					<label class="dis_flex aic">
+					<checkbox value="cb" checked="true" style="transform:scale(0.7)"/>
+					我已阅读并同意此<text @click="$service.jump" data-url="/pagesA/xieyi/xieyi?type=0">《用户协议》</text>和<text @click="$service.jump" data-url="/pagesA/xieyi/xieyi?type=1">《隐私协议》</text>
+					</label>
+				</view>
+			</checkbox-group>
+			<view class="b_box">
+				<view class="b_box1">
+					<block  v-if="pp_datas.is_gg==1">
+					<view class="b_btn1" @click="ad_fuc">
+						<view class="b_btn1_tip" @click.stop="test">每日3次，免费支付</view>
+						看广告
+					</view>
+					<!-- <view class="b_btn1" @click="share_fuc">
+						分享
+					</view> -->
+					</block>
+					<view class="b_btn flex_1" @click="mk_fuc">确认支付￥{{fw_type==0?'5.00':'20.00'}}</view>
 				</view>
 			</view>
-			<view class="fw_li">
-				<image class="fw_img" src="/static/images/icon_vippay.png" mode="aspectFit"></image>
-				<view class="fw_r1">会员支付</view>
-				<view class="fw_r_num">今日免费还剩10次</view>
-				<view class="fw_r2"></view>
-				<view class="fw_box" :class="{active:pay_type==2}" @click="pay_type=2">
-					<text class="iconfont icon-duigou2"></text>
-				</view>
-			</view>
-		</view>
-		<checkbox-group @change="checkboxChange">
-			<view class="xieyi_box">
-				<label class="dis_flex aic">
-				<checkbox value="cb" checked="true" style="transform:scale(0.7)"/>
-				我已阅读并同意此<text @click="$service.jump" data-url="/pagesA/xieyi/xieyi?type=0">《用户协议》</text>和<text @click="$service.jump" data-url="/pagesA/xieyi/xieyi?type=1">《隐私协议》</text>
-				</label>
-			</view>
-		</checkbox-group>
-		<view class="b_box">
-			<view class="b_box1">
-				<view class="b_btn1" @click="pay_fuc">
-					<view class="b_btn1_tip" @click.stop="test">每日3次，免费支付</view>
-					看广告
-				</view>
-				<view class="b_btn" @click="pay_fuc">确认支付￥{{fw_type==0?'5.00':'20.00'}}</view>
-			</view>
-		</view>
-		
+		</block>
 		<!-- 阻止滑动 -->
 		<!-- <view @touchmove.stop.prevent='test'></view> -->
 	</view>
@@ -111,12 +125,16 @@
 				datas:'',
 				page:1,
 				fw_type:0,
-				pay_type:0,
-				xy_type:true
+				pay_type:1,
+				xy_type:true,
+				datas_cs:'',
+				bj_price:'',
+				or_price:'',
+				pp_datas:''
 			}
 		},
 		computed: {
-		...mapState(['hasLogin', 'forcedLogin', 'userName', 'userinfo','loginDatas']),
+		...mapState(['hasLogin', 'forcedLogin', 'userName', 'userinfo','loginDatas','addmsg','p_config']),
 		},
 		// onReachBottom() {
 		// 	that.getdata()
@@ -126,8 +144,9 @@
 			that.options=e||{}
 			//type 1 查状态    2 年检   3 车型识别   4 查违章
 			console.log(e)
-			
-			// that.getdata()
+			var cs=JSON.parse(e.cs)
+			that.datas_cs=cs
+			that.getdata_pri()
 		},
 		onShow() {
 			// that.onRetry()
@@ -136,10 +155,330 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
-			pay_fuc(){
+			ad_fuc(){
+				that.pay_type=4
+				that.mk_fuc()
+			},
+			share_fuc(){
+				var code=''
+				// if(that.loginDatas.identification_id){
+				// 	code=that.loginDatas.identification_id
+				// }
+				uni.shareWithSystem({
+				  summary: '车圈',
+				  // href: 'https://yibeitong.com.aa.800123456.top/h5/#/?code='+code,
+				  href: 'https://www.baidu.com?code='+code,
+				  success(){
+				    // 分享完成，请注意此时不一定是成功分享
+						that.pay_type=5
+						that.pay_fuc()
+				  },
+				  fail(){
+				    // 分享失败
+				  }
+				})
+				// uni.share({
+				// 	provider: "weixin",
+				// 	scene: "WXSceneTimeline",
+				// 	type: 1,
+				// 	href: "http://uniapp.dcloud.io/",
+					
+				// 	title: "uni-app分享",
+				// 	summary: "我正在使用HBuilderX开发uni-app，赶紧跟我一起来体验！",
+					
+				// 	imageUrl: "https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKmRZxBGVgJicED1mLYTXkHRdMdGzOYfp8dGK7epK6Hpib4gO0Ria7nlHriabNzcpaedO5y3RuJSibRbPA/132",
+				// 	success: function (res) {
+				// 		console.log("success:" + JSON.stringify(res));
+				// 	},
+				// 	fail: function (err) {
+				// 		console.log("fail:" + JSON.stringify(err));
+				// 	}
+				// });
+			},
+			getdata_pri(){
+				var datas={
+					province: that.datas_cs.province,
+					type:that.options.type==1?1:3
+				}
+				var jkurl='/publics/price'
+				
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.pp_datas=datas
+						that.bj_price=datas.bj_price
+						that.or_price=datas.or_price
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
+			reset_fuc(){
+				var pay_status=that.pay_type
+				var datas={
+					code:that.datas_cs.code,
+					img: that.datas_cs.img,
+					province:that.datas_cs.province,
+					car_code:that.datas_cs.car_code,
+					car_number:that.datas_cs.car_number,
+					engine:that.datas_cs.engine,
+					car_type:that.datas_cs.car_type,
+					// address:that.fw_type==1?2:1,
+					// pay_status:pay_status
+				}
+				var jkurl='/car/cstatusagain'
+				if(that.options.type==4){
+					jkurl='/car/violationagain'
+				}
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+						
+						that.gook_fuc(datas)
+						// if (typeof datas == 'string') {
+						// 	datas = JSON.parse(datas)
+						// }
+						// console.log(res)
+						// that.datas=datas.content
+						// // if(datas.title){
+						// // 	uni.setNavigationBarTitle({
+						// // 		title:datas.title
+						// // 	})
+						// // }
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
+			// 首次提交
+			mk_fuc(){
+				var pay_status=that.pay_type
+				var datas={
+					img: that.datas_cs.img,
+					province:that.datas_cs.province,
+					car_code:that.datas_cs.car_code,
+					car_number:that.datas_cs.car_number,
+					engine:that.datas_cs.engine,
+					car_type:that.datas_cs.car_type,
+					address:that.fw_type==1?2:1,
+					pay_status:pay_status
+				}
+				var jkurl='/car/cstatus'
+				if(that.options.type==4){
+					jkurl='/car/violation'
+				}
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+						if(that.pay_type<3){
+							that.pay_fuc(datas)
+							return
+						}
+						that.gook_fuc(datas)
+						// if (typeof datas == 'string') {
+						// 	datas = JSON.parse(datas)
+						// }
+						// console.log(res)
+						// that.datas=datas.content
+						// // if(datas.title){
+						// // 	uni.setNavigationBarTitle({
+						// // 		title:datas.title
+						// // 	})
+						// // }
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+				return
 				uni.redirectTo({
 					url:'/pagesA/rgc_zt_jg/rgc_zt_jg?type='+that.options.type
 				})
+			},
+			pay_fuc(code){
+				var that =this
+				
+				var jkurl='/operate/pay'
+				var datas={
+					code :code,
+					type:that.pay_type
+				}
+				if(that.btnkg==1){
+					return
+				}
+				that.btnkg=1
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+						var provider=''
+						// 支付宝
+						if (that.pay_type == 2) {
+							provider='alipay'
+							
+						}
+						//微信
+						if (that.pay_type == 1) {
+							console.log('datas----------------------------------------->')
+							console.log(typeof datas)
+							console.log(datas)
+							provider='wxpay'
+							
+						}
+						uni.requestPayment({
+							provider: provider,
+							orderInfo: datas, //微信、支付宝订单数据
+							success: function(res) {
+								console.log('success:' + JSON.stringify(res));
+								that.gook_fuc(code)
+							},
+							fail: function(err) {
+								that.btnkg = 0
+								console.log('fail:' + JSON.stringify(err));
+								uni.showModal({
+									content: "支付失败",
+									showCancel: false
+								})
+								setTimeout(()=>{
+									uni.redirectTo({
+										url:'/pagesA/rgc_zt_jg/rgc_zt_jg?type='+that.options.type+'&code='+code
+									})
+								},1000)
+							}
+						});
+						
+					} else {
+							that.btnkg=0
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+						
+						setTimeout(()=>{
+							uni.redirectTo({
+								url:'/pagesA/rgc_zt_jg/rgc_zt_jg?type='+that.options.type+'&code='+code
+							})
+						},1000)
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+					
+					setTimeout(()=>{
+						uni.redirectTo({
+							url:'/pagesA/rgc_zt_jg/rgc_zt_jg?type='+that.options.type+'&code='+code
+						})
+					},1000)
+				})
+			},
+			gook_fuc(code){
+				uni.showToast({
+					icon:'none',
+					title:'提交成功'
+				})
+				setTimeout(function(){
+					that.btnkg=0
+					// uni.redirectTo({
+					// 	// url:'/pages_my/my_fabu/my_fabu'
+					// 	url:'/pages_my/store_fb_ok/store_fb_ok?type=2&type1='+that.type1
+					// })
+					uni.redirectTo({
+						url:'/pagesA/rgc_zt_jg/rgc_zt_jg?type='+that.options.type+'&code='+code
+					})
+				},1000)
 			},
 			checkboxChange: function (e) {
 				console.log(e.detail.value)

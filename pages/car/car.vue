@@ -63,19 +63,19 @@
 			</view>
 		</view>
 		
-		<view class="mt_cbox">
+		<view v-if="datas_tj.length>0" class="mt_cbox">
 			<view class="mt_cboxtit dis_flex aic">
 				<view class="mt_cboxtit_l">安全认证</view>
 				<view class="flex_1">/  专业检测 车况透明</view>
 			</view>
 			<scroll-view class="scroll_x mtc_list" scroll-x="true" >
-				<view class="car_li" v-for="(item,index) in 20" @click="$service.jump" data-url="/pages/details_car/details_car">
+				<view class="car_li" v-for="(item,index) in datas_tj" @click="$service.jump" data-url="/pages/details_car/details_car">
 					<view class="car_li_box">
-						<image class="car_li_img" src="/static/images/car.jpg" mode="aspectFill"></image>
+						<image class="car_li_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 						<view class="car_li_msg">
-							<view class="car_li_tit oh1">大众ID.4 X 2021款 Pure+ 纯净长续航版</view>
-							<view class="car_li_num">17.66万</view>
-							<view class="car_li_ntext">2017年/7.80万公里</view>
+							<view class="car_li_tit oh1">{{item.title}}</view>
+							<view class="car_li_num">{{item.price}}万</view>
+							<view class="car_li_ntext">{{item.brand_time||''}}年/{{item.km}}万公里</view>
 						</view>
 					</view>
 				</view>
@@ -120,7 +120,8 @@
 				datas_car:[],
 				listc_status:'loading',
 				contentText:{contentdown: "上拉显示更多",contentrefresh: "正在加载...",contentnomore: "暂无数据"},
-				page:1
+				page:1,
+				datas_tj:[]
 			}
 		},
 		onLoad() {
@@ -129,6 +130,7 @@
 			if(that.car_info.length==0){
 				that.getcar_datas()
 			}
+			that.getlist_tj()
 			that.onRetry()
 		},
 		computed: {
@@ -186,6 +188,61 @@
 					})
 				})
 			},
+			getlist_tj(){
+				// /index/store
+				var datas={
+					// store_id:'',
+					// lat:that.addmsg.latitude||'',
+					// lng:that.addmsg.longitude||'',
+					is_hot:1,//是否热门推荐 1、是 2、否
+					// search:'',
+					page:1,
+					limit:16
+				}
+				var jkurl='/index/usedcar'
+				that.listc_status='loading'
+				
+				var nowpage=that.page
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						
+						that.datas_tj=datas
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
+			
 			onRetry(){
 					that.page=1
 					that.datas_car=[]
@@ -200,7 +257,7 @@
 					// store_id:'',
 					// lat:that.addmsg.latitude||'',
 					// lng:that.addmsg.longitude||'',
-					is_hot:1,//是否热门推荐 1、是 2、否
+					is_hot:2,//是否热门推荐 1、是 2、否
 					// search:'',
 					page:that.page,
 					limit:16

@@ -137,6 +137,7 @@
 					active:this.active
 				}
 				this.$emit('input', datas);
+				this.close();
 			},
 			close() {
 				this.$refs.keyboardPackage.close();

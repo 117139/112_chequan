@@ -1,7 +1,7 @@
 <template>
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
-		<u-sticky>
+		<!-- <u-sticky>
 		<scroll-view class="tab_list scroll_x" scroll-x="true">
 			<view>
 				<view class="tab_li" :class="{active:active==index}" @click="setcur(index)" v-for="(item,index) in tabs">
@@ -9,7 +9,12 @@
 				</view>
 			</view>
 		</scroll-view>
-		</u-sticky>
+		</u-sticky> -->
+		<view class="tab_list">
+			<view class="tab_li" :class="{active:active==index}" @click="setcur(index)" v-for="(item,index) in tabs">
+				{{item.title}}
+			</view>
+		</view>
 		<view class="zan_list">
 			<view class="zan_li" v-for="(item,index) in datas" @click="jump_fuc(item)">
 				<image class="zan_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
@@ -371,6 +376,15 @@ page{
 	padding: 0 28rpx;
 	background: #fff;
 	border-bottom: 1px solid #eee;
+	position: fixed;
+	top: 0;
+	// #ifdef H5
+	top: 44px;
+	// #endif
+	z-index: 900;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
 	.tab_li{
 		display: inline-flex;
 		height: 100rpx;
@@ -381,7 +395,7 @@ page{
 		font-weight: 400;
 		color: #666666;
 		&+.tab_li{
-			margin-left: 88rpx;
+			// margin-left: 88rpx;
 		}
 		&.active{
 			color: #4680E6;
@@ -407,6 +421,7 @@ page{
 	min-height: calc(100vh -  44px);
 	// #endif
 	background: #fff;
+	padding-top: 100rpx;
 }
 .zan_list{
 	width: 100%;

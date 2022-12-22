@@ -11,63 +11,67 @@
 		</scroll-view>
 		</u-sticky>
 		<view v-if="active==0" class="datas_list">
-			<view class="datas_li" v-for="(item,index) in 5" @click="$service.jump" :data-url="'/pagesA/rgc_zt_jg/rgc_zt_jg?type=1'">
-				<!-- <image v-if="index==1" class="datas_li_st" src="/static/images/o_type1.png" mode="aspectFill"></image> -->
-				<image v-if="index==2" class="datas_li_st" src="/static/images/o_type2.png" mode="aspectFill"></image>
-				<!-- <image v-if="index==3" class="datas_li_st" src="/static/images/o_type3.png" mode="aspectFill"></image> -->
-				<image v-else-if="index==4" class="datas_li_st" src="/static/images/o_type4.png" mode="aspectFill"></image>
-				<image v-else class="datas_li_st" src="/static/images/o_type0.png" mode="aspectFill"></image>
+			<!-- 状态 1、待支付 2、待办 3、信息有误 4、已完成 -->
+			<view class="datas_li" v-for="(item,index) in datas" @click="$service.jump" :data-url="'/pagesA/rgc_zt_jg/rgc_zt_jg?type=1&code='+item.code">
+				<image v-if="item.status==1" class="datas_li_st" src="/static/images/o_type.png" mode="aspectFill"></image>
+				<image v-if="item.status==2" class="datas_li_st" src="/static/images/o_type0.png" mode="aspectFill"></image>
+				<image v-if="item.status==3" class="datas_li_st" src="/static/images/o_type4.png" mode="aspectFill"></image>
+				<image v-if="item.status==4" class="datas_li_st" src="/static/images/o_type2.png" mode="aspectFill"></image>
 				<view class="datas_li_cname">
-					京A12345
+					{{item.province||''}}{{item.car_code||''}}
 				</view>
 				<view class="datas_li_msg">
-					支付金额：￥5.00
+					支付金额：￥{{item.price||'0'}}
 				</view>
 				<view class="datas_li_msg">
 					车辆状态：-
 				</view>
 				<view class="datas_li_msg">
-					订单编号：400565312580921
+					订单编号：{{item.code||''}}
 				</view>
 				<view class="datas_li_msg">
-					下单时间：2022-06-08 18:07:32
+					下单时间：{{item.create_time||''}}
 				</view>
-				<view class="down_btn" v-if="index==2||index==4">
+				<view class="down_btn" v-if="item.status==4&&item.result&&item.result.length>0" @click.stop="down_fuc(1,item.result)">
 					一键下载图片
 				</view>
-				<view class="down_btn" v-if="index==4" @click.stop="sub_fuc">
+				<view class="down_btn" v-if="item.status==3" @click.stop="reset_fuc(item,1)">
 					重新提交
 				</view>
 			</view>
 			
+			<uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more>
 		</view>
 		<view v-if="active==1" class="datas_list">
-			<view class="datas_li" v-for="(item,index) in 5" @click="$service.jump" :data-url="'/pagesA/rgc_nj_order3/rgc_nj_order3?type=1'">
-				<image v-if="index==1" class="datas_li_st" src="/static/images/o_type2.png" mode="aspectFill"></image>
+			<view class="datas_li" v-for="(item,index) in datas" @click="jump_nj(item)" :data-url="'/pagesA/rgc_nj_order3/rgc_nj_order3?type=1'">
+				<image v-if="item.status==1" class="datas_li_st" src="/static/images/o_type.png" mode="aspectFill"></image>
+				<image v-if="item.status==2" class="datas_li_st" src="/static/images/o_type01.png" mode="aspectFill"></image>
+				<image v-if="item.status==3" class="datas_li_st" src="/static/images/o_type0.png" mode="aspectFill"></image>
+				<image v-if="item.status==4" class="datas_li_st" src="/static/images/o_type2.png" mode="aspectFill"></image>
 				<!-- <image v-if="index==2" class="datas_li_st" src="/static/images/o_type2.png" mode="aspectFill"></image> -->
 				<!-- <image v-if="index==3" class="datas_li_st" src="/static/images/o_type3.png" mode="aspectFill"></image> -->
 				<!-- <image v-else-if="index==4" class="datas_li_st" src="/static/images/o_type4.png" mode="aspectFill"></image> -->
-				<image v-else class="datas_li_st" src="/static/images/o_type0.png" mode="aspectFill"></image>
 				<view class="datas_li_cname">
-					京A12345
+					{{item.province||''}}{{item.car_code||''}}
 				</view>
 				<view class="datas_li_msg">
-					支付金额：￥5.00
+					支付金额：￥{{item.price||'0'}}
 				</view>
 				<view class="datas_li_msg">
-					办理方式：线上年检
+					办理方式：{{item.nj_type==1?'线上年检':'线下年检'}}
 				</view>
 				<view class="datas_li_msg">
-					订单编号：400565312580921
+					订单编号：{{item.code||''}}
 				</view>
 				<view class="datas_li_msg">
-					下单时间：2022-06-08 18:07:32
+					下单时间：{{item.create_time||''}}
 				</view>
 			</view>
 			
+			<uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more>
 		</view>
 		<view v-if="active==2" class="datas_list">
-			<view class="datas_li" v-for="(item,index) in 5" @click="$service.jump" :data-url="'/pagesA/rgc_sb_jg/rgc_sb_jg'">
+			<view class="datas_li" v-for="(item,index) in datas" @click="$service.jump" :data-url="'/pagesA/rgc_sb_jg/rgc_sb_jg?code='+item.code">
 				<!-- <image v-if="index==1" class="datas_li_st" src="/static/images/o_type1.png" mode="aspectFill"></image> -->
 				<!-- <image v-if="index==2" class="datas_li_st" src="/static/images/o_type2.png" mode="aspectFill"></image> -->
 				<!-- <image v-if="index==3" class="datas_li_st" src="/static/images/o_type3.png" mode="aspectFill"></image> -->
@@ -76,53 +80,58 @@
 				<view class="datas_li_cname">
 					车型识别
 				</view>
+				<!-- <view class="datas_li_msg">
+					支付金额：￥{{item.price||'0'}}
+				</view> -->
 				<view class="datas_li_msg">
-					支付金额：￥5.00
+					车辆识别号：{{item.vin||''}}
 				</view>
 				<view class="datas_li_msg">
-					车辆识别号：LSVWY4180KN246094
+					订单编号：{{item.code||''}}
 				</view>
 				<view class="datas_li_msg">
-					订单编号：400565312580921
-				</view>
-				<view class="datas_li_msg">
-					下单时间：2022-06-08 18:07:32
+					下单时间：{{item.create_time||''}}
 				</view>
 			</view>
 			
+			<uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more>
 		</view>
 		<view v-if="active==3" class="datas_list">
-			<view class="datas_li" v-for="(item,index) in 5" @click="jump_fuc(index)"  :data-url="'/pagesA/rgc_zt_jg/rgc_zt_jg?type=4'">
+			<!-- 订单状态 1、待支付 2、信息有误 3、待处理 4、无违章 5、有违章 -->
+			<view class="datas_li" v-for="(item,index) in datas" @click="jump_fuc(item)"  :data-url="'/pagesA/rgc_zt_jg/rgc_zt_jg?type=4&code='+item.code">
 				<!-- <image v-if="index==1" class="datas_li_st" src="/static/images/o_type1.png" mode="aspectFill"></image> -->
 				<!-- <image v-if="index==2" class="datas_li_st" src="/static/images/o_type2.png" mode="aspectFill"></image> -->
-				<image v-if="index==1" class="datas_li_st" src="/static/images/o_type3.png" mode="aspectFill"></image>
-				<image v-else-if="index==2" class="datas_li_st" src="/static/images/o_type5.png" mode="aspectFill"></image>
-				<image v-else class="datas_li_st" src="/static/images/o_type0.png" mode="aspectFill"></image>
+				<image v-if="item.status==1" class="datas_li_st" src="/static/images/o_type.png" mode="aspectFill"></image>
+				<image v-if="item.status==2" class="datas_li_st" src="/static/images/o_type4.png" mode="aspectFill"></image>
+				<image v-if="item.status==3" class="datas_li_st" src="/static/images/o_type0.png" mode="aspectFill"></image>
+				<image v-if="item.status==4" class="datas_li_st" src="/static/images/o_type3.png" mode="aspectFill"></image>
+				<image v-if="item.status==5" class="datas_li_st" src="/static/images/o_type5.png" mode="aspectFill"></image>
 				<view class="datas_li_cname">
-					京A12345
+					{{item.province||''}}{{item.car_code||''}}
 				</view>
 				<view class="datas_li_msg">
-					支付金额：￥5.00
+					支付金额：￥{{item.price||'0'}}
 				</view>
 				<view class="datas_li_msg">
-					<text  v-if="index==1">违章信息：恭喜您该车无违章</text>
-					<text v-else-if="index==2">违章信息：该车有违章</text>
+					<text  v-if="item.status==4">违章信息：恭喜您该车无违章</text>
+					<text v-else-if="item.status==5">违章信息：该车有违章</text>
 					<text v-else>违章信息：-</text>
 				</view>
 				<view class="datas_li_msg">
-					订单编号：400565312580921
+					订单编号：{{item.code||''}}
 				</view>
 				<view class="datas_li_msg">
-					下单时间：2022-06-08 18:07:32
+					下单时间：{{item.create_time||''}}
 				</view>
-				<view class="down_btn" v-if="index==2">
+				<view class="down_btn" v-if="item.status==5&&item.result&&item.result.length>0" @click.stop="down_fuc(1,item.result)">
 					一键下载图片
 				</view>
-				<!-- <view class="down_btn" v-if="index==4">
+				<view class="down_btn" v-if="item.status==2" @click.stop="reset_fuc(item,4)">
 					重新提交
-				</view> -->
+				</view>
 			</view>
 			
+			<uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more>
 		</view>
 		
 		<!-- 阻止滑动 -->
@@ -157,15 +166,15 @@
 				options:'',
 				datas:'',
 				page:1,
-				active:0
+				active:0,
+				listc_status:'loading',
+				contentText:{contentdown: "上拉显示更多",contentrefresh: "正在加载...",contentnomore: "暂无数据"},
 			}
 		},
 		computed: {
 		...mapState(['hasLogin', 'forcedLogin', 'userName', 'userinfo','loginDatas']),
 		},
-		// onReachBottom() {
-		// 	that.getdata()
-		// },
+		
 		onLoad(e) {
 			that=this
 			that.options=e||{}
@@ -175,54 +184,84 @@
 			// that.getdata()
 		},
 		onShow() {
-			// that.onRetry()
+			that.onRetry()
 		},
-		
+		onReachBottom() {
+			that.getlist()
+		},
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
-			sub_fuc(){
-				// uni.showToast({
-				// 	icon:'none',
-				// 	title:'提交成功'
-				// })
-				if(that.active==0){
+			jump_nj(item){
+				// 状态 1、待支付 2、待上传 3、待办理 4、已完成/已寄出
+				if(item.status==1){
 					uni.navigateTo({
-						url:'/pagesA/rgc_zt/rgc_zt'
+						url:'/pagesA/rgc_nj_order0/rgc_nj_order0?code='+item.code
+					})
+				}
+				if(item.status==2){
+					uni.navigateTo({
+						url:'/pagesA/rgc_nj_order1/rgc_nj_order1?code='+item.code
+					})
+				}
+				if(item.status==3){
+					uni.navigateTo({
+						url:'/pagesA/rgc_nj_order2/rgc_nj_order2?code='+item.code
+					})
+				}
+				if(item.status==4){
+					uni.navigateTo({
+						url:'/pagesA/rgc_nj_order3/rgc_nj_order3?code='+item.code
+					})
+				}
+			},
+			reset_fuc(item,type){
+				item=JSON.stringify(item)
+				if(that.active==0){
+					uni.redirectTo({
+						url:'/pagesA/rgc_zt/rgc_zt?code='+item.code+'&datas='+item
 					})
 				}
 				if(that.active==3){
-					uni.navigateTo({
-						url:'/pagesA/rgc_wz/rgc_wz'
+					uni.redirectTo({
+						url:'/pagesA/rgc_wz/rgc_wz?code='+item.code+'&datas='+item
 					})
 				}
-			},
-			jump_fuc(e){
-				if(e!=1){
-					uni.navigateTo({
-						url:'/pagesA/rgc_zt_jg/rgc_zt_jg?type=4'
-					})
-				}
-			},
-			setcur(index){
-				that.active=index
 			},
 			onRetry(){
-				that.page=1
-				that.datas=[]
-				that.getdata()
+					that.page=1
+					that.datas=[]
+					that.getlist()
 			},
-			getdata(){
-				
+			/**
+			 * 列表
+			 */
+			getlist(){
+				// /index/store
 				var datas={
-					// day:that.date,
-					page: that.page
+					// store_id:'',
+					// lat:that.addmsg.latitude||'',
+					// lng:that.addmsg.longitude||'',
+					// is_hot:'',//是否热门推荐 1、是 2、否
+					// search:'',
+					page:that.page,
+					limit:20,
 				}
-				uni.showLoading({
-					mask:true,
-					title:'正在获取数据'
-				})
-				var jkurl='/history'
+				var jkurl='/order/cstatus'
+				if(that.active==0){
+					jkurl='/order/cstatus'
+				}
+				if(that.active==1){
+					jkurl='/order/yearly'
+				}
+				if(that.active==2){
+					jkurl='/order/carvin'
+				}
+				if(that.active==3){
+					jkurl='/order/violation'
+				}
+				that.listc_status='loading'
+				
 				var nowpage=that.page
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
@@ -236,18 +275,29 @@
 							datas = JSON.parse(datas)
 						}
 						console.log(res)
+						
 						if(nowpage==1){
+							that.datas=[]
 							that.datas=datas.data
 						}else{
-							if(datas.data.length==0){
-								return
-							}
 							that.datas=that.datas.concat(datas.data)
 						}
-						if(datas.data.length==0){
-							return
+						
+						if(datas.total==0){
+							that.listc_status='noMore'
+							
+						}else{
+							that.listc_status=''
 						}
-						that.page++
+						if(datas.data>length>0){
+							that.page++
+						}
+						// that.getdata_tz()
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
 					} else {
 					
 						if (res.msg) {
@@ -272,6 +322,86 @@
 						title: '获取数据失败，请检查您的网络连接'
 					})
 				})
+			},
+			down_fuc(num,datas){
+				if(!num){
+					num=1
+				}
+				if(datas.length<1){
+					return
+				}
+				uni.showLoading({
+					mask:true,
+					title:"正在保存图片"+num+'/'+datas.length
+				})
+				var idx=num-1
+				var url=that.$service.getimg(datas[idx])
+				const downloadTask = uni.downloadFile({
+					url: url,
+					success: (res) => {
+						if (res.statusCode === 200) {
+							console.log('下载成功');
+							uni.hideLoading()
+							if(num==datas.length){
+								uni.showToast({
+									icon:'none',
+									title:'保存成功'
+								})
+							}else{
+								num++
+								uni.hideLoading()
+								that.down_fuc(num,datas)
+							}
+							
+						}
+					},
+					fail() {
+						uni.hideLoading()
+						uni.showToast({
+							icon:'none',
+							title:'保存失败'
+						})
+					}
+				});
+				
+				downloadTask.onProgressUpdate((res) => {
+					console.log('下载进度' + res.progress);
+					console.log('已经下载的数据长度' + res.totalBytesWritten);
+					console.log('预期需要下载的数据总长度' + res.totalBytesExpectedToWrite);
+				
+					// 满足测试条件，取消下载任务。
+					// if (res.progress > 50) {
+					// 	downloadTask.abort();
+					// }
+				});
+				
+			},
+			sub_fuc(){
+				// uni.showToast({
+				// 	icon:'none',
+				// 	title:'提交成功'
+				// })
+				if(that.active==0){
+					uni.navigateTo({
+						url:'/pagesA/rgc_zt/rgc_zt'
+					})
+				}
+				if(that.active==3){
+					uni.navigateTo({
+						url:'/pagesA/rgc_wz/rgc_wz'
+					})
+				}
+			},
+			jump_fuc(item){
+				if(item.status!=4){
+					uni.navigateTo({
+						url:'/pagesA/rgc_zt_jg/rgc_zt_jg?type=4&code='+item.code
+					})
+				}
+			},
+			setcur(index){
+				that.active=index
+				that.onRetry()
 			},
 			// 单条数据
 			getdata1(){

@@ -17,7 +17,7 @@
 				<view class="">
 					姓名
 				</view>
-				<input class="uni-input" type="text" placeholder="请输入" maxlength="5" placeholder-style="color:#999999;font-size: 30rpx;" v-model="userdata.nick">
+				<input class="uni-input" type="text" placeholder="请输入" maxlength="5" placeholder-style="color:#999999;font-size: 30rpx;" v-model="userdata.name">
 			</view>
 			<picker @change="confirm" :value="index" :range="columns" range-key="title">
 			<view class="line_one area flex">
@@ -141,11 +141,11 @@
 					
 				}
 				// /mine/mine_set
-				var jkurl='/member/edit'
+				var jkurl='/operate/changeInfo'
 				// var address=uni.getStorageSync('kyp_address')||''
 				var datas={
 					img	:that.userdata.img,
-					nick:that.userdata.nick,
+					nick:that.userdata.name,
 					sex:that.userdata.sex,
 				}
 				that.$service.P_post(jkurl, datas).then(res => {
@@ -165,8 +165,14 @@
 							title: '提交成功'
 						})
 						setTimeout(function(){
-							that.$service.wxlogin('token')
+							uni.$emit('login_fuc', {
+								title: ' 刷新信息 ',
+								content: 'item.id'
+							});
 						},1000)
+						setTimeout(function(){
+							uni.navigateBack()
+						},1600)
 					} else {
 					
 						if (res.msg) {

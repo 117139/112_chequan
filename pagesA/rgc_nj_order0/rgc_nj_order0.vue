@@ -12,7 +12,7 @@
 		<view class="cz_box">
 			<view class="cz_tip"><text class="iconfont icon-jinggao"></text>资料无误,1至2天闪电办完,不需要跑车管所(后台设置)</view>
 			<view class="car_li fww">
-				<view class="car_li_l">{{datas_cs.province}}{{datas_cs.car_code}}-{{nj_array[nj_index].title}}</view>
+				<view class="car_li_l">{{datas.province}}{{datas.car_code}}-{{nj_array[nj_index].title}}</view>
 				<!-- <view class="car_li_r" @click="$service.back">重新编辑</view> -->
 				<view class="nj_tg dis_flex aic">
 					<view class="nj_tg_li">代预约</view>
@@ -21,27 +21,27 @@
 			</view>
 			<view class="cm_li">
 				<view class="cm_l"><text>*</text>车主姓名</view>
-				<input type="text" class="cm_r" placeholder="请输入车主姓名" v-model="master_name">
+				<input type="text" class="cm_r" placeholder="请输入车主姓名" v-model="datas.master_name"  :disabled="true">
 			</view>
 			<view class="cm_li">
 				<view class="cm_l"><text>*</text>车主手机号</view>
-				<input type="number" class="cm_r" placeholder="请输入车主手机号" v-model="master_phone">
+				<input type="number" class="cm_r" placeholder="请输入车主手机号" v-model="datas.master_phone"  :disabled="true">
 			</view>
-			<view v-if="nj_index==0" class="cm_li" style="border-bottom: 0;" @click="getadd">
+			<view v-if="nj_index==0" class="cm_li" style="border-bottom: 0;"><!--  @click="getadd" -->
 				<view class="cm_l"><text>*</text>联系地址</view>
-				<input type="text" class="cm_r" placeholder="请选择联系地址" v-model="master_address" :disabled="true">
-				<text class="iconfont icon-next"></text>
+				<input type="text" class="cm_r" placeholder="请选择联系地址" v-model="datas.master_address" :disabled="true">
+				<!-- <text class="iconfont icon-next"></text> -->
 			</view>
-			<view v-if="nj_index==1" class="cm_li" style="border-bottom: 0;" @click="getadd">
+			<view v-if="nj_index==1" class="cm_li" style="border-bottom: 0;"><!-- @click="getadd" -->
 				<view class="cm_l"><text>*</text>邮寄地址</view>
-				<input type="text" class="cm_r" placeholder="请选择收件地址" v-model="master_address" :disabled="true">
-				<text class="iconfont icon-next"></text>
+				<input type="text" class="cm_r" placeholder="请选择收件地址" v-model="datas.master_address" :disabled="true">
+				<!-- <text class="iconfont icon-next"></text> -->
 			</view>
 			<view v-if="nj_index==0" class="nj_text_box">
-				<textarea class="nj_text" placeholder="请输入详细地址，会有专业人员为您代驾年检" v-model="master_addcontent"></textarea>
+				<textarea class="nj_text" placeholder="请输入详细地址，会有专业人员为您代驾年检" v-model="datas.master_addcontent" :disabled="true"></textarea>
 			</view>
 			<view v-if="nj_index==1" class="nj_text_box">
-				<textarea class="nj_text" placeholder="请输入详细地址，年检办完将回寄合格标志给您" v-model="master_addcontent"></textarea>
+				<textarea class="nj_text" placeholder="请输入详细地址，年检办完将回寄合格标志给您" v-model="datas.master_addcontent" :disabled="true"></textarea>
 			</view>
 		</view>
 		<view class="shop_vip_box" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=0"  :data-login="true">
@@ -54,10 +54,10 @@
 				<view class="sd2">免费查车型/查状态/查违章</view>
 			</view>
 		</view>
-		<view v-if="nj_index==1" class="xx_txm">
+		<view v-if="nj_index==1&&datas.txm" class="xx_txm">
 			<view class="xxtxm1">
 				<view class="xxt1">行驶证条形码</view>
-				<input type="text" class="xxt2" placeholder="请输入条形码后6位（选填）" v-model="txm">
+				<input type="text" class="xxt2" placeholder="请输入条形码后6位（选填）" v-model="datas.txm"  :disabled="true">
 			</view>
 			<view class="xxtxm2">快至2小时办完</view>
 		</view>
@@ -67,7 +67,7 @@
 		<view class="fw_list">
 			<view class="fw_li">
 				<view class="fw_r1">服务费</view>
-				<view class="fw_r2" style="padding-right: 0;">￥{{bj_price||0}}</view>
+				<view class="fw_r2" style="padding-right: 0;">￥{{datas.price||0}}</view>
 				<!-- <view class="fw_box" :class="{active:fw_type==0}" @click="fw_type=0">
 					<text class="iconfont icon-duigou2"></text>
 				</view> -->
@@ -103,14 +103,14 @@
 				</view>
 			</view> -->
 		</view>
-		<checkbox-group @change="checkboxChange">
+		<!-- <checkbox-group @change="checkboxChange">
 			<view class="xieyi_box">
 				<label class="dis_flex aic">
 				<checkbox value="cb" checked="true" style="transform:scale(0.7)"/>
 				我已阅读并同意此<text @click="$service.jump" data-url="/pagesA/xieyi/xieyi?id=njdbfwxy">《年检代办服务协议》</text>
 				</label>
 			</view>
-		</checkbox-group>
+		</checkbox-group> -->
 		<view class="b_box">
 			<view class="b_box1">
 				<!-- <view class="b_btn1" @click="pay_fuc">
@@ -118,9 +118,9 @@
 					看广告
 				</view> -->
 				<view class="order_pri">
-					合计: <text>￥{{bj_price||0}}</text>
+					合计: <text>￥{{datas.price||0}}</text>
 				</view>
-				<view class="b_btn" @click="mk_fuc">去支付</view>
+				<view class="b_btn" @click="pay_fuc">去支付</view>
 			</view>
 		</view>
 		
@@ -178,11 +178,9 @@
 			that=this
 			that.options=e||{}
 			that.nj_index=e.type||0
-			console.log(e)
-			var cs=JSON.parse(e.cs)
-			that.datas_cs=cs
-			that.getdata_pri()
-			// that.getdata()
+			
+			// that.getdata_pri()
+			that.getdata()
 		},
 		onShow() {
 			// that.onRetry()
@@ -263,13 +261,6 @@
 			// },
 			// 首次提交
 			mk_fuc(){
-				if(!that.xy_type){
-					uni.showToast({
-						icon:'none',
-						title:'请先阅读并同意《年检代办服务协议》'
-					})
-					return
-				}
 				var pay_status=that.pay_type
 				var datas={
 					img: that.datas_cs.img,
@@ -350,7 +341,7 @@
 				// return
 				var jkurl='/operate/pay'
 				var datas={
-					code :code,
+					code :that.datas.code,
 					type:that.pay_type
 				}
 				if(that.btnkg==1){
@@ -466,79 +457,13 @@
 				}
 				
 			},
-			onRetry(){
-				that.page=1
-				that.datas=[]
-				that.getdata()
-			},
+			// 单条数据
 			getdata(){
 				
 				var datas={
-					// day:that.date,
-					page: that.page
+					code: that.options.code
 				}
-				uni.showLoading({
-					mask:true,
-					title:'正在获取数据'
-				})
-				var jkurl='/history'
-				var nowpage=that.page
-				that.$service.P_post(jkurl, datas).then(res => {
-					that.btnkg = 0
-					console.log(res)
-					if (res.code == 1) {
-						that.htmlReset = 0
-						var datas = res.data
-						console.log(typeof datas)
-				
-						if (typeof datas == 'string') {
-							datas = JSON.parse(datas)
-						}
-						console.log(res)
-						if(nowpage==1){
-							that.datas=datas.data
-						}else{
-							if(datas.data.length==0){
-								return
-							}
-							that.datas=that.datas.concat(datas.data)
-						}
-						if(datas.data.length==0){
-							return
-						}
-						that.page++
-					} else {
-					
-						if (res.msg) {
-							uni.showToast({
-								icon: 'none',
-								title: res.msg
-							})
-						} else {
-							uni.showToast({
-								icon: 'none',
-								title: '获取数据失败'
-							})
-						}
-					}
-				}).catch(e => {
-					that.htmlReset = 1
-					that.btnkg = 0
-					// that.$refs.htmlLoading.htmlReset_fuc(1)
-					console.log(e)
-					uni.showToast({
-						icon: 'none',
-						title: '获取数据失败，请检查您的网络连接'
-					})
-				})
-			},
-			// 单条数据
-			getdata1(){
-				
-				var datas={
-					id: that.options.id
-				}
-				var jkurl='/news_detail'
+				var jkurl='/order/yearlydetail'
 				
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
@@ -552,7 +477,8 @@
 							datas = JSON.parse(datas)
 						}
 						console.log(res)
-						that.datas=datas.content
+						that.datas=datas
+						that.nj_index=datas.nj_type==2?1:0
 						// if(datas.title){
 						// 	uni.setNavigationBarTitle({
 						// 		title:datas.title

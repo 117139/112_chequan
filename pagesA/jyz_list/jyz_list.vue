@@ -7,7 +7,8 @@
 				<text class="bus_title">加油站</text>
 				<picker @change="confirm" :value="index" :range="columns" range-key="title">
 					<!-- <view class="bus_jl"  @click="showpick">{{columns[index].title}} <image src="/static/images/icon_dropdown.png" mode="aspectFit"></image></view> -->
-					<view class="bus_jl"  >{{columns[index].title}} <image src="/static/images/icon_dropdown.png" mode="aspectFit"></image></view>
+					<view v-if="index==-1" class="bus_jl"  >请选择 <image src="/static/images/icon_dropdown.png" mode="aspectFit"></image></view>
+					<view v-else class="bus_jl"  >{{columns[index].title}} <image src="/static/images/icon_dropdown.png" mode="aspectFit"></image></view>
 				</picker>
 			</view>
 		</topbar>
@@ -88,22 +89,27 @@
 				page:1,
 				columns:[
 					{
-						title:'1km'
+						title:'1km',
+						id:1
 					},
 					{
-						title:'5km'
+						title:'5km',
+						id:5
 					},
 					{
-						title:'10km'
+						title:'10km',
+						id:10
 					},
 					{
-						title:'15km'
+						title:'15km',
+						id:15
 					},
 					{
-						title:'20km'
+						title:'20km',
+						id:20
 					},
 				],
-				index:0,
+				index:-1,
 				show_sx:false,
 				listc_status:'loading',
 				contentText:{contentdown: "上拉显示更多",contentrefresh: "正在加载...",contentnomore: "暂无数据"},
@@ -141,6 +147,7 @@
 			confirm(e) { //选择性别 确定
 				console.log(e)
 				this.index = e.detail.value
+				that.onRetry()
 			},
 			confirm_sx(e) { //选择工作时间
 				this.ay_zodiac = e.value[0]
@@ -160,10 +167,15 @@
 			 */
 			getdatas(){
 				// /index/store
+				var km=''
+				if(that.index!=-1){
+					km=that.columns[that.index].id
+				}
 				var datas={
 					status:4,
 					lat:that.addmsg.latitude||'',
 					lng:that.addmsg.longitude||'',
+					km:km,
 					page:that.page,
 					limit:10
 				}

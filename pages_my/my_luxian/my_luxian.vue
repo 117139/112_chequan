@@ -22,8 +22,8 @@
 							<text class="icon icon-xihuan"></text>
 							{{item.zan||0}}
 						</view>
-						<view class="li_cz">编辑</view>
-						<view class="li_cz" @click="del_fuc">删除</view>
+						<view class="li_cz" @click.stop="edit_fuc(item)">编辑</view>
+						<view class="li_cz" @click.stop="del_fuc(item)">删除</view>
 					 </view>
 				</view>
 			</view>
@@ -35,7 +35,7 @@
 				<view class="fb_imgs_t">添加图片</view>
 			</view>
 			<view class="fb_img_box dis_flex fww">
-				<view class="fb_img_li" v-for="(item,index) in real_work">
+				<view class="fb_img_li" v-for="(item,index) in banner">
 					<image class="fb_img_p" :src="$service.getimg(item)" mode="aspectFill"></image>
 					<view class="fb_img_i "  @click="delimg_fuc"  data-type="2" :data-idx="index">
 						<text class="iconfont icon-shanchu1"></text>
@@ -47,19 +47,19 @@
 					<view class="fb_li_l">
 						<text>*</text>标题
 					</view>
-					<input class="fb_li_r" type="text" v-model="fb_tit" placeholder="请填写标题">
+					<input class="fb_li_r" type="text" v-model="title" placeholder="请填写标题">
 				</view>
 				<view class="fb_li" @click="getadd">
 					<view class="fb_li_l">
 						<text>*</text>地址
 					</view>
-					<view class="fb_li_r">{{fb_add||'请选择地址'}}<text class="iconfont icon-next"></text></view>
+					<view class="fb_li_r">{{address||'请选择地址'}}<text class="iconfont icon-next"></text></view>
 				</view>
-				<view class="fb_li">
+				<view class="fb_li" style="overflow: hidden;">
 					<view class="fb_li_l">
 						<text>*</text>内容描述
 					</view>
-					<textarea class="fb_li_area" v-model="fb_content" placeholder="请填写内容描述"></textarea>
+					<textarea class="fb_li_area" v-model="content" placeholder="请填写内容描述" maxlength="-1"></textarea>
 				</view>
 				
 				<view class="fb_btn" @click="fub_fuc">确认发布</view>
@@ -94,10 +94,15 @@
 					},
 				],
 				active:0,
-				fb_tit:'',
-				fb_content:'',
-				fb_add:'',
-				real_work:[],   ///照片
+				title:'',
+				content:'',
+				address:'',
+				address1:'',
+				lat:'',
+				lng:'',
+				banner:[],   ///照片
+				
+				datas_edit:''
 			}
 		},
 		computed: {
@@ -129,10 +134,82 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			edit_fuc(item){
+				var jkurl='/detail/routes'
+				var datas={
+					id:item.id
+				}
+				if(that.btnkg==1){
+					return
+				}
+				that.btnkg=1
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						// if (typeof datas == 'string') {
+						// 	datas = JSON.parse(datas)
+						// }
+						console.log(res)
+						
+						that.datas_edit=datas
+						that.set_fuc(datas)
+						setTimeout(function(){
+							that.active=1
+						},100)
+					} else {
+							that.btnkg=0
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
 			onRetry(){
 					that.page=1
 					that.datas=[]
 					that.getdatas()
+			},
+			set_fuc(datas){
+				if(!datas){
+					datas={
+						title:'',
+						banner:'',
+						address:'',
+						lat:'',
+						lng:'',
+						content:'',
+					}
+					that.datas_edit=''
+				}
+				that.title=datas.title||''
+				that.banner=datas.banner||''
+				that.address=datas.address||''
+				that.lat=datas.lat||''
+				that.lng=datas.lng||''
+				that.content=datas.content||''
 			},
 			/**
 			 * 列表
@@ -146,7 +223,8 @@
 					// is_hot:'',//是否热门推荐 1、是 2、否
 					// search:'',
 					page:that.page,
-					limit:16
+					limit:16,
+					is_my:1
 				}
 				var jkurl='/index/routes'
 				that.listc_status='loading'
@@ -214,13 +292,74 @@
 			},
 			
 			fub_fuc(){
-				uni.showToast({
-					icon:'none',
-					title:'发布成功'
+				var jkurl='/sub/routes'
+				var datas={
+					title:that.title,
+					banner:that.banner.join(','),
+					address:that.address,
+					lat:that.lat,
+					lng:that.lng,
+					content:that.content,
+				}
+				if(that.datas_edit.id){
+					datas={
+						id:that.datas_edit.id,
+						...datas
+					}
+				}
+				if(that.btnkg==1){
+					return
+				}
+				that.btnkg=1
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						// if (typeof datas == 'string') {
+						// 	datas = JSON.parse(datas)
+						// }
+						console.log(res)
+						
+						uni.showToast({
+							icon:'none',
+							title:'提交成功'
+						})
+						that.set_fuc()
+						setTimeout(function(){
+							that.active=0
+							that.btnkg=0
+							that.onRetry()
+						},1000)
+					} else {
+							that.btnkg=0
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
 				})
-				setTimeout(function(){
-					that.active=0
-				},1000)
+				
 			},
 			getadd(){
 				console.log(1)
@@ -229,10 +368,10 @@
 						// this.value5 = res.name
 						console.log('当前位置的：');
 						console.log(res);
-						that.address=res.address//地址
+						that.address1=res.address//地址
 						that.lng=res.longitude//经度  
 						that.lat=res.latitude//纬度  
-						that.fb_add=res.name
+						that.address=res.name
 					},fail(err) {
 						console.log(err);
 					}
@@ -244,9 +383,50 @@
 				    content: '是否删除该信息',
 				    success: function (res) {
 				        if (res.confirm) {
-										uni.showToast({
-											title:'删除成功',
-											icon:'none'
+										// var type=that.active+1
+										var type=4
+										var datas={
+											id: item.id,
+											type:type
+										}
+													
+										var jkurl='/operate/del'
+										that.$service.P_post(jkurl, datas).then(res => {
+											that.btnkg = 0
+											console.log(res)
+											if (res.code == 1) {
+												that.htmlReset = 0
+												var datas = res.data
+												console.log(typeof datas)
+										
+												if (typeof datas == 'string') {
+													datas = JSON.parse(datas)
+												}
+												console.log(res)
+												that.onRetry()
+											} else {
+											
+												if (res.msg) {
+													uni.showToast({
+														icon: 'none',
+														title: res.msg
+													})
+												} else {
+													uni.showToast({
+														icon: 'none',
+														title: '获取数据失败'
+													})
+												}
+											}
+										}).catch(e => {
+											that.htmlReset = 1
+											that.btnkg = 0
+											// that.$refs.htmlLoading.htmlReset_fuc(1)
+											console.log(e)
+											uni.showToast({
+												icon: 'none',
+												title: '获取数据失败，请检查您的网络连接'
+											})
 										})
 				           
 				        } else if (res.cancel) {
@@ -292,7 +472,7 @@
 			  if(that.$service.appVN==0){
 					var datas=imgs[i]
 					if(edatas.type==2){ //持有证书和荣誉
-						 that.real_work.push(datas)
+						 that.banner.push(datas)
 					}
 					if (i<imgs.length-1) {
 						i++
@@ -312,7 +492,7 @@
 						// that.img_arr.push(datas)
 						
 						if(edatas.type==2){ //持有证书和荣誉
-							 that.real_work.push(datas)
+							 that.banner.push(datas)
 						}
 						if (i<imgs.length-1) {
 							i++
@@ -353,7 +533,7 @@
 						if (res.confirm) {
 							console.log('用户点击确定')
 							if(datas.type==2){
-								that.real_work.splice(datas.idx,1)
+								that.banner.splice(datas.idx,1)
 							}
 						} else if (res.cancel) {
 							console.log('用户点击取消')
@@ -617,7 +797,7 @@ page{
 				font-size: 28rpx;
 				font-family: Microsoft YaHei;
 				font-weight: 400;
-				color: #DDDDDD;
+				// color: #DDDDDD;
 				line-height: 42rpx;
 				height: 300rpx;
 			}

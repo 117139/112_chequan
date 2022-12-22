@@ -111,27 +111,44 @@
 				</view> -->
 			</view>
 		</view>
-		<scroll-view class="scroll_x order_list" scroll-x="true" >
+		<scroll-view v-if="my_order.length>0" class="scroll_x order_list" scroll-x="true" >
 			<view>
-				<view class="order_li" v-for="(item,index) in 4">
+				<view class="order_li" v-for="(item,index) in my_order">
 					<image class="order_libg" src="/static/images/order_libg.png" mode="aspectFill"></image>
 					<view class="order_li_box">
 						<view class="order_li_l">
 							<image class="order_li_img" src="/static/images/order_img.png" mode="aspectFit"></image>
-							<view class="order_li_carid">京A 12345</view>
-							<view class="order_li_goorder" @click="$service.jump" :data-url="'/pagesA/rgc_zt_jg/rgc_zt_jg?type=1'">
+							<view class="order_li_carid">{{item.province}}{{item.car_code}}</view>
+							<!-- 状态 1、待支付 2、待办 3、信息有误 4、已完成 -->
+							<!-- 订单状态 1、待支付 2、信息有误 3、待处理 4、无违章 5、有违章 -->
+							<view v-if="item.type==1" class="order_li_goorder" @click="$service.jump" :data-url="'/pagesA/rgc_zt_jg/rgc_zt_jg?type=1&code='+item.code"  :data-login="true">
+								查看订单<text class="icon icon-next"></text>
+							</view>
+							<view v-if="item.type==3&&item.status!=4" class="order_li_goorder" @click="$service.jump" :data-url="'/pagesA/rgc_zt_jg/rgc_zt_jg?type=4&code='+item.code"  :data-login="true">
 								查看订单<text class="icon icon-next"></text>
 							</view>
 						</view>
 						<view class="order_li_r">
-							<image v-if="index==2" class="order_img_type" src="/static/images/order_ok.png" mode="aspectFit"></image>
-							<image v-if="index==3" class="order_img_type" src="/static/images/order_wait.png" mode="aspectFit"></image>
-							<view v-if="index==1" class="order_tip order_tip1">状态查询成功</view>
-							<view v-else-if="index==2" class="order_tip order_tip1">恭喜您该车无违章</view>
-							<view v-else-if="index==3" class="order_tip order_tip1">正在查询中请稍等</view>
-							<view v-else class="order_tip">该车有违章</view>
-							<view v-if="index<2" class="order_btn" @click="up_fuc">一键下载</view>
-							<view class="order_code">订单编号：4001234923814</view>
+							
+							<block v-if="item.type==1&&item.status==2">
+								<image class="order_img_type" src="/static/images/order_wait.png" mode="aspectFit"></image>
+								<view class="order_tip order_tip1">{{p_config.order_tips}}</view>
+							</block>
+							<view  v-if="item.type==1&&item.status==3" class="order_tip">信息有误</view>
+							<view v-if="item.type==1&&item.status==4" class="order_tip order_tip1">状态查询成功</view>
+							
+							<view  v-if="item.type==3&&item.status==2" class="order_tip">信息有误</view>
+							<block v-if=" item.type==3&&item.status==3">
+								<image class="order_img_type" src="/static/images/order_wait.png" mode="aspectFit"></image>
+								<view class="order_tip order_tip1">{{p_config.order_tips}}</view>
+							</block>
+							<block v-if="item.type==3&&item.status==4">
+								<image class="order_img_type" src="/static/images/order_ok.png" mode="aspectFit"></image>
+								<view class="order_tip order_tip1">恭喜您该车无违章</view>
+							</block>
+							<view  v-if="item.type==3&&item.status==5" class="order_tip">该车有违章</view>
+							<view v-if="item.result&&item.result.length>0" class="order_btn" @click="down_fuc(1,item.result)">一键下载</view>
+							<view class="order_code">订单编号：{{item.code}}</view>
 						</view>
 					</view>
 				</view>
@@ -238,7 +255,8 @@
 				listc_status:'loading',
 				contentText:{contentdown: "上拉显示更多",contentrefresh: "正在加载...",contentnomore: "暂无数据"},
 				datas_car:[],
-				page:1
+				page:1,
+				my_order:[]
 			}
 		},
 		onLoad() {
@@ -249,14 +267,79 @@
 			that.getlist(1)
 			that.onRetry()
 		},
-		
+		onShow() {
+			if(that.hasLogin){
+				that.getmy_order()
+			}
+		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin','loginDatas','addmsg','p_config','navdata']),
 		},
 		onReachBottom() {
 			that.getlist_car()
 		},
+		watch:{
+			hasLogin(val){
+				
+				if(that.hasLogin){
+					that.getmy_order()
+				}else{
+					that.my_order=[]
+				}
+			}
+		},
 		methods: {
+			/**
+			 * 首页订单
+			 */
+			getmy_order(){
+				var datas={}
+				var jkurl='/order/index'
+				
+				that.$service.P_get(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.my_order=datas
+						// that.getdata_tz()
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
 			/**
 			 * @Description 获取金刚区数据
 			 * 
@@ -393,11 +476,58 @@
 					})
 				})
 			},
-			up_fuc(){
-				uni.showToast({
-					icon:'none',
-					title:'下载成功'
+			down_fuc(num,datas){
+				if(!num){
+					num=1
+				}
+				if(datas.length<1){
+					return
+				}
+				uni.showLoading({
+					mask:true,
+					title:"正在保存图片"+num+'/'+datas.length
 				})
+				var idx=num-1
+				var url=that.$service.getimg(datas[idx])
+				const downloadTask = uni.downloadFile({
+					url: url,
+					success: (res) => {
+						if (res.statusCode === 200) {
+							console.log('下载成功');
+							uni.hideLoading()
+							if(num==datas.length){
+								uni.showToast({
+									icon:'none',
+									title:'保存成功'
+								})
+							}else{
+								num++
+								uni.hideLoading()
+								that.down_fuc(num,datas)
+							}
+							
+						}
+					},
+					fail() {
+						uni.hideLoading()
+						uni.showToast({
+							icon:'none',
+							title:'保存失败'
+						})
+					}
+				});
+				
+				downloadTask.onProgressUpdate((res) => {
+					console.log('下载进度' + res.progress);
+					console.log('已经下载的数据长度' + res.totalBytesWritten);
+					console.log('预期需要下载的数据总长度' + res.totalBytesExpectedToWrite);
+				
+					// 满足测试条件，取消下载任务。
+					// if (res.progress > 50) {
+					// 	downloadTask.abort();
+					// }
+				});
+				
 			},
 			/**
 			 * 店铺列表

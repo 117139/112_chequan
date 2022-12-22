@@ -1,7 +1,7 @@
 <template>
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
-		<u-sticky>
+		<!-- <u-sticky>
 		<scroll-view class="tab_list scroll_x" scroll-x="true">
 			<view>
 				<view class="tab_li" :class="{active:active==index}" @click="setcur(index)" v-for="(item,index) in tabs">
@@ -9,18 +9,24 @@
 				</view>
 			</view>
 		</scroll-view>
-		</u-sticky>
+		</u-sticky> -->
+		<view class="tab_list">
+			<view class="tab_li" :class="{active:active==index}" @click="setcur(index)" v-for="(item,index) in tabs">
+				{{item.title}}
+			</view>
+		</view>
 		<view class="zan_list">
-			<view class="zan_li" v-for="(item,index) in 10" @click="jump_fuc">
-				<image class="zan_img" src="/static/images/car1.png" mode="aspectFill"></image>
+			<view class="zan_li" v-for="(item,index) in datas" @click="jump_fuc(item)">
+				<image class="zan_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 				<view class="zan_msg">
-					 <view class="zan_tit">入驻泉州最著名的西街旁 | 安 静清幽的小阁楼</view>
-					 <view class="car_li_sc car_li_sc1 dis_flex aic" >
+					 <view class="zan_tit">{{item.title}}</view>
+					 <view @click.stop="del_fuc(item)" class="car_li_sc car_li_sc1 dis_flex aic" >
 					 	<text class="icon icon-shoucang1"></text>
 					 	已收藏
 					 </view>
 				</view>
 			</view>
+			<uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more>
 		</view>
 		
 		<!-- 阻止滑动 -->
@@ -51,11 +57,13 @@
 					{
 						title:'二手车',
 					},
-					{
-						title:'加油站',
-					},
+					// {
+					// 	title:'加油站',
+					// },
 				],
-				active:0
+				active:0,
+				listc_status:'loading',
+				contentText:{contentdown: "上拉显示更多",contentrefresh: "正在加载...",contentnomore: "暂无数据"},
 			}
 		},
 		computed: {
@@ -72,26 +80,29 @@
 			// that.getdata()
 		},
 		onShow() {
-			// that.onRetry()
+			that.onRetry()
 		},
 		
+		onReachBottom() {
+			that.getlist()
+		},
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
-			jump_fuc(){
+			jump_fuc(item){
 				if(that.active==0){
 					uni.navigateTo({
-						url:'/pages/details_qcmr/details_qcmr'
+						url:'/pages/details_qcmr/details_qcmr?id='+item.pid
 					})
 				}
 				if(that.active==1){
 					uni.navigateTo({
-						url:'/pages/details_motor/details_motor'
+						url:'/pages/details_motor/details_motor?id='+item.pid
 					})
 				}
 				if(that.active==2){
 					uni.navigateTo({
-						url:'/pages/details_car/details_car'
+						url:'/pages/details_car/details_car?id='+item.pid
 					})
 				}
 				if(that.active==3){
@@ -102,23 +113,85 @@
 			},
 			setcur(index){
 				that.active=index
+				that.onRetry()
+			},
+			del_fuc(item){
+				uni.showModal({
+				    title: '提示',
+				    content: '是否取消收藏该信息',
+				    success: function (res) {
+				        if (res.confirm) {
+									var type=that.active+1
+										var datas={
+											id: item.pid,
+											type:type
+										}
+													
+										var jkurl='/operate/collection'
+										that.$service.P_post(jkurl, datas).then(res => {
+											that.btnkg = 0
+											console.log(res)
+											if (res.code == 1) {
+												that.htmlReset = 0
+												var datas = res.data
+												console.log(typeof datas)
+										
+												if (typeof datas == 'string') {
+													datas = JSON.parse(datas)
+												}
+												console.log(res)
+												that.onRetry()
+											} else {
+											
+												if (res.msg) {
+													uni.showToast({
+														icon: 'none',
+														title: res.msg
+													})
+												} else {
+													uni.showToast({
+														icon: 'none',
+														title: '获取数据失败'
+													})
+												}
+											}
+										}).catch(e => {
+											that.htmlReset = 1
+											that.btnkg = 0
+											// that.$refs.htmlLoading.htmlReset_fuc(1)
+											console.log(e)
+											uni.showToast({
+												icon: 'none',
+												title: '获取数据失败，请检查您的网络连接'
+											})
+										})
+				           
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
 			},
 			onRetry(){
-				that.page=1
-				that.datas=[]
-				that.getdata()
+					that.page=1
+					that.datas=[]
+					that.getlist()
 			},
-			getdata(){
-				
+			/**
+			 * 列表
+			 */
+			getlist(){
+				var type=that.active+1
 				var datas={
-					// day:that.date,
-					page: that.page
+					type:type,
+					page:that.page,
+					limit:20,
+					is_my:1
 				}
-				uni.showLoading({
-					mask:true,
-					title:'正在获取数据'
-				})
-				var jkurl='/history'
+				var jkurl='/index/collection'
+				
+				that.listc_status='loading'
+				
 				var nowpage=that.page
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
@@ -132,18 +205,29 @@
 							datas = JSON.parse(datas)
 						}
 						console.log(res)
+						
 						if(nowpage==1){
+							that.datas=[]
 							that.datas=datas.data
 						}else{
-							if(datas.data.length==0){
-								return
-							}
 							that.datas=that.datas.concat(datas.data)
 						}
-						if(datas.data.length==0){
-							return
+						
+						if(datas.total==0){
+							that.listc_status='noMore'
+							
+						}else{
+							that.listc_status=''
 						}
-						that.page++
+						if(datas.data>length>0){
+							that.page++
+						}
+						// that.getdata_tz()
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
 					} else {
 					
 						if (res.msg) {
@@ -241,6 +325,15 @@ page{
 	padding: 0 28rpx;
 	background: #fff;
 	border-bottom: 1px solid #eee;
+	position: fixed;
+	top: 0;
+	// #ifdef H5
+	top: 44px;
+	// #endif
+	z-index: 900;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
 	.tab_li{
 		display: inline-flex;
 		height: 100rpx;
@@ -251,7 +344,7 @@ page{
 		font-weight: 400;
 		color: #666666;
 		&+.tab_li{
-			margin-left: 88rpx;
+			// margin-left: 88rpx;
 		}
 		&.active{
 			color: #4680E6;
@@ -277,6 +370,7 @@ page{
 	min-height: calc(100vh -  44px);
 	// #endif
 	background: #fff;
+	padding-top: 100rpx;
 }
 .zan_list{
 	width: 100%;

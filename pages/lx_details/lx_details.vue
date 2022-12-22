@@ -21,13 +21,13 @@
 			<image class="xq_ttx" :src="$service.getimg(datas.userInfo.img)" mode="aspectFill"></image>
 			<view class="flex_1">
 				<view class="xq_tname">{{datas.userInfo.nick}}</view>
-				<view class="xq_ttime">2022.06.08发布</view>
+				<view class="xq_ttime">{{datas.create_time||''}}发布</view>
 			</view>
-			<view v-if="datas.is_zan" class="car_li_sc car_li_sc1 dis_flex aic" >
+			<view v-if="datas.is_zan==1" class="car_li_sc car_li_sc1 dis_flex aic"  @click="sc_fuc">
 				<text class="icon icon-xihuan1"></text>
 				{{datas.zan}}
 			</view>
-			<view v-else class="car_li_sc dis_flex aic" >
+			<view v-else class="car_li_sc dis_flex aic"  @click="sc_fuc">
 				<text class="icon icon-xihuan"></text>
 				{{datas.zan}}
 			</view>
@@ -186,6 +186,53 @@
 				  fail(){
 				    // 分享失败
 				  }
+				})
+			},
+			/**
+			 * 收藏方法
+			 */
+			sc_fuc(){
+				var datas={
+					id: that.options.id
+				}
+			
+				var jkurl='/operate/zan'
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.getdata()
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
 				})
 			},
 			swiper_change(e) {

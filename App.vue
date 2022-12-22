@@ -437,4 +437,9 @@
 		// #endif
 		background: #fff;
 	}
+	
+	.my_status_bar {
+			height: var(--status-bar-height);
+			width: 100%;
+	}
 </style>

@@ -34,11 +34,11 @@
 				</view>
 				<view class="xq_li">
 					<view class="xq_l ">车牌号</view>
-					<!-- <picker @change="bindPickerChange_c" :value="cc_index" :range="cc_array" range-key="title"> -->
-						<view class="xq_l1"  @click="focus">{{car_id_n}}<text class="iconfont icon-xiasanjiao"></text></view>			
+					<!-- <picker @change="bindPickerChange_c" :value="car_type" :range="cc_array" range-key="title"> -->
+						<view class="xq_l1"  @click="focus">{{province}}<text class="iconfont icon-xiasanjiao"></text></view>			
 					<!-- </picker> -->
-					<input class="xq_r" type="text" v-model="car_id" placeholder="请输入车牌号码" maxlength="12">
-					<!-- <view class="xq_r">{{car_id||'请输入车牌号码'}}</view> -->
+					<input class="xq_r" type="text" v-model="car_code" placeholder="请输入车牌号码" maxlength="12">
+					<!-- <view class="xq_r">{{car_code||'请输入车牌号码'}}</view> -->
 				</view>
 				<!-- <view class="xq_li">
 					<view class="xq_l">车辆识别号</view>
@@ -48,41 +48,41 @@
 					<view class="xq_l">发动机号</view>
 					<input type="text" class="xq_r" v-model="pow_num" placeholder="请输入发动机号后4位">
 				</view> -->
-				<picker @change="bindPickerChange_c" :value="cc_index" :range="cc_array" range-key="title">
+				<picker @change="bindPickerChange_c" :value="car_type" :range="cc_array" range-key="title">
 					<view class="xq_li">
 						<view class="xq_l">车辆类型</view>
 						<!-- <input type="text" class="xq_r" v-model="pow_num" placeholder="请输入发动机号后4位"> -->
-						<view class="xq_r">{{cc_array[cc_index].title||'请选择车辆类型'}} <text class="iconfont icon-next"></text></view>
+						<view class="xq_r">{{cc_array[car_type].title||'请选择车辆类型'}} <text class="iconfont icon-next"></text></view>
 					</view>				
 				</picker>
-				<picker @change="bindDateChange_cz" mode="date" :value="car_cz" :start="startDate" :end="endDate1">
+				<picker @change="bindDateChange_cz" mode="date" :value="sign_time" :start="startDate" :end="endDate1">
 					<view class="xq_li">
 						<view class="xq_l">注册日期</view>
 						<!-- <input type="text" class="xq_r" v-model="pow_num" placeholder="请输入发动机号后4位"> -->
-						<view class="xq_r">{{car_cz||'请选择注册日期'}}<text class="iconfont icon-next"></text></view>
+						<view class="xq_r">{{sign_time||'请选择注册日期'}}<text class="iconfont icon-next"></text></view>
 					</view>	
 					
 				</picker>
-				<picker @change="bindDateChange_jc" mode="date" :value="car_jc" :start="startDate" :end="endDate1">
+				<picker @change="bindDateChange_jc" mode="date" :value="nj_time" :start="startDate" :end="endDate1">
 					<view class="xq_li">
 						<view class="xq_l">检测有效期</view>
 						<!-- <input type="text" class="xq_r" v-model="pow_num" placeholder="请输入发动机号后4位"> -->
-						<view class="xq_r">{{car_jc||'请选择检测有效期'}}<text class="iconfont icon-next"></text></view>
+						<view class="xq_r">{{nj_time||'请选择检测有效期'}}<text class="iconfont icon-next"></text></view>
 					</view>	
 					
 				</picker>
-				<picker @change="bindPickerChange_nj" :value="nj_index" :range="nj_array" range-key="title">
+				<picker @change="bindPickerChange_nj" :value="nj_type" :range="nj_array" range-key="title">
 					<view class="xq_li">
 						<view class="xq_l">年检方式</view>
 						<!-- <input type="text" class="xq_r" v-model="pow_num" placeholder="请输入发动机号后4位"> -->
-					<view class="xq_r">{{nj_array[nj_index].title||'请选择年检方式'}} <text class="iconfont icon-next"></text></view>
+					<view class="xq_r">{{nj_array[nj_type].title||'请选择年检方式'}} <text class="iconfont icon-next"></text></view>
 					</view>				
 				</picker>
 				<view class="xq_li">
 					<view class="xq_l" style="width: 300rpx;">未造成伤亡事故</view>
 					<view class="flex_1"></view>
 					<!-- <input type="text" class="xq_r" v-model="car_num" placeholder="请输入车辆识别号后4位"> -->
-					<u-switch v-model="dz_type" @change="dzchange" activeColor="#4680E6"></u-switch>
+					<u-switch v-model="is_accident" @change="dzchange" activeColor="#4680E6"></u-switch>
 				</view>
 				<view class="xq_btn" @click="go_fuc">立即查询</view>
 				<view class="xq_yx" @click="active=!active">
@@ -121,25 +121,28 @@
 				options:'',
 				datas:'',
 				page:1,
-				car_id_n:'京',
-				car_id:'',
+				province:'京',
+				car_code:'',
 				car_num:'',
 				pow_num:'',
 				cc_array:[
 					{
-						title:'小型车'
+						title:'小型汽车'
 					},
 					{
-						title:'中型车'
+						title:'中型客车'
 					},
 					{
-						title:'大型车'
+						title:'大型客车'
 					},
 					{
-						title:'重型车'
+						title:'牵引车'
+					},
+					{
+						title:'公交车'
 					},
 				],
-				cc_index:0,
+				car_type:0,
 				nj_array:[
 					{
 						title:'线上年检'
@@ -148,11 +151,12 @@
 						title:'线下年检'
 					},
 				],
-				nj_index:0,
-				dz_type:false,
-				car_cz:'',
-				car_jc:'',
-				active:false
+				nj_type:0,
+				is_accident:false,
+				sign_time:'',
+				nj_time:'',
+				active:false,
+				img:''
 			}
 		},
 		computed: {
@@ -185,10 +189,10 @@
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
 			bindDateChange_cz: function(e) {
-					this.car_cz = e.detail.value
+					this.sign_time = e.detail.value
 			},
 			bindDateChange_jc: function(e) {
-					this.car_jc = e.detail.value
+					this.nj_time = e.detail.value
 			},
 			getDate(type) {
 					const date = new Date();
@@ -211,21 +215,21 @@
 				console.log(e)
 			},
 			go_fuc(){
-				if(!this.car_id){
+				if(!this.car_code){
 					uni.showToast({
 						icon:'none',
 						title:'请输入车牌号'
 					})
 					return
 				}
-				if(!this.car_cz){
+				if(!this.sign_time){
 					uni.showToast({
 						icon:'none',
 						title:'请选择注册日期'
 					})
 					return
 				}
-				if(!this.car_jc){
+				if(!this.nj_time){
 					uni.showToast({
 						icon:'none',
 						title:'请选择检测有效期'
@@ -241,8 +245,21 @@
 					})
 					return
 				}
+				var cs={
+					img:that.img,
+					province:that.province,
+					car_code:that.car_code,
+					car_number:that.car_number,
+					engine:that.engine,
+					car_type:that.cc_array[that.car_type].title,
+					sign_time:that.sign_time,
+					nj_time:that.nj_time,
+					nj_type:that.nj_type==1?2:1,
+					is_accident:that.is_accident?1:2
+				}
+				cs=JSON.stringify(cs)
 				uni.navigateTo({
-					url:'/pagesA/rgc_nj_order/rgc_nj_order?type='+that.nj_index
+					url:'/pagesA/rgc_nj_order/rgc_nj_order?type='+that.nj_type+'&cs='+cs
 				})
 			},
 			focus ( type ) {
@@ -266,7 +283,7 @@
 				// val = val.toString()
 				console.log(val)
 				if(val.active==2){
-					that.car_id_n=val.val
+					that.province=val.val
 				}else{
 					
 				}
@@ -302,11 +319,11 @@
 			},
 			bindPickerChange_c: function(e) {
 					console.log('picker发送选择改变，携带值为', e.detail.value)
-					this.cc_index = e.detail.value
+					this.car_type = e.detail.value
 			},
 			bindPickerChange_nj: function(e) {
 					console.log('picker发送选择改变，携带值为', e.detail.value)
-					this.nj_index = e.detail.value
+					this.nj_type = e.detail.value
 			},
 			showpick(){
 				console.log(111)

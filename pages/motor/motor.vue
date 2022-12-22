@@ -5,7 +5,7 @@
 				<image class="h_add" src="/static/images/icon_address.png" mode="aspectFit"></image>
 				<view class="flex_1 h_add_text" >北京</view>
 				<image  @tap="$service.jump" data-url="/pagesA/search/search" class="h_iconr" src="/static/images/icon_find.png" mode="aspectFit"></image>
-				<image @click="$service.call" data-tel="18300000000" class="h_iconr" src="/static/images/icon_kefu.png" mode="aspectFit"></image>
+				<image @click="$service.call" :data-tel="p_config.kf_phone" class="h_iconr" src="/static/images/icon_kefu.png" mode="aspectFit"></image>
 			</view>
 		</topbar>
 		<view  v-if="list1.length>0" class="mbanner">
@@ -17,8 +17,8 @@
 			<image class="pttz_img" src="/static/images/pttz_icon.png" mode="aspectFit"></image>
 			<swiper class="card-swiper1" :indicator-dots="false" :circular="true" :vertical="true" :autoplay="true" interval="6000"
 				duration="500" indicator-color="#8799a3" indicator-active-color="#0081ff">
-				<swiper-item class="dis_flex aic" v-for="(item,index) in 3">
-					<view>阅读北京限行规则，避免违章问题</view>
+				<swiper-item class="dis_flex aic" v-for="(item,index) in notify">
+					<view>{{item.title}}</view>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -127,7 +127,8 @@
 				listc_status:'loading',
 				contentText:{contentdown: "上拉显示更多",contentrefresh: "正在加载...",contentnomore: "暂无数据"},
 				datas_car:[],
-				page:1
+				page:1,
+				notify:[]
 			}
 		},
 		computed: {
@@ -137,6 +138,7 @@
 			that =this
 			that.getlist(2)
 			that.getbanner()
+			that.getnotify()
 			that.onRetry()
 		},
 		onReachBottom() {
@@ -299,7 +301,56 @@
 					})
 				})
 			},
-			
+			getnotify(){
+				var datas={
+					type:2,
+				}
+				var jkurl='/publics/notify'
+				
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.notify=datas
+						// that.getdata_tz()
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
 			getbanner(){
 				var datas={
 					type:2,

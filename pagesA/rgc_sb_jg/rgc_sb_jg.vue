@@ -8,84 +8,84 @@
 		<view class="jg_list">
 			<view class="jg_li">
 				<view class="jg_l">车辆识别号</view>
-				<view class="jg_r">LSVWY4180KN246094</view>
+				<view class="jg_r">{{datas.vin}}</view>
 			</view>
 		</view>
 		<view class="jg_list">
 			<view class="jg_li">
-				<view class="jg_l">品牌车系</view>
-				<view class="jg_r">大众朗逸</view>
+				<view class="jg_l">品牌</view>
+				<view class="jg_r">{{params.brand||""}}</view>
+			</view>
+			<view class="jg_li">
+				<view class="jg_l">厂家</view>
+				<view class="jg_r">{{params.manufacturer||""}}</view>
 			</view>
 			<view class="jg_li">
 				<view class="jg_l">厂家指导价</view>
-				<view class="jg_r">11.89万</view>
+				<view class="jg_r">{{params.price||""}}</view>
 			</view>
 			<view class="jg_li">
-				<view class="jg_l">上市时间</view>
-				<view class="jg_r">2017-02</view>
+				<view class="jg_l">年款</view>
+				<view class="jg_r">{{params.yeartype||""}}</view>
 			</view>
 		</view>
 		<view class="jg_list">
 			<view class="jg_li">
 				<view class="jg_l">发动机</view>
-				<view class="jg_r">1.6L 110马力 L4</view>
+				<view class="jg_r">{{params.displacement}} {{params.maxhorsepower}}马力 <text v-if="params.cylindernum">L{{params.cylindernum}}</text></view>
 			</view>
 			<view class="jg_li">
 				<view class="jg_l">排量</view>
-				<view class="jg_r">1.6</view>
+				<view class="jg_r">{{params.displacement||""}}</view>
 			</view>
 			<view class="jg_li">
-				<view class="jg_l">进气形式</view>
-				<view class="jg_r">-</view>
+				<view class="jg_l">油耗</view>
+				<view class="jg_r">{{params.comfuelconsumption||""}}</view>
 			</view>
 			<view class="jg_li">
 				<view class="jg_l">排放标准</view>
-				<view class="jg_r">国5</view>
+				<view class="jg_r">{{params.environmentalstandards||""}}</view>
 			</view>
 			<view class="jg_li">
 				<view class="jg_l">燃油类型</view>
-				<view class="jg_r">汽油</view>
+				<view class="jg_r">{{params.fueltype||""}}</view>
 			</view>
 			<view class="jg_li">
 				<view class="jg_l">燃油标号</view>
-				<view class="jg_r">92号</view>
+				<view class="jg_r">{{params.fuelgrade||""}}</view>
 			</view>
 			<view class="jg_li">
 				<view class="jg_l">变速箱</view>
-				<view class="jg_r">6档 手自一体</view>
+				<view class="jg_r">{{params.gearbox||""}}</view>
 			</view>
 			<view class="jg_li">
 				<view class="jg_l">变速箱类型</view>
-				<view class="jg_r">手自一体变速箱(AT)</view>
+				<view class="jg_r">{{params.geartype||""}}</view>
 			</view>
 			<view class="jg_li">
 				<view class="jg_l">档位数</view>
-				<view class="jg_r">6</view>
+				<view class="jg_r">{{params.gearnum||""}}</view>
 			</view>
 		</view>
 		<view class="jg_list">
 			<view class="jg_li">
-				<view class="jg_l">车身结构</view>
-				<view class="jg_r">4门5座三厢车</view>
-			</view>
-			<view class="jg_li">
-				<view class="jg_l">级别</view>
-				<view class="jg_r">紧凑型车</view>
+				<view class="jg_l">车身形式</view>
+				<view class="jg_r">{{params.sizetype||""}}</view>
 			</view>
 			<view class="jg_li">
 				<view class="jg_l">驱动方式</view>
-				<view class="jg_r">前置前驱</view>
+				<view class="jg_r">{{params.drivemode}}</view>
 			</view>
 			<view class="jg_li">
 				<view class="jg_l">前轮胎规格</view>
-				<view class="jg_r">205/55 R16</view>
+				<view class="jg_r">{{params.fronttiresize}}</view>
 			</view>
 			<view class="jg_li">
 				<view class="jg_l">后轮胎规格</view>
-				<view class="jg_r">205/55 R16</view>
+				<view class="jg_r">{{params.reartiresize}}</view>
 			</view>
 		</view>
-		<view class="xq_btn" @click="go_fuc">重新查询</view>
+		<view v-if="datas.status==3" class="xq_btn" @click="go_fuc">重新查询</view>
 		<!-- 阻止滑动 -->
 		<!-- <view @touchmove.stop.prevent='test'></view> -->
 	</view>
@@ -103,7 +103,8 @@
 			return {
 				options:'',
 				datas:'',
-				page:1
+				page:1,
+				params:''
 			}
 		},
 		computed: {
@@ -117,7 +118,7 @@
 			that.options=e||{}
 			console.log(e)
 			
-			// that.getdata()
+			that.getdata()
 		},
 		onShow() {
 			// that.onRetry()
@@ -126,6 +127,53 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			getdata(){
+				var that=this
+				var datas={
+					code: that.options.code,
+				}
+				var jkurl='/order/carvindetail'
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.datas=datas
+						that.params=datas.params
+						
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
+			
 			go_fuc(){
 				
 				// if(!this.cc_index){
@@ -152,7 +200,7 @@
 				// 	return
 				// }
 				uni.redirectTo({
-					url:'/pagesA/rgc_sb/rgc_sb'
+					url:'/pagesA/rgc_sb/rgc_sb?code='+that.options.code+'&vin='+that.datas.vin
 				})
 			},
 			onRetry(){
@@ -160,7 +208,7 @@
 				that.datas=[]
 				that.getdata()
 			},
-			getdata(){
+			getdata2(){
 				
 				var datas={
 					// day:that.date,

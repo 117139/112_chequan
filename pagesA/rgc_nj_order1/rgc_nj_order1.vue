@@ -14,10 +14,10 @@
 				<image src="/static/images/order_ok.png" mode="aspectFit"></image>支付成功
 			</view>
 			<view class="njpname">
-				<view>京NTP686-{{nj_array[nj_index].title}}</view>
-				<view class="njpri">￥98.00</view>
+				<view>{{datas.province}}{{datas.car_code}}-{{nj_array[nj_index].title}}</view>
+				<view class="njpri">￥{{datas.price}}</view>
 			</view>
-			<view class="njpcode">订单编号：400565312580921</view>
+			<view class="njpcode">订单编号：{{datas.code}}</view>
 		</view>
 		<view class="cz_box">
 			<view class="cz_tip"><text class="iconfont icon-yanzhengma"></text>以下信息仅供交管局查询使用，我们将严格保密</view>
@@ -151,6 +151,8 @@
 				xsz2:'',
 				jsz1:'',
 				jsz2:'',
+				
+				btnkg:0
 			}
 		},
 		computed: {
@@ -165,7 +167,7 @@
 			that.nj_index=e.type||0
 			console.log(e)
 			
-			// that.getdata()
+			that.getdata()
 		},
 		onShow() {
 			// that.onRetry()
@@ -174,24 +176,145 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
-			next_fuc(){
-				// if(!that.sfz1){
-				// 	uni.showToast({
-				// 		icon:'none',
-				// 		title:'请上传身份证正面'
-				// 	})
-				// 	return
-				// }
-				// if(!that.sfz2){
-				// 	uni.showToast({
-				// 		icon:'none',
-				// 		title:'请上传身份证反面'
-				// 	})
-				// 	return
-				// }
-				uni.redirectTo({
-					url:'/pagesA/rgc_nj_order2/rgc_nj_order2?type='+that.options.type
+			// 单条数据
+			getdata(){
+				
+				var datas={
+					code: that.options.code
+				}
+				var jkurl='/order/yearlydetail'
+				
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.datas=datas
+						that.nj_index=datas.nj_type==2?1:0
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
 				})
+			},
+			
+			next_fuc(){
+				if(!that.sfz1){
+					uni.showToast({
+						icon:'none',
+						title:'请上传身份证正面'
+					})
+					return
+				}
+				if(!that.sfz2){
+					uni.showToast({
+						icon:'none',
+						title:'请上传身份证反面'
+					})
+					return
+				}
+				// if(!that.xsz1){
+				// 	uni.showToast({
+				// 		icon:'none',
+				// 		title:'请上传行驶证正面'
+				// 	})
+				// 	return
+				// }
+				// if(!that.xsz2){
+				// 	uni.showToast({
+				// 		icon:'none',
+				// 		title:'请上传行驶证反面'
+				// 	})
+				// 	return
+				// }
+				var jkurl='/car/supplement_yearly'
+				var datas={
+					code:that.options.code,
+					id_card:that.sfz1,
+					id_cardf:that.sfz2,
+					driving_img:that.xsz1,
+					driving_imgf:that.xsz2,
+					license_img:that.jsz1,
+					license_imgf:that.jsz2,
+				}
+				if(that.btnkg==1){
+					return
+				}
+				that.btnkg=1
+				that.$service.P_post(jkurl, datas).then(res => {
+					
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+						uni.showToast({
+							icon:'none',
+							title:'提交成功'
+						})
+						setTimeout(function(){
+							that.btnkg=0
+							uni.redirectTo({
+								url:'/pagesA/rgc_nj_order2/rgc_nj_order2?code='+that.options.code
+							})
+						},1000)
+						
+					} else {
+						that.btnkg = 0
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+				
 			},
 			upimg_fuc(e){
 				var edatas=e.currentTarget.dataset
@@ -264,15 +387,17 @@
 						// that.img_arr.push(datas)
 						
 						if(edatas.type==1){ //上传商品图
-							that.goods_img=datas
+							 that.sfz1=datas
 						}else if(edatas.type==2){ //商品详情图
-							 that.goodsxq_img.push(datas)
-						}else if(edatas.type==3){ //工作照片
-							that.mt_img.push(datas)
-						}else if(edatas.type==4){ //工作照片
-							that.self_img.push(datas)
+							 that.sfz2=datas
+						}else if(edatas.type==3){ //mt照片
+							that.xsz1=datas
+						}else if(edatas.type==4){ //mt照片
+							that.xsz2=datas
 						}else if(edatas.type==5){ //身份证
-							that.certificate.push(datas)
+							that.jsz1=datas
+						}else{ //上传本人照片
+							that.jsz2=datas
 						}
 						
 						if(edatas.type=='v1'){
@@ -343,123 +468,6 @@
 					this.xy_type=false
 				}
 				
-			},
-			onRetry(){
-				that.page=1
-				that.datas=[]
-				that.getdata()
-			},
-			getdata(){
-				
-				var datas={
-					// day:that.date,
-					page: that.page
-				}
-				uni.showLoading({
-					mask:true,
-					title:'正在获取数据'
-				})
-				var jkurl='/history'
-				var nowpage=that.page
-				that.$service.P_post(jkurl, datas).then(res => {
-					that.btnkg = 0
-					console.log(res)
-					if (res.code == 1) {
-						that.htmlReset = 0
-						var datas = res.data
-						console.log(typeof datas)
-				
-						if (typeof datas == 'string') {
-							datas = JSON.parse(datas)
-						}
-						console.log(res)
-						if(nowpage==1){
-							that.datas=datas.data
-						}else{
-							if(datas.data.length==0){
-								return
-							}
-							that.datas=that.datas.concat(datas.data)
-						}
-						if(datas.data.length==0){
-							return
-						}
-						that.page++
-					} else {
-					
-						if (res.msg) {
-							uni.showToast({
-								icon: 'none',
-								title: res.msg
-							})
-						} else {
-							uni.showToast({
-								icon: 'none',
-								title: '获取数据失败'
-							})
-						}
-					}
-				}).catch(e => {
-					that.htmlReset = 1
-					that.btnkg = 0
-					// that.$refs.htmlLoading.htmlReset_fuc(1)
-					console.log(e)
-					uni.showToast({
-						icon: 'none',
-						title: '获取数据失败，请检查您的网络连接'
-					})
-				})
-			},
-			// 单条数据
-			getdata1(){
-				
-				var datas={
-					id: that.options.id
-				}
-				var jkurl='/news_detail'
-				
-				that.$service.P_post(jkurl, datas).then(res => {
-					that.btnkg = 0
-					console.log(res)
-					if (res.code == 1) {
-						that.htmlReset = 0
-						var datas = res.data
-						console.log(typeof datas)
-				
-						if (typeof datas == 'string') {
-							datas = JSON.parse(datas)
-						}
-						console.log(res)
-						that.datas=datas.content
-						// if(datas.title){
-						// 	uni.setNavigationBarTitle({
-						// 		title:datas.title
-						// 	})
-						// }
-					} else {
-					
-						if (res.msg) {
-							uni.showToast({
-								icon: 'none',
-								title: res.msg
-							})
-						} else {
-							uni.showToast({
-								icon: 'none',
-								title: '获取数据失败'
-							})
-						}
-					}
-				}).catch(e => {
-					that.htmlReset = 1
-					that.btnkg = 0
-					// that.$refs.htmlLoading.htmlReset_fuc(1)
-					console.log(e)
-					uni.showToast({
-						icon: 'none',
-						title: '获取数据失败，请检查您的网络连接'
-					})
-				})
 			},
 			
 			goback(){

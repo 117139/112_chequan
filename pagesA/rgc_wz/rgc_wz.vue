@@ -35,24 +35,24 @@
 				<view class="xq_li">
 					<view class="xq_l">车牌号</view>
 					<!-- <picker @change="bindPickerChange_c" :value="cc_index" :range="cc_array" range-key="title"> -->
-						<view class="xq_l1"  @click="focus">{{car_id_n}}<text class="iconfont icon-xiasanjiao"></text></view>			
+						<view class="xq_l1"  @click="focus">{{province}}<text class="iconfont icon-xiasanjiao"></text></view>			
 					<!-- </picker> -->
-					<input class="xq_r" type="text" v-model="car_id" placeholder="请输入车牌号码" maxlength="12">
-					<!-- <view class="xq_r">{{car_id||'请输入车牌号码'}}</view> -->
+					<input class="xq_r" type="text" v-model="car_code" placeholder="请输入车牌号码" maxlength="12">
+					<!-- <view class="xq_r">{{car_code||'请输入车牌号码'}}</view> -->
 				</view>
 				<view class="xq_li">
 					<view class="xq_l">车辆识别号</view>
-					<input type="text" class="xq_r" v-model="car_num" placeholder="请输入车辆识别号"><!-- 后4位 -->
+					<input type="text" class="xq_r" v-model="car_number" placeholder="请输入车辆识别号"><!-- 后4位 -->
 				</view>
 				<view class="xq_li">
 					<view class="xq_l">发动机号</view>
-					<input type="text" class="xq_r" v-model="pow_num" placeholder="请输入发动机号"><!-- 后4位 -->
+					<input type="text" class="xq_r" v-model="engine" placeholder="请输入发动机号"><!-- 后4位 -->
 				</view>
-				<picker @change="bindPickerChange_c" :value="cc_index" :range="cc_array" range-key="title">
+				<picker @change="bindPickerChange_c" :value="car_type" :range="cc_array" range-key="title">
 					<view class="xq_li">
 						<view class="xq_l">车辆类型</view>
 						<!-- <input type="text" class="xq_r" v-model="pow_num" placeholder="请输入发动机号后4位"> -->
-					<view class="xq_r">{{cc_array[cc_index].title||'请选择车辆类型'}} <text class="iconfont icon-next"></text></view>
+					<view class="xq_r">{{cc_array[car_type].title||'请选择车辆类型'}} <text class="iconfont icon-next"></text></view>
 					</view>				
 				</picker>
 				<view class="xq_btn" @click="go_fuc">立即查询</view>
@@ -89,25 +89,29 @@
 				options:'',
 				datas:'',
 				page:1,
-				car_id_n:'京',
-				car_id:'',
-				car_num:'',
-				pow_num:'',
+				province:'京',
+				car_code:'',
+				car_number:'',
+				engine:'',
 				cc_array:[
 					{
-						title:'小型车'
+						title:'小型汽车'
 					},
 					{
-						title:'中型车'
+						title:'中型客车'
 					},
 					{
-						title:'大型车'
+						title:'大型客车'
 					},
 					{
-						title:'重型车'
+						title:'牵引车'
+					},
+					{
+						title:'公交车'
 					},
 				],
-				cc_index:0,
+				car_type:0,
+				img:'',
 				active:false
 			}
 		},
@@ -121,7 +125,26 @@
 			that=this
 			that.options=e||{}
 			console.log(e)
-			
+			if(e.code){
+				var datas=JSON.parse(e.datas)
+				that.datas=datas
+				that.province=datas.province||''
+				that.car_code=datas.car_code||''
+				that.car_number=datas.car_number||''
+				that.engine=datas.engine||''
+				that.img=datas.img||''
+				// that.car_type=datas.img||''
+				if(datas.car_type){
+					for (var i = 0; i < that.cc_array.length; i++) {
+						if(that.cc_array[i].title==datas.car_type){
+							that.car_type=i
+						}
+					}
+				}else{
+					that.car_type=0
+				}
+				console.log(datas)
+			}
 			// that.getdata()
 		},
 		onShow() {
@@ -140,8 +163,44 @@
 					})
 					return
 				}
+				if(!that.car_code){
+					uni.showToast({
+						icon:'none',
+						title:'请输入车牌号'
+					})
+					return
+				}
+				if(!that.car_number){
+					uni.showToast({
+						icon:'none',
+						title:'请输入车辆识别号'
+					})
+					return
+				}
+				if(!that.engine){
+					uni.showToast({
+						icon:'none',
+						title:'请输入发动机号'
+					})
+					return
+				}
+				var cs={
+					img:that.img,
+					province:that.province,
+					car_code:that.car_code,
+					car_number:that.car_number,
+					engine:that.engine,
+					car_type:that.cc_array[that.car_type].title
+				}
+				if(that.datas.code){
+					cs={
+						code:that.datas.code,
+						...cs
+					}
+				}
+				cs=JSON.stringify(cs)
 				uni.navigateTo({
-					url:'/pagesA/rgc_zt_order/rgc_zt_order?type=4'
+					url:'/pagesA/rgc_zt_order/rgc_zt_order?type=4&cs='+cs
 				})
 			},
 			focus ( type ) {
@@ -165,7 +224,7 @@
 				// val = val.toString()
 				console.log(val)
 				if(val.active==2){
-					that.car_id_n=val.val
+					that.province=val.val
 				}else{
 					
 				}
@@ -201,7 +260,7 @@
 			},
 			bindPickerChange_c: function(e) {
 					console.log('picker发送选择改变，携带值为', e.detail.value)
-					this.cc_index = e.detail.value
+					this.car_type = e.detail.value
 			},
 			showpick(){
 				console.log(111)

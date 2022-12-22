@@ -6,7 +6,7 @@
 			<image v-else class="main_bg" src="/static/images/rgcsb_bg.png" mode="widthFix"></image>
 			<view class="cz_box">
 				<view class="xq_li fww">
-					<input class="car_id" type="text" placeholder="请输入车架号或扫描行驶证">
+					<input class="car_id" type="text" placeholder="请输入车架号或扫描行驶证" v-model="vin">
 					<view class="pz_btn" @click="$service.jump" data-url="/pagesA/pzsb/pzsb?type=5">
 						<text class="iconfont icon-saoyisao"></text>拍照识别
 					</view>
@@ -107,7 +107,9 @@
 				car_cz:'',
 				car_jc:'',
 				fb_add:['北京市','市辖区','东城区'],
-				active:false
+				active:false,
+				img:'',
+				vin:''
 			}
 		},
 		computed: {
@@ -128,6 +130,10 @@
 		onLoad(e) {
 			that=this
 			that.options=e||{}
+			if(e.code){
+				that.vin=e.vin
+				that.active=true
+			}
 			console.log(e)
 			
 			// that.getdata()
@@ -172,13 +178,13 @@
 			},
 			go_fuc(){
 				
-				// if(!this.cc_index){
-				// 	uni.showToast({
-				// 		icon:'none',
-				// 		title:'请选择车辆型号'
-				// 	})
-				// 	return
-				// }
+				if(!this.vin){
+					uni.showToast({
+						icon:'none',
+						title:'请输入车架号或扫描行驶证'
+					})
+					return
+				}
 				// if(!this.car_jc){
 				// 	uni.showToast({
 				// 		icon:'none',
@@ -204,9 +210,72 @@
 					})
 					return
 				}
-				uni.redirectTo({
-					url:'/pagesA/rgc_sb_jg/rgc_sb_jg'
+				var datas={
+					vin: that.vin,
+					img: that.img,
+					pay_status:3
+				}
+				var jkurl='/car/car_vin'
+				if(that.options.code){
+					datas={
+						vin: that.vin,
+						img: that.img,
+						code:that.options.code
+					}
+					jkurl='/car/car_vin_again'
+				}
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						// if (typeof datas == 'string') {
+						// 	datas = JSON.parse(datas)
+						// }
+						console.log(res)
+						uni.showToast({
+							icon:'none',
+							title:'提交成功'
+						})
+						setTimeout(()=>{
+							uni.redirectTo({
+								url:'/pagesA/rgc_sb_jg/rgc_sb_jg?code='+datas
+							})
+						},1000)
+						// that.datas=datas.content
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
 				})
+				
 			},
 			focus ( type ) {
 				// let typeArr = {

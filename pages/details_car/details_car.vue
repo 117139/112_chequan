@@ -224,7 +224,7 @@
 					<text class="iconfont icon-gongsi"></text>
 					<text>商家</text>
 				</view>
-				<view v-if="!sc_type" class="xq_bli" @click="sc_fuc">
+				<view v-if="datas.collection==2" class="xq_bli" @click="sc_fuc">
 					<text class="iconfont icon-shoucang"></text>
 					<text>收藏</text>
 				</view>
@@ -383,9 +383,53 @@
 					})
 				})
 			},
-			
+			/**
+			 * 收藏方法
+			 */
 			sc_fuc(){
-				that.sc_type=!that.sc_type
+				var datas={
+					id: that.options.id,
+					type:3
+				}
+			
+				var jkurl='/operate/collection'
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.getdata()
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
 			},
 			onRetry(){
 				that.page=1

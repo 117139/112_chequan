@@ -113,6 +113,16 @@
 					￥{{p_config.top_price2}}
 				</view>
 			</view>
+			<picker v-if="dz_type" @change="bindPickerChange_pay" :value="pay_index" :range="pay_array" range-key="title">
+			<view class="fb_li fb_li2">
+				<view class="fb_li_l">
+					<text>*</text>支付方式
+				</view>
+				<!-- <input class="fb_li_r" type="text" v-model="color" placeholder="请填写车辆颜色"> -->
+				<view class="fb_li_r fb_li_r2">{{pay_array[pay_index].title||'请选择支付方式'}}</view>
+				<text class="iconfont icon-31xiala"></text>
+			</view>
+			</picker>
 		</view>
 		<view class="b_box">
 			<view class="b_box1">
@@ -154,7 +164,18 @@
 				mt_content:'',
 				mtxq_img:[],
 				
-				dz_type:false
+				dz_type:false,
+				pay_array:[
+					{
+						title:'微信支付',
+						id:1
+					},
+					{
+						title:'支付宝',
+						id:2
+					},
+				],
+				pay_index:0,
 			};
 		},
 		computed: {
@@ -176,6 +197,9 @@
 			test(){},
 			dzchange(e){
 				console.log(e)
+			},
+			bindPickerChange_pay: function(e) {
+					this.pay_index = e.detail.value
 			},
 			getdata(){
 				var that=this
@@ -388,7 +412,94 @@
 				// 	})
 				// },1000)
 			},
-			
+			pay_fuc(code){
+				var that =this
+				var jkurl='/sub/usedcar'
+				var datas={
+					code :code,
+					type:that.pay_array[that.pay_index].id
+				}
+				if(that.btnkg==1){
+					return
+				}
+				that.btnkg=1
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+						var provider=''
+						// 支付宝
+						if (that.pay_type == 2) {
+							provider='alipay'
+							
+						}
+						//微信
+						if (that.pay_type == 1) {
+							console.log('datas----------------------------------------->')
+							console.log(typeof datas)
+							console.log(datas)
+							provider='wxpay'
+							
+						}
+						uni.requestPayment({
+							provider: provider,
+							orderInfo: datas, //微信、支付宝订单数据
+							success: function(res) {
+								console.log('success:' + JSON.stringify(res));
+								that.gook_fuc()
+							},
+							fail: function(err) {
+								that.btnkg = 0
+								console.log('fail:' + JSON.stringify(err));
+								uni.showModal({
+									content: "支付失败",
+									showCancel: false
+								})
+							}
+						});
+						
+					} else {
+							that.btnkg=0
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
+			gook_fuc(){
+				uni.showToast({
+					icon:'none',
+					title:'发布成功'
+				})
+				setTimeout(function(){
+					that.btnkg=0
+					uni.redirectTo({
+						// url:'/pages_my/my_fabu/my_fabu'
+						url:'/pages_my/store_fb_ok/store_fb_ok?type=1&type1='+that.type1
+					})
+				},1000)
+			},
 			upimg_fuc(e){
 				var that=this
 				var edatas=e.currentTarget.dataset
