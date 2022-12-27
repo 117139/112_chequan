@@ -922,7 +922,7 @@
 			},
 			pay_fuc(code){
 				var that =this
-				var jkurl='/sub/usedcar'
+				var jkurl='/operate/pay'
 				var datas={
 					code :code,
 					type:that.pay_array[that.pay_index].id

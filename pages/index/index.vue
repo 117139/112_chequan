@@ -286,6 +286,11 @@
 				}else{
 					that.my_order=[]
 				}
+			},
+			addmsg(val){
+				var index=that.cur
+				that.getlist(index)
+				that.onRetry()
 			}
 		},
 		methods: {
@@ -495,16 +500,22 @@
 						if (res.statusCode === 200) {
 							console.log('下载成功');
 							uni.hideLoading()
-							if(num==datas.length){
-								uni.showToast({
-									icon:'none',
-									title:'保存成功'
-								})
-							}else{
-								num++
-								uni.hideLoading()
-								that.down_fuc(num,datas)
-							}
+							uni.saveImageToPhotosAlbum({
+								filePath: res.tempFilePath,
+								success(res_m) {
+									if(num==datas.length){
+										uni.showToast({
+											icon:'none',
+											title:'保存成功'
+										})
+									}else{
+										num++
+										uni.hideLoading()
+										that.down_fuc(num,datas)
+									}
+								}
+							})
+							
 							
 						}
 					},
@@ -607,8 +618,8 @@
 				// /index/store
 				var datas={
 					// store_id:'',
-					// lat:that.addmsg.latitude||'',
-					// lng:that.addmsg.longitude||'',
+					lat:that.addmsg.latitude||'',
+					lng:that.addmsg.longitude||'',
 					// is_hot:'',//是否热门推荐 1、是 2、否
 					// search:'',
 					page:that.page,
@@ -644,7 +655,7 @@
 						}else{
 							that.listc_status=''
 						}
-						if(datas.data>length>0){
+						if(datas.data.length>0){
 							that.page++
 						}
 						// that.getdata_tz()

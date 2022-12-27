@@ -51,9 +51,14 @@ const store = new Vuex.Store({
 		cardatas:{},
 		car_info:[],
 		car_info_hot:[],
-		car_info_all:[]
+		car_info_all:[],
+		
+		proData:[]
 	},
 	mutations: {
+		setprovince(state, proData){
+			state.proData = proData||{}
+		},
 		// 金刚区数据
 		setnavdata(state, navdata){
 			state.navdata = navdata||{}

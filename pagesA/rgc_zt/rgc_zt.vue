@@ -2,7 +2,7 @@
 	<view class="wrap_box">
 		
 		<view class="main_box">
-			<image v-if="navdata[2].banner" class="main_bg" :src="$service.getimg(navdata[2].banner)" mode="aspectFill"></image>
+			<image v-if="navdata[2].banner" class="main_bg" :src="$service.getimg(navdata[2].banner)" mode="widthFix"></image>
 			<image v-else class="main_bg" src="/static/images/rgczt_bg.png" mode="widthFix"></image>
 			<view class="cz_box">
 				<view class="cz_tip"><text class="iconfont icon-yanzhengma"></text>以下信息仅供交管局查询使用，我们将严格保密</view>
@@ -15,10 +15,10 @@
 					<view class="pz_btn" @click="$service.jump" data-url="/pagesA/pzsb/pzsb?type=1">
 						<text class="iconfont icon-saoyisao"></text>拍照识别
 					</view>
-					<view class="pz_jg dis_flex aic ju_c">
+					<view v-if="img" class="pz_jg dis_flex aic ju_c">
 						<view class="pz_jgbox">
 							<view class="pz_jgbox1">
-								<image class="pz_jgbox_img" src="/static/images/banner.png" mode="aspectFill"></image>
+								<image class="pz_jgbox_img" :src="$service.getimg(img)" mode="aspectFill"></image>
 								<view class="pz_jgbox_msg">
 									<view class="pz_i">
 										<text class="iconfont icon-paizhao-xianxing"></text>
@@ -28,7 +28,7 @@
 							</view>
 						</view>
 					</view>
-					<view class="pz_tip">
+					<view v-if="img" class="pz_tip">
 						<text class="iconfont icon-jinggao"></text>请核对识别的信息，如有误请修改
 					</view>
 				</view>
@@ -95,7 +95,16 @@
 				engine:'',
 				cc_array:[
 					{
-						title:'小型汽车'
+						title:'小型轿车'
+					},
+					{
+						title:'中型轿车'
+					},
+					{
+						title:'大型轿车'
+					},
+					{
+						title:'微型轿车'
 					},
 					{
 						title:'中型客车'
@@ -145,6 +154,28 @@
 				}
 				console.log(datas)
 			}
+			uni.$on('setimg_fuc', (data) => {
+					console.log('标题：' + data.title)
+					console.log('内容：' + data.content)
+					// that.getbasedata()
+					that.img=data.content.img_url
+					that.car_number=data.content.vin
+					that.engine=data.content.engine_no
+					var  car_id=data.content.plate_no
+					car_id=car_id.split('')
+					that.province=car_id.shift()
+					that.car_code=car_id.join('')
+					if(data.content.vehicle_type){
+						for (var i = 0; i < that.cc_array.length; i++) {
+							if(that.cc_array[i].title==data.content.vehicle_type){
+								that.car_type=i
+							}
+						}
+					}else{
+						that.car_type=0
+					}
+					// that.imgmsg()
+			})
 			// that.getdata()
 		},
 		onShow() {
@@ -154,6 +185,66 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			imgmsg(){
+				var datas={
+					// day:that.date,
+					page: that.page
+				}
+				uni.showLoading({
+					mask:true,
+					title:'正在获取数据'
+				})
+				var jkurl='/publics/car_license'
+				var nowpage=that.page
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						if(nowpage==1){
+							that.datas=datas.data
+						}else{
+							if(datas.data.length==0){
+								return
+							}
+							that.datas=that.datas.concat(datas.data)
+						}
+						if(datas.data.length==0){
+							return
+						}
+						that.page++
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
 			go_fuc(){
 				if(!that.active){
 					uni.showToast({

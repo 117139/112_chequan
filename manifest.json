@@ -61,7 +61,8 @@
                     }
                 },
                 "ad" : {},
-                "share" : {}
+                "share" : {},
+                "statics" : {}
             }
         }
     },
@@ -73,7 +74,12 @@
         "setting" : {
             "urlCheck" : false
         },
-        "usingComponents" : true
+        "usingComponents" : true,
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "获取位置信息"
+            }
+        }
     },
     "mp-alipay" : {
         "usingComponents" : true

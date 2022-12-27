@@ -14,7 +14,7 @@
 		</topbar>
 		<u-picker :show="show_sx" :columns="columns" @confirm="confirm_sx" @cancel="cancel_sx" />
 		<view class="main_box">
-			<image v-if="navdata[0].banner" class="main_bg" :src="$service.getimg(navdata[0].banner)" mode="aspectFill"></image>
+			<image v-if="navdata[0].banner" class="main_bg" :src="$service.getimg(navdata[0].banner)" mode="widthFix"></image>
 			<image v-else class="main_bg" src="/static/images/bg_addoil.png" mode="widthFix"></image>
 			<view class="data_list">
 				<!-- <view class="data_li" v-for="(item,index) in datas"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=3&id='+1">
@@ -209,7 +209,7 @@
 						}else{
 							that.listc_status=''
 						}
-						if(datas.data>length>0){
+						if(datas.data.length>0){
 							that.page++
 						}
 						// that.getdata_tz()

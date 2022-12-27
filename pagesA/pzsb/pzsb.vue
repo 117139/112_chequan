@@ -29,7 +29,7 @@
 			</view>
 		  <!-- </camera> -->
 		</block>
-		<image class="camera_img" :src="$service.getimg(srcImg)" mode="aspectFill" v-else></image>
+		<image class="camera_img" :src="$service.getimg(srcImg.img_url)" mode="aspectFill" v-else></image>
 		<view class="driving">
 		  <view>请确认信息完整，避免反光、模糊导致无法识别</view>
 		  <image src="/static/images/home_img_03@2x.png"></image>
@@ -114,6 +114,10 @@
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
 			ok_fuc(){
+				uni.$emit('setimg_fuc', {
+					title: ' 刷新信息 ',
+					content: that.srcImg
+				});
 				uni.navigateBack()
 			},
 			upimg_fuc(e){
@@ -161,7 +165,7 @@
 					that.srcImg=datas
 					return
 				}
-				that.$service.wx_upload(imgs[i]).then(res => {
+				that.$service.wx_upload_msg(imgs[i]).then(res => {
 							
 					that.btn_kg = 0
 					console.log(res)

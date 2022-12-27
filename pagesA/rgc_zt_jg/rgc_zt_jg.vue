@@ -186,9 +186,12 @@
 						}
 						console.log(res)
 						that.datas=datas
-						that.list1=datas.result.map((e)=>{
-							return that.$service.getimg(e)
-						})
+						if(datas.result.length>0){
+							that.list1=datas.result.map((e)=>{
+								return that.$service.getimg(e)
+							})
+						}
+						
 						
 					} else {
 					
@@ -318,16 +321,22 @@
 						if (res.statusCode === 200) {
 							console.log('下载成功');
 							uni.hideLoading()
-							if(num==that.list1.length){
-								uni.showToast({
-									icon:'none',
-									title:'保存成功'
-								})
-							}else{
-								num++
-								uni.hideLoading()
-								that.down_fuc(num)
-							}
+							uni.saveImageToPhotosAlbum({
+								filePath: res.tempFilePath,
+								success(res_m) {
+									if(num==that.list1.length){
+										uni.showToast({
+											icon:'none',
+											title:'保存成功'
+										})
+									}else{
+										num++
+										uni.hideLoading()
+										that.down_fuc(num)
+									}
+								}
+							})
+							
 							
 						}
 					},

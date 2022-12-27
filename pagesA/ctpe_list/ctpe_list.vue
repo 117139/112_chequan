@@ -15,7 +15,7 @@
 					{{cell.name}}
 					<!-- <image :src="$service.getimg(cell.img)" mode="aspectFit"></image>{{cell.name}} -->
 				</view>
-				<view v-else class="list-cell" v-for="(cell, cindex) in item" @tap="$service.jump"
+				<view v-else class="list-cell" v-for="(cell, cindex2) in item" @tap="$service.jump"
 					:data-url="'/pagesA/search/search?type=2&key='+cell.name">
 					<myLazyLoad  class="exPimg"  :src="$service.getimg(cell.img)" :loadTime="index" mode="aspectFit"></myLazyLoad>
 					{{cell.name}}

@@ -2,7 +2,7 @@
 	<view class="wrap_box">
 		
 		<view class="main_box">
-			<image v-if="navdata[4].banner" class="main_bg" :src="$service.getimg(navdata[4].banner)" mode="aspectFill"></image>
+			<image v-if="navdata[4].banner" class="main_bg" :src="$service.getimg(navdata[4].banner)" mode="widthFix"></image>
 			<image v-else class="main_bg" src="/static/images/bg_pinggu.png" mode="widthFix"></image>
 			<view class="cz_box">
 				<view class="cz_tip"><text class="iconfont icon-yanzhengma"></text>为全网95%二手车交易提供估值服务</view>
@@ -146,7 +146,28 @@
 			that=this
 			that.options=e||{}
 			console.log(e)
-			
+			uni.$on('setimg_fuc', (data) => {
+					console.log('标题：' + data.title)
+					console.log('内容：' + data.content)
+					// that.getbasedata()
+					that.img=data.content.img_url
+					that.car_number=data.content.vin
+					that.engine=data.content.engine_no
+					var  car_id=data.content.plate_no
+					car_id=car_id.split('')
+					that.province=car_id.shift()
+					that.car_code=car_id.join('')
+					if(data.content.vehicle_type){
+						for (var i = 0; i < that.cc_array.length; i++) {
+							if(that.cc_array[i].title==data.content.vehicle_type){
+								that.car_type=i
+							}
+						}
+					}else{
+						that.car_type=0
+					}
+					// that.imgmsg()
+			})
 			// that.getdata()
 		},
 		onShow() {

@@ -42,17 +42,32 @@
 					<view hover-class="active" :hover-start-time="0" :hover-stay-time="5" @tap="confirm">完成</view>
 				</view>
 				<view class="main">
+				
 					<view class="normal" v-if="active===1">
-						<view class="row" v-for="(item,index) in EngKeyBoardList" :key="index">
-							<view class="item" v-for="(ite,idx) in item" :key="idx" hover-class="active" :hover-start-time="0" :hover-stay-time="5" @tap="input(ite)">
-								{{ite}}
+						
+							<view class="row" v-for="(item,index) in EngKeyBoardList" :key="index">
+								<view class="item" v-for="(ite,idx) in item" :key="idx" hover-class="active" :hover-start-time="0" :hover-stay-time="5" @tap="input(ite)">
+									{{ite}}
+								</view>
+								<view class="item img" v-if="index===EngKeyBoardList.length-1" hover-class="active" :hover-start-time="0" :hover-stay-time="5" @tap="deleteVal">
+									<image src="/static/delete.png" mode=""></image>
+								</view>
 							</view>
-							<view class="item img" v-if="index===EngKeyBoardList.length-1" hover-class="active" :hover-start-time="0" :hover-stay-time="5" @tap="deleteVal">
-								<image src="/static/delete.png" mode=""></image>
-							</view>
-						</view>
+						
 					</view>
+					
 					<view class="area" v-if="active===2">
+						<block v-if="proData">
+							<view class="row diy_area" >
+								<view class="item" v-for="(ite,idx) in proData" :key="idx" hover-class="active" :hover-start-time="0" :hover-stay-time="5" @tap="input(ite)">
+									{{ite.title}}
+								</view>
+								<!-- <view class="item img dis_flex aic ju_c" v-if="index===EngKeyBoardList.length-1" hover-class="active" :hover-start-time="0" :hover-stay-time="5" @tap="deleteVal">
+									<image src="/static/delete.png" mode=""></image>删除
+								</view> -->
+							</view>
+						</block>
+						<block v-else>
 						<view class="row" v-for="(item,index) in areaList" :key="index">
 							<view class="item" v-for="(ite,idx) in item" :key="idx" hover-class="active" :hover-start-time="0" :hover-stay-time="5" @tap="input(ite)">
 								{{ite}}
@@ -61,6 +76,7 @@
 								<image src="/static/delete.png" mode=""></image>删除
 							</view> -->
 						</view>
+						</block>
 					</view>
 				</view>
 			</view>
@@ -71,6 +87,10 @@
 
 <script>
 	import uniPopup from "@/components/keyboard-package/uni-popup.vue"
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	export default {
 		components: {
 			uniPopup
@@ -115,9 +135,19 @@
 					['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
 					['Z', 'X', 'C', 'V', 'B', 'N', 'M']
 				],
-				active: 2
+				active: 2,
+				proData_m:[]
 			};
 		},
+		computed: {
+			...mapState([
+				'hasLogin',
+				'loginDatas',
+				'basedata',
+				'proData'
+			])
+		},
+		
 		methods: {
 			open() {
 				this.$refs.keyboardPackage.open();
@@ -132,6 +162,9 @@
 			},
 			input(val) {
 				if (val === '.' && this.disableDot) return;
+				if(this.proData){
+					val=val.title
+				}
 				var datas={
 					val:val,
 					active:this.active
@@ -260,14 +293,22 @@
 		}
 
 		.main {
-			height: 435rpx;
+			min-height: 445rpx;
 
 			.row {
 				margin: 13rpx 0;
 				display: flex;
 				justify-content: center;
 				align-items: center;
-
+				&.diy_area{
+					flex-wrap: wrap;
+					margin: 0;
+					padding: 7rpx 13rpx;
+					.item{
+						margin:7rpx 7rpx;
+					}
+				}
+				
 				.item {
 					width: 56rpx;
 					height: 94rpx;
@@ -300,4 +341,5 @@
 
 		}
 	}
+	
 </style>

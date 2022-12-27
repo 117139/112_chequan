@@ -743,7 +743,142 @@ const wx_upload = function(tximg,type) {
 	})
 
 }
+const wx_upload_msg = function(tximg,type) {
+	return new Promise((resolve, reject) => {
+		uni.showLoading({
+			mask: true,
+			title: '正在上传'
+		})
+		// #ifndef H5
+		console.log(tximg)
+		var jkurl='/publics/car_license'
+		// if(type==1){
+		// 	jkurl='Sign/video'
+		// }
+		// if(type==2){
+		// 	jkurl='/sign/file'
+		// }
+		uni.uploadFile({
+			url: IPurl + jkurl,
+			filePath: tximg,
+			name: 'file',
+			header: header,
+			formData: {
+				token: uni.getStorageSync('token')
+			},
+			// success: (uploadFileRes) => {
+			// 	console.log(uploadFileRes.data);
+			// 	var ndata = JSON.parse(uploadFileRes.data)
+			// 	resolve(uploadFileRes)
+			// },
+			complete: (res) => {
+				uni.hideLoading();
+				uni.stopPullDownRefresh(); //慎用hideLoading,会关闭wx.showToast弹窗
+				// console.log(`耗时${Date.now() - timeStart}`);
+				console.log(res)
+				if (res.statusCode == 200) { //请求成功
+					var ndata = JSON.parse(res.data)
+					if (ndata.code == -1) {
+						store.commit('logout')
+						uni.navigateTo({
+							url: '/pagesC_mxx/login/login'
+						})
+						return
+					} else if (ndata.code == 0) {
+						if (ndata.msg) {
 
+							uni.showToast({
+								icon: 'none',
+								title: ndata.msg
+							})
+						} else {
+
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+					resolve(ndata)
+				} else {
+					reject(res);
+				}
+			}
+		});
+		// #endif
+		// #ifdef H5
+		uni.request({
+				url: tximg,
+				method: 'GET',
+			
+				responseType: 'arraybuffer',
+				success: (res) => {
+						let base64 = wx.arrayBufferToBase64(res.data); //把arraybuffer转成base64
+						console.log('base64')
+						// console.log(base64)
+						base64 = 'data:image/jpeg;base64,' + base64; //不加上这串字符，在页面无法显示
+						// return base64
+						var datas={
+							base64_img:base64,
+							// type:1,
+						}
+						var jkurl='/publics/base'
+						// if(type==1){
+						// 	jkurl='Sign/video'
+						// }
+						var jkurls=IPurl + jkurl
+						// var jkurl='https://yibeitong.com.aa.800123456.top/api/'+'/upload/base64Img'
+						console.log('h5 upload')
+						uni.request({
+							url: jkurls,
+							data: datas,
+							method: 'POST',
+							header: {
+								'content-type': 'application/x-www-form-urlencoded'
+							},
+							complete: (res) => {
+								uni.hideLoading();
+								uni.stopPullDownRefresh(); //慎用hideLoading,会关闭wx.showToast弹窗
+								console.log(res)
+								if (res.statusCode == 200) { //请求成功
+									console.log(res)
+									if (res.data.code == 0) {
+										if (res.data.msg) {
+						
+											uni.showToast({
+												icon: 'none',
+												title: res.data.msg
+											})
+										} else {
+						
+											uni.showToast({
+												icon: 'none',
+												title: '操作失败'
+											})
+										}
+									}
+									resolve(res.data)
+								} else {
+									reject(res);
+								}
+							}
+						})
+						// 单个请求
+						// P_post(jkurl, datas).then(res => {
+						// 	resolve(ndata)
+						// }).catch(e => {
+						// 	reject(res);
+						// })
+				},
+				fail: (err) => {
+					console.log(err)
+				}
+		});
+		
+		// #endif
+	})
+
+}
 
 
 
@@ -2136,6 +2271,7 @@ export default {
 	pveimg,
 	get_fwb,
 	wx_upload,
+	wx_upload_msg,
 	wxpay,
 	
 	emojiList,

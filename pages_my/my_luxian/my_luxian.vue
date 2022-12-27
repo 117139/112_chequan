@@ -256,7 +256,7 @@
 						}else{
 							that.listc_status=''
 						}
-						if(datas.data>length>0){
+						if(datas.data.length>0){
 							that.page++
 						}
 						// that.getdata_tz()

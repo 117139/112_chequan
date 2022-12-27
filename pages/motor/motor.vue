@@ -2,8 +2,9 @@
 	<view class="content">
 		<topbar>
 			<view class="my_header dis_flex aic">
-				<image class="h_add" src="/static/images/icon_address.png" mode="aspectFit"></image>
-				<view class="flex_1 h_add_text" >北京</view>
+				<image class="h_add" src="/static/images/icon_address.png" mode="aspectFit" @click="getadd"></image>
+				<view v-if="addmsg.address" class="flex_1 h_add_text"  @click="getadd">{{addmsg.address.city||'--'}}</view>
+				<view v-else class="flex_1 h_add_text"  @click="getadd">--</view>
 				<image  @tap="$service.jump" data-url="/pagesA/search/search" class="h_iconr" src="/static/images/icon_find.png" mode="aspectFit"></image>
 				<image @click="$service.call" :data-tel="p_config.kf_phone" class="h_iconr" src="/static/images/icon_kefu.png" mode="aspectFit"></image>
 			</view>
@@ -141,11 +142,37 @@
 			that.getnotify()
 			that.onRetry()
 		},
+		watch:{
+			addmsg(val){
+				that.onRetry()
+			}
+		},
 		onReachBottom() {
 			that.getlist_car()
 			
 		},
 		methods: {
+			/**
+			 * @Description 获取地理位置信息
+			 * 
+			 */
+			getadd(){
+				uni.getLocation({
+					type: 'gcj02',
+					// #ifdef APP
+					geocode:true,
+					// #endif
+					success: function (res) {
+						console.log('当前位置的经度：' + res.longitude);
+						console.log('当前位置的纬度：' + res.latitude);
+						that.$store.commit('setaddmsg',res)
+						// that.getdata()
+					},
+					fail: function (res) {
+						console.log(res)
+					}
+				});
+			},
 			/**
 			 * 店铺列表
 			 * @param  status = [1|2|3|4] 类型 1、汽车美容 2、摩托车 3、二手车 4、加油站
@@ -224,8 +251,8 @@
 				// /index/store
 				var datas={
 					// store_id:'',
-					// lat:that.addmsg.latitude||'',
-					// lng:that.addmsg.longitude||'',
+					lat:that.addmsg.latitude||'',
+					lng:that.addmsg.longitude||'',
 					// is_hot:'',//是否热门推荐 1、是 2、否
 					// search:'',
 					page:that.page,
@@ -267,7 +294,7 @@
 						}else{
 							that.listc_status=''
 						}
-						if(datas.data>length>0){
+						if(datas.data.length>0){
 							that.page++
 						}
 						// that.getdata_tz()

@@ -26,6 +26,8 @@
 						<view v-if="active==2" class="li_num flex_1">{{item.price}}万</view>
 						<!-- 
 						<view v-if="active==3" class="li_num flex_1">7.8元</view> -->
+						<view class="li_cz" @click.stop="up_fuc(item)">上架</view>
+						<view class="li_cz" @click.stop="down_fuc(item)">下架</view>
 						<view class="li_cz" @click.stop="$service.jump" :data-url="'/pages_my/store_fb/store_fb?type1=1&type='+active+'&id='+item.id">编辑</view>
 						<view class="li_cz" @click.stop="del_fuc(item)">删除</view>
 					 </view>
@@ -164,7 +166,7 @@
 						}else{
 							that.listc_status=''
 						}
-						if(datas.data>length>0){
+						if(datas.data.length>0){
 							that.page++
 						}
 						// that.getdata_tz()
@@ -226,10 +228,53 @@
 				    content: '是否删除该信息',
 				    success: function (res) {
 				        if (res.confirm) {
+									var jkurl='/operate/del'
+									var datas={
+										id:item.id,
+										type:that.tabs[that.active].id,
+									}
+									that.$service.P_post(jkurl, datas).then(res => {
+										that.btnkg = 0
+										console.log(res)
+										if (res.code == 1) {
+											that.htmlReset = 0
+											var datas = res.data
+											console.log(typeof datas)
+									
+											if (typeof datas == 'string') {
+												datas = JSON.parse(datas)
+											}
+											console.log(res)
+											uni.showToast({
+												title:'删除成功',
+												icon:'none'
+											})
+											that.onRetry()
+										} else {
+										
+											if (res.msg) {
+												uni.showToast({
+													icon: 'none',
+													title: res.msg
+												})
+											} else {
+												uni.showToast({
+													icon: 'none',
+													title: '获取数据失败'
+												})
+											}
+										}
+									}).catch(e => {
+										that.htmlReset = 1
+										that.btnkg = 0
+										// that.$refs.htmlLoading.htmlReset_fuc(1)
+										console.log(e)
 										uni.showToast({
-											title:'删除成功',
-											icon:'none'
+											icon: 'none',
+											title: '获取数据失败，请检查您的网络连接'
 										})
+									})
+										
 				           
 				        } else if (res.cancel) {
 				            console.log('用户点击取消');
@@ -237,7 +282,124 @@
 				    }
 				});
 			},
-			
+			up_fuc(item){
+				uni.showModal({
+				    title: '提示',
+				    content: '是否上架该信息',
+				    success: function (res) {
+				        if (res.confirm) {
+										
+				           var jkurl='/operate/is_show'
+				           var datas={
+				           	id:item.id,
+				           	type:that.tabs[that.active].id,
+				           }
+				           that.$service.P_post(jkurl, datas).then(res => {
+				           	that.btnkg = 0
+				           	console.log(res)
+				           	if (res.code == 1) {
+				           		that.htmlReset = 0
+				           		var datas = res.data
+				           		console.log(typeof datas)
+				           
+				           		if (typeof datas == 'string') {
+				           			datas = JSON.parse(datas)
+				           		}
+				           		console.log(res)
+				           		uni.showToast({
+				           			title:'上架成功',
+				           			icon:'none'
+				           		})
+				           		that.onRetry()
+				           	} else {
+				           	
+				           		if (res.msg) {
+				           			uni.showToast({
+				           				icon: 'none',
+				           				title: res.msg
+				           			})
+				           		} else {
+				           			uni.showToast({
+				           				icon: 'none',
+				           				title: '获取数据失败'
+				           			})
+				           		}
+				           	}
+				           }).catch(e => {
+				           	that.htmlReset = 1
+				           	that.btnkg = 0
+				           	// that.$refs.htmlLoading.htmlReset_fuc(1)
+				           	console.log(e)
+				           	uni.showToast({
+				           		icon: 'none',
+				           		title: '获取数据失败，请检查您的网络连接'
+				           	})
+				           })
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
+			},
+			dowm_fuc(item){
+				uni.showModal({
+				    title: '提示',
+				    content: '是否下架该信息',
+				    success: function (res) {
+				        if (res.confirm) {
+										
+				           var jkurl='/operate/is_show'
+				           var datas={
+				           	id:item.id,
+				           	type:that.tabs[that.active].id,
+				           }
+				           that.$service.P_post(jkurl, datas).then(res => {
+				           	that.btnkg = 0
+				           	console.log(res)
+				           	if (res.code == 1) {
+				           		that.htmlReset = 0
+				           		var datas = res.data
+				           		console.log(typeof datas)
+				           
+				           		if (typeof datas == 'string') {
+				           			datas = JSON.parse(datas)
+				           		}
+				           		console.log(res)
+				           		uni.showToast({
+				           			title:'下架成功',
+				           			icon:'none'
+				           		})
+				           		that.onRetry()
+				           	} else {
+				           	
+				           		if (res.msg) {
+				           			uni.showToast({
+				           				icon: 'none',
+				           				title: res.msg
+				           			})
+				           		} else {
+				           			uni.showToast({
+				           				icon: 'none',
+				           				title: '获取数据失败'
+				           			})
+				           		}
+				           	}
+				           }).catch(e => {
+				           	that.htmlReset = 1
+				           	that.btnkg = 0
+				           	// that.$refs.htmlLoading.htmlReset_fuc(1)
+				           	console.log(e)
+				           	uni.showToast({
+				           		icon: 'none',
+				           		title: '获取数据失败，请检查您的网络连接'
+				           	})
+				           })
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
+			},
 			// onRetry(){
 			// 	that.page=1
 			// 	that.datas=[]

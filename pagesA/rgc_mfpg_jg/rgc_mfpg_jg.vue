@@ -2,7 +2,7 @@
 	<view class="wrap_box">
 		
 		<view class="main_box">
-			<image v-if="navdata[4].banner" class="main_bg" :src="$service.getimg(navdata[4].banner)" mode="aspectFill"></image>
+			<image v-if="navdata[4].banner" class="main_bg" :src="$service.getimg(navdata[4].banner)" mode="widthFix"></image>
 			<image v-else class="main_bg" src="/static/images/bg_pinggu.png" mode="widthFix"></image>
 			<view class="cz_box">
 				<view class="cz_tip"><text class="iconfont icon-yanzhengma"></text>为全网95%二手车交易提供估值服务</view>
@@ -126,7 +126,12 @@
 			that=this
 			that.options=e||{}
 			console.log(e)
-			
+			uni.$on('setimg_fuc', (data) => {
+					console.log('标题：' + data.title)
+					console.log('内容：' + data.content)
+					// that.getbasedata()
+					that.img=data.content
+			})
 			// that.getdata()
 		},
 		onShow() {
