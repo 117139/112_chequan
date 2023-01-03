@@ -2,7 +2,16 @@
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
 		<scroll-view scroll-x="true" class="scroll_x topZ_box"  :scroll-into-view="'t'+active">
-			<view class="topZ_li" :id="'t'+index" :class="{active:active==index}" @click="active=index" v-for="(item,index) in tabs">{{item.title}}</view>
+			<view class="topZ_li" :id="'t'+0" :class="{active:active==0}" @click="active=0">车辆参数</view>
+			<view v-if="car_params.body" class="topZ_li" :id="'t'+1" :class="{active:active==1}" @click="active=1">车身尺寸</view>
+			<view v-if="car_params.engine" class="topZ_li" :id="'t'+2" :class="{active:active==2}" @click="active=2">动力系统</view>
+			<view v-if="car_params.chassisbrake" class="topZ_li" :id="'t'+201" :class="{active:active==201}" @click="active=201">底盘制动</view>
+			<view v-if="car_params.drivingauxiliary" class="topZ_li" :id="'t'+3" :class="{active:active==3}" @click="active=3">驾驶辅助</view>
+			<view v-if="car_params.safe" class="topZ_li" :id="'t'+4" :class="{active:active==4}" @click="active=4">安全配置</view>
+			<view v-if="car_params.internalconfig" class="topZ_li" :id="'t'+5" :class="{active:active==5}" @click="active=5">内部配置</view>
+			<view v-if="car_params.entcom" class="topZ_li" :id="'t'+6" :class="{active:active==6}" @click="active=6">信息娱乐</view>
+			<view  v-if="car_params.seat" class="topZ_li" :id="'t'+7" :class="{active:active==7}" @click="active=7">座椅配置</view>
+			<!-- <view class="topZ_li" :id="'t'+index" :class="{active:active==index}" @click="active=index" v-for="(item,index) in tabs">{{item.title}}</view> -->
 		</scroll-view>
 		<scroll-view v-if="car_params" scroll-y="true" class="scroll_y" :scroll-into-view="'a'+active">
 			<view class="msg_box" id="a0">
@@ -138,7 +147,54 @@
 					<view>{{car_params.gearbox.gearnum||''}}</view>
 				</view>
 			</view>
-			
+			<view v-if="car_params.chassisbrake" class="msg_box1" id="a201">
+				<view class="msg_box1_tit">底盘制动</view>
+				<view class="msg_box1_li">
+					<view>车体结构</view>
+					<view>{{car_params.chassisbrake.bodystructure||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>转向助力</view>
+					<view>{{car_params.chassisbrake.powersteering||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>驱动方式</view>
+					<view>{{car_params.chassisbrake.drivemode||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>前制动类型</view>
+					<view>{{car_params.chassisbrake.frontbraketype||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>后制动类型</view>
+					<view>{{car_params.chassisbrake.rearbraketype||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>驻车制动类型</view>
+					<view>{{car_params.chassisbrake.parkingbraketype||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>空气悬挂</view>
+					<view>{{car_params.chassisbrake.airsuspension||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>可调悬挂</view>
+					<view>{{car_params.chassisbrake.adjustablesuspension||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>前悬挂类型</view>
+					<view>{{car_params.chassisbrake.frontsuspensiontype||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>后悬挂类型</view>
+					<view>{{car_params.chassisbrake.rearsuspensiontype||''}}</view>
+				</view>
+				<view class="msg_box1_li">
+					<view>中央差速器锁</view>
+					<view>{{car_params.chassisbrake.centerdifferentiallock||''}}</view>
+				</view>
+				
+			</view>
 			<view v-if="car_params.drivingauxiliary" class="msg_box1" id="a3">
 				<view class="msg_box1_tit">驾驶辅助</view>
 				<view class="msg_box1_li">

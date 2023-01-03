@@ -26,8 +26,8 @@
 						<view v-if="active==2" class="li_num flex_1">{{item.price}}万</view>
 						<!-- 
 						<view v-if="active==3" class="li_num flex_1">7.8元</view> -->
-						<view class="li_cz" @click.stop="up_fuc(item)">上架</view>
-						<view class="li_cz" @click.stop="down_fuc(item)">下架</view>
+						<view v-if="item.is_show==1" class="li_cz" @click.stop="down_fuc(item)">下架</view>
+						<view v-else class="li_cz" @click.stop="up_fuc(item)">上架</view>
 						<view class="li_cz" @click.stop="$service.jump" :data-url="'/pages_my/store_fb/store_fb?type1=1&type='+active+'&id='+item.id">编辑</view>
 						<view class="li_cz" @click.stop="del_fuc(item)">删除</view>
 					 </view>
@@ -232,6 +232,7 @@
 									var datas={
 										id:item.id,
 										type:that.tabs[that.active].id,
+										
 									}
 									that.$service.P_post(jkurl, datas).then(res => {
 										that.btnkg = 0
@@ -293,6 +294,7 @@
 				           var datas={
 				           	id:item.id,
 				           	type:that.tabs[that.active].id,
+										is_show:1
 				           }
 				           that.$service.P_post(jkurl, datas).then(res => {
 				           	that.btnkg = 0
@@ -341,7 +343,7 @@
 				    }
 				});
 			},
-			dowm_fuc(item){
+			down_fuc(item){
 				uni.showModal({
 				    title: '提示',
 				    content: '是否下架该信息',
@@ -352,6 +354,7 @@
 				           var datas={
 				           	id:item.id,
 				           	type:that.tabs[that.active].id,
+										is_show:2
 				           }
 				           that.$service.P_post(jkurl, datas).then(res => {
 				           	that.btnkg = 0
