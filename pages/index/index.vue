@@ -19,35 +19,35 @@
 				</view>
 				<view class="index_tui_li_text">{{navdata[1].title||'汽车美容'}}</view>
 			</view>
-			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_zt/rgc_zt">
+			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_zt/rgc_zt" :data-login="true">
 				<view class="index_tui_li_img">
 					<image v-if="navdata[2].img" :src="$service.getimg(navdata[2].img)" mode="aspectFill"></image>
 					<image v-else src="/static/images/iti3.png" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">{{navdata[2].title||'人工查状态'}}</view>
 			</view>
-			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_nj/rgc_nj">
+			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_nj/rgc_nj" :data-login="true">
 				<view class="index_tui_li_img">
 					<image v-if="navdata[3].img" :src="$service.getimg(navdata[3].img)" mode="aspectFill"></image>
 					<image v-else src="/static/images/iti4.png" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">{{navdata[3].title||'急速年检'}}</view>
 			</view>
-			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_mfpg/rgc_mfpg">
+			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_mfpg/rgc_mfpg" :data-login="true">
 				<view class="index_tui_li_img">
 					<image v-if="navdata[4].img" :src="$service.getimg(navdata[4].img)" mode="aspectFill"></image>
 					<image v-else src="/static/images/iti5.png" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">{{navdata[4].title||'免费评估'}}</view>
 			</view>
-			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_sb/rgc_sb">
+			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_sb/rgc_sb" :data-login="true">
 				<view class="index_tui_li_img">
 					<image v-if="navdata[5].img" :src="$service.getimg(navdata[5].img)" mode="aspectFill"></image>
 					<image v-else src="/static/images/iti6.png" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">{{navdata[5].title||'车型识别'}}</view>
 			</view>
-			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_wz/rgc_wz">
+			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_wz/rgc_wz" :data-login="true">
 				<view class="index_tui_li_img">
 					<image v-if="navdata[6].img" :src="$service.getimg(navdata[6].img)" mode="aspectFill"></image>
 					<image v-else src="/static/images/iti7.png" mode="aspectFill"></image>
@@ -64,7 +64,7 @@
 			</view>
 		</view>
 		<view class="indext2_ul dis_flex fww">
-			<view class="indext2_li" @click="$service.jump" data-url="/pagesA/rgc_sb/rgc_sb">
+			<view class="indext2_li" @click="$service.jump" data-url="/pagesA/rgc_sb/rgc_sb" :data-login="true">
 				<image v-if="p_config.img1" class="indext2_libg" :src="$service.getimg(p_config.img1)" mode="aspectFill"></image>
 				<image v-else class="indext2_libg" src="/static/images/it2i1.png" mode="aspectFill"></image>
 				<!-- <view class="indext2_liinr">
@@ -72,7 +72,7 @@
 					<text>识别高低配</text>
 				</view> -->
 			</view>
-			<view class="indext2_li" @click="$service.jump" data-url="/pagesA/rgc_zt/rgc_zt">
+			<view class="indext2_li" @click="$service.jump" data-url="/pagesA/rgc_zt/rgc_zt" :data-login="true">
 				<image v-if="p_config.img2" class="indext2_libg" :src="$service.getimg(p_config.img2)" mode="aspectFill"></image>
 				<image v-else class="indext2_libg" src="/static/images/it2i2.png" mode="aspectFill"></image>
 				<!-- <view class="indext2_liinr">
@@ -80,7 +80,7 @@
 					<text>1对1快速</text>
 				</view> -->
 			</view>
-			<view class="indext2_li" @click="$service.jump" data-url="/pagesA/rgc_mfpg/rgc_mfpg">
+			<view class="indext2_li" @click="$service.jump" data-url="/pagesA/rgc_mfpg/rgc_mfpg" :data-login="true">
 				<image v-if="p_config.img3" class="indext2_libg" :src="$service.getimg(p_config.img3)" mode="aspectFill"></image>
 				<image v-else class="indext2_libg" src="/static/images/it2i3.png" mode="aspectFill"></image>
 				<!-- <view class="indext2_liinr" style="color: #305380;">

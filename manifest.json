@@ -60,7 +60,9 @@
                         "appkey_android" : "78d03e4fa2c58385000c443d09fbeb2e"
                     }
                 },
-                "ad" : {},
+                "ad" : {
+                    "ks" : {}
+                },
                 "share" : {},
                 "statics" : {}
             }

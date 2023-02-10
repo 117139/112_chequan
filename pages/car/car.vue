@@ -14,26 +14,26 @@
 		</topbar>
 		<!-- 金刚区 -->
 		<view class="index_tui_list dis_flex fww">
-			<view class="index_tui_li" @tap="$service.jump" data-url="/pages_my/store_fb/store_fb?type1=1&type=2">
+			<view class="index_tui_li" @tap="$service.jump" data-url="/pages_my/store_fb/store_fb?type1=1&type=2" :data-login="true">
 				<view class="index_tui_li_img">
 					<image src="/static/images/ici1.png" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">我要发布</view>
 			</view>
-			<view class="index_tui_li" @tap="$service.jump" data-url="/pages_my/store_fb/store_fb?type1=1&type=2">
+			<view class="index_tui_li" @tap="$service.jump" data-url="/pages_my/store_fb/store_fb?type1=1&type=2" :data-login="true">
 				<view class="index_tui_li_img">
 					<image src="/static/images/ici2.png" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">我要卖车</view>
 			</view>
-			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_sb/rgc_sb">
+			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_sb/rgc_sb" :data-login="true">
 				<view class="index_tui_li_img">
 					<image v-if="navdata[5].img" :src="$service.getimg(navdata[5].img)" mode="aspectFill"></image>
 					<image v-else src="/static/images/iti6.png" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">{{navdata[5].title||'车型识别'}}</view>
 			</view>
-			<view class="index_tui_li"  @click="$service.jump" data-url="/pagesA/rgc_mfpg/rgc_mfpg">
+			<view class="index_tui_li"  @click="$service.jump" data-url="/pagesA/rgc_mfpg/rgc_mfpg" :data-login="true">
 				<!-- <view class="index_tui_li_img">
 					<image src="/static/images/iti5.png" mode="aspectFill"></image>
 				</view>
@@ -97,7 +97,7 @@
 				</view>
 			</view>
 		</view>
-		<uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more>
+		<uni-load-more  :status="listc_status" :contentText="contentText"></uni-load-more>
 	</view>
 </template>
 
@@ -131,10 +131,13 @@
 				that.getcar_datas()
 			}
 			that.getlist_tj()
-			that.onRetry()
 		},
 		computed: {
 			...mapState(['hasLogin', 'forcedLogin','loginDatas','addmsg','p_config','navdata','car_info','car_info_hot']),
+		},
+		onShow() {
+			
+			that.onRetry()
 		},
 		onReachBottom() {
 			that.getlist_car()

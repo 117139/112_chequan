@@ -60,19 +60,24 @@
 				page:1,
 				columns:[
 					{
-						title:'1km'
+						title:'1km',
+						id:1
 					},
 					{
-						title:'5km'
+						title:'5km',
+						id:5
 					},
 					{
-						title:'10km'
+						title:'10km',
+						id:10
 					},
 					{
-						title:'15km'
+						title:'15km',
+						id:15
 					},
 					{
-						title:'20km'
+						title:'20km',
+						id:20
 					},
 				],
 				index:-1,
@@ -114,6 +119,7 @@
 			confirm(e) { //选择性别 确定
 				console.log(e)
 				this.index = e.detail.value
+				that.onRetry()
 			},
 			confirm_sx(e) { //选择工作时间
 				this.ay_zodiac = e.value[0]

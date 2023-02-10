@@ -5,7 +5,7 @@ const USERS_KEY = 'USERS_KEY';
 const STATE_KEY = 'STATE_KEY';
 const map_key = "7FEBZ-WLWK2-PMGUE-C4BFT-EKXB6-BFFNR"
 const appVN=1
-let baseurl = ""
+let baseurl = "http://chequan.a.800123456.vip/"
 // const baseurl = "http://192.168.0.119:8000/"
 // var jkurl_type=uni.getStorageSync('jkurl_type')
 var ck_url=uni.getStorageSync('jkurl')
@@ -13,10 +13,10 @@ var ck_url=uni.getStorageSync('jkurl')
 if (process.env.NODE_ENV === 'development') {
 	console.log('开发环境');
 	// baseurl='http://10.10.66.102:8000/'
-	baseurl='http://car.gxp88.top/'
+	// baseurl='http://car.gxp88.top/'
 } else {
 	console.log('生产环境');
-	baseurl='http://car.gxp88.top/'
+	// baseurl='http://car.gxp88.top/'
 }
 let imgurl = baseurl
 // let imgurl = ''

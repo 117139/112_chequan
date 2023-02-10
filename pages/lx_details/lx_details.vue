@@ -5,9 +5,9 @@
 			<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration"
 			 indicator-active-color='#8e8e8e' :circular="circular" @change="swiper_change">
 				<!-- <block v-for="(item,idx) in goodsData.img"> -->
-				<block v-for="(item,idx) in goodsData.imageList ">
+				<block v-for="(item,idx) in datas.banner ">
 					<swiper-item>
-						<image :src="$service.getimg(item.url)" class="slide-image" mode="aspectFill" :data-src="$service.getimg(item.url)"  />
+						<image :src="$service.getimg(item)" class="slide-image" mode="aspectFill" :data-src="$service.getimg(item)"  />
 						<!-- <image :src="getimg(item)" class="slide-image" mode="aspectFill" width="355" height="150" :data-src="getimg(item)"
 						 :data-array="filter.getgimgarrIP(goodsData.img)" @tap.stop="pveimg" /> -->
 					</swiper-item>
@@ -15,7 +15,7 @@
 		
 			</swiper>
 			<!-- <view class="br_box">{{cur_swiper}}/{{goodsData.img.length}}</view> -->
-			<view v-if="goodsData.imageList.length>0" class="br_box">{{cur_swiper}}/{{goodsData.imageList.length}}</view>
+			<view v-if="datas.banner.length>0" class="br_box">{{cur_swiper}}/{{datas.banner.length}}</view>
 		</view>
 		<view v-if="datas.userInfo" class="xq_tmsg dis_flex aic">
 			<image class="xq_ttx" :src="$service.getimg(datas.userInfo.img)" mode="aspectFill"></image>
@@ -89,20 +89,7 @@
 				interval: 3000,
 				duration: 1000,
 				goodsData:{
-					imageList:[
-						{
-							url:'/static/images/lx1.jpg'
-						},
-						{
-							url:'/static/images/lx2.jpg'
-						},
-						{
-							url:'/static/images/lx1.jpg'
-						},
-						{
-							url:'/static/images/lx2.jpg'
-						},
-					]
+					
 				},
 				cur_swiper:1,
 				sc_type:false
