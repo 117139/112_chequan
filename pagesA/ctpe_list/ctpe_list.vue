@@ -9,13 +9,13 @@
 				<!-- #ifndef APP-NVUE -->
 				<u-index-anchor :text="indexList[index]"></u-index-anchor>
 				<!-- #endif -->
-				<view v-if="options.type==1" class="list-cell" v-for="(cell, cindex) in item" @tap="getcx(cell)"
+				<view v-if="options.type==1||options.type==2" class="list-cell" v-for="(cell, cindex) in item" @tap="getcx(cell)"
 					:data-url="'/pagesA/search/search?type=2&key='+cell.name">
 					<!-- <myLazyLoad  class="exPimg"  :src="$service.getimg(cell.img)" :loadTime="index" mode="aspectFit"></myLazyLoad> -->
 					{{cell.name}}
 					<!-- <image :src="$service.getimg(cell.img)" mode="aspectFit"></image>{{cell.name}} -->
 				</view>
-				<view v-else class="list-cell" v-for="(cell, cindex2) in item" @tap="$service.jump"
+				<view v-else class="list-cell" v-for="(cell, cindex) in item" @tap="$service.jump"
 					:data-url="'/pagesA/search/search?type=2&key='+cell.name">
 					<!-- <myLazyLoad  class="exPimg"  :src="$service.getimg(cell.img)" :loadTime="index" mode="aspectFit"></myLazyLoad> -->
 					{{cell.name}}
@@ -63,6 +63,12 @@
 			// ...mapMutations(['wxshouquan','login']),
 			test() {},
 			getcx(item){
+				if(this.options.type==2){
+					uni.navigateTo({
+						url:'/pagesA/search/search?type=2&key='+item.name
+					})
+					return
+				}
 				uni.$emit('carpp_fuc', {
 					title: ' 品牌信息 ',
 					content: item

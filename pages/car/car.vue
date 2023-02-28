@@ -26,14 +26,14 @@
 				</view>
 				<view class="index_tui_li_text">我要卖车</view>
 			</view>
-			<view class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_sb/rgc_sb" :data-login="true">
+			<view v-if="navdata[5].is_show==1" class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_sb/rgc_sb" :data-login="true">
 				<view class="index_tui_li_img">
 					<image v-if="navdata[5].img" :src="$service.getimg(navdata[5].img)" mode="aspectFill"></image>
 					<image v-else src="/static/images/iti6.png" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">{{navdata[5].title||'车型识别'}}</view>
 			</view>
-			<view class="index_tui_li"  @click="$service.jump" data-url="/pagesA/rgc_mfpg/rgc_mfpg" :data-login="true">
+			<view v-if="navdata[4].is_show==1" class="index_tui_li"  @click="$service.jump" data-url="/pagesA/rgc_mfpg/rgc_mfpg" :data-login="true">
 				<!-- <view class="index_tui_li_img">
 					<image src="/static/images/iti5.png" mode="aspectFill"></image>
 				</view>
@@ -57,7 +57,7 @@
 					<view class="cart_text">{{item.name}}</view>
 				</view>
 			</block>
-			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/ctpe_list/ctpe_list">
+			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/ctpe_list/ctpe_list?type=2">
 				<image class="cart_img" src="/static/images/icon_more.png" mode="aspectFit"></image>
 				<view class="cart_text">更多</view>
 			</view>

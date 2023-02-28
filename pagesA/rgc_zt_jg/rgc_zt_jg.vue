@@ -1,7 +1,7 @@
 <template>
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
-		<view v-if="datas.result.length>0" class="banner_box">
+		<view v-if="datas.result&&datas.result.length>0" class="banner_box">
 			<u-swiper  :list="list1" @click="click_fuc" height="384rpx" radius='5' :circular="true" 
 				:indicator="true"
 			  :autoplay="false" 

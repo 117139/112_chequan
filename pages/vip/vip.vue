@@ -9,7 +9,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
-	var that
+	var _that
 	export default {
 		data() {
 			return {
@@ -63,30 +63,30 @@
 			...mapState(['hasLogin', 'loginDatas','vipDatas'])
 		},
 		onLoad(options) {
-			that=this
-			// that.getviplist()
+			_that=this
+			// _that.getviplist()
 		},
 		onShow() {
 			var vipnum = uni.getStorageSync('vipnum')
 				console.log(vipnum)
 			if(vipnum){
 				if(vipnum==1){
-					that.bg_color='#282A4F'
-					that.cur=1
+					_that.bg_color='#282A4F'
+					_that.cur=1
 				}else{
-					that.bg_color='#FF9E54'
-					that.cur=0
+					_that.bg_color='#FF9E54'
+					_that.cur=0
 				}
 				uni.removeStorageSync('vipnum')
 			}
 		},
 		methods: {
 			setcur(index){
-				that.cur=index
+				_that.cur=index
 				if(index==1){
-					that.bg_color='#282A4F'
+					_that.bg_color='#282A4F'
 				}else{
-					that.bg_color='#FF9E54'
+					_that.bg_color='#FF9E54'
 				}
 			},
 			
@@ -95,11 +95,11 @@
 			// 		dtProdID:'1'
 			// 	}
 			// 	// datas=JSON.stringify(datas)
-			// 	that.$proBase.getviplist(datas).then((response) => {
+			// 	_that.$proBase.getviplist(datas).then((response) => {
 			// 		console.log(response)
 			// 		const datas = response.data
 			// 		if(datas.code==200){
-			// 			that.list=datas.data.dataSkus
+			// 			_that.list=datas.data.dataSkus
 			// 		}
 			// 	})
 			// }

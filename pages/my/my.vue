@@ -35,20 +35,24 @@
 					全部订单<text class="iconfont icon-next"></text>
 				</view>
 			</view>
-			<view class="order_urls dis_flex aic ju_a">
-				<view class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+0">
+			<view v-if="navdata.length>0" class="order_urls dis_flex aic ju_a">
+					 <!-- v-if="navdata[2].is_show==1" -->
+				<view  class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+0">
 					<image src="/static/images/iti3.png" mode="aspectFit"></image>
 					<text>人工查状态</text>
 				</view>
+				 <!-- v-if="navdata[3].is_show==1" -->
 				<view class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+1">
 					<image  src="/static/images/iti4.png" mode="aspectFit"></image>
 					<text>急速年检</text>
 				</view>
-				<view class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+2">
+					 <!-- v-if="navdata[5].is_show==1" -->
+				<view  class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+2">
 					<image  src="/static/images/iti6.png" mode="aspectFit"></image>
 					<text>车型识别</text>
 				</view>
-				<view class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+3">
+					 <!-- v-if="navdata[6].is_show==1" -->
+				<view  class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+3">
 					<image  src="/static/images/iti7.png" mode="aspectFit"></image>
 					<text>人工查违章</text>
 				</view>
@@ -135,7 +139,7 @@
 			}
 		},
 		computed: {
-		...mapState(['hasLogin', 'forcedLogin', 'userName', 'userinfo','loginDatas','p_config']),
+		...mapState(['hasLogin', 'forcedLogin', 'userName', 'userinfo','navdata','loginDatas','p_config']),
 		},
 		// onReachBottom() {
 		// 	that.getdata()

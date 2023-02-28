@@ -378,6 +378,10 @@
 							provider='wxpay'
 							
 						}
+						if(!datas){
+							that.gook_fuc(code)
+							return
+						}
 						uni.requestPayment({
 							provider: provider,
 							orderInfo: datas, //微信、支付宝订单数据

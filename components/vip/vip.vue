@@ -204,7 +204,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
-	// var that 
+	var that 
 	export default {
 		name:"vip",
 		props: {
@@ -326,6 +326,7 @@
 			...mapState(['hasLogin', 'loginDatas','vipDatas'])
 		},
 		mounted() {
+			that=this
 			this.cur=this.curtype
 			this.getdata()
 		},
@@ -340,7 +341,7 @@
 		},
 		methods: {
 			get_fuc(){
-				var that=this
+				// var that=this
 				if(!that.sele){
 					uni.showToast({
 						icon:'none',
@@ -350,7 +351,8 @@
 					return
 				}
 				var datas={
-					id: that.datas[that.current].id
+					id: that.datas[that.current].id,
+					pay_status:that.pay_type
 				}
 				var jkurl='/vip/buy'
 				if(that.btnkg==1){
@@ -398,7 +400,7 @@
 				
 			},
 			pay_fuc(code){
-				var that =this
+				// var that =this
 				// that.gook_fuc(code)
 				// return
 				var jkurl='/operate/pay'
@@ -406,9 +408,12 @@
 					code :code,
 					type:that.pay_type
 				}
-				
+				// if(that.btnkg==1){
+				// 	return
+				// }
+				// that.btnkg=1
 				that.$service.P_post(jkurl, datas).then(res => {
-					that.btnkg = 0
+					
 					console.log(res)
 					if (res.code == 1) {
 						that.htmlReset = 0
@@ -428,12 +433,17 @@
 							provider='wxpay'
 							
 						}
+						if(!datas){
+							that.gook_fuc(code)
+							return
+						}
 						uni.requestPayment({
 							provider: provider,
 							orderInfo: datas, //微信、支付宝订单数据
 							success: function(res) {
 								console.log('success:' + JSON.stringify(res));
 								that.gook_fuc(code)
+								that.btnkg = 0
 							},
 							fail: function(err) {
 								that.btnkg = 0

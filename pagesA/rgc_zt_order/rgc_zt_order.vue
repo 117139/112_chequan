@@ -73,10 +73,10 @@
 						<text class="iconfont icon-duigou2"></text>
 					</view>
 				</view>
-				<view class="fw_li"  v-if="pp_datas.is_pay==1">
+				<view class="fw_li"  v-if="pp_datas.is_pay==1&&loginDatas.u_day_num>0">
 					<image class="fw_img" src="/static/images/icon_vippay.png" mode="aspectFit"></image>
 					<view class="fw_r1">会员支付</view>
-					<view class="fw_r_num">今日免费还剩10次</view>
+					<view class="fw_r_num">今日免费还剩{{loginDatas.u_day_num}}次</view>
 					<view class="fw_r2"></view>
 					<view class="fw_box" :class="{active:pay_type==3}" @click="pay_type=3">
 						<text class="iconfont icon-duigou2"></text>
@@ -94,15 +94,15 @@
 			<view class="b_box">
 				<view class="b_box1">
 					<block  v-if="pp_datas.is_gg==1">
-					<view class="b_btn1" @click="ad_fuc">
+					<view v-if="loginDatas.u_gg>0" class="b_btn1" @click="ad_fuc">
 						<view class="b_btn1_tip" @click.stop="test">每日3次，免费支付</view>
 						看广告
 					</view>
-					<!-- <view class="b_btn1" @click="share_fuc">
+					<view v-else-if="loginDatas.u_fx>0" class="b_btn1" @click="share_fuc">
 						分享
-					</view> -->
+					</view>
 					</block>
-					<view class="b_btn flex_1" @click="mk_fuc">确认支付￥{{fw_type==0?'5.00':'20.00'}}</view>
+					<view class="b_btn flex_1" @click="mk_fuc">确认支付￥{{fw_type==0?bj_price:or_price}}</view>
 				</view>
 			</view>
 		</block>
@@ -118,6 +118,7 @@
 		mapMutations
 	} from 'vuex'
 	var that 
+	var timestr=null
 	export default {
 		data() {
 			return {
@@ -150,6 +151,16 @@
 		},
 		onShow() {
 			// that.onRetry()
+			if(this.hasLogin){
+				uni.$emit('login_fuc', {
+					title: ' 刷新信息 ',
+					content: 'item.id'
+				});
+			}
+			clearTimeout(timestr)
+			if(that.share_type==1){
+				that.share_ok()
+			}
 		},
 		
 		methods: {
@@ -159,19 +170,25 @@
 				that.pay_type=4
 				that.mk_fuc()
 			},
+			share_ok(){
+				that.pay_type=5
+				that.mk_fuc()
+			},
 			share_fuc(){
 				var code=''
 				// if(that.loginDatas.identification_id){
 				// 	code=that.loginDatas.identification_id
 				// }
 				uni.shareWithSystem({
-				  summary: '车圈',
+				  summary: '懂车圈',
 				  // href: 'https://yibeitong.com.aa.800123456.top/h5/#/?code='+code,
 				  href: 'https://www.baidu.com?code='+code,
 				  success(){
 				    // 分享完成，请注意此时不一定是成功分享
-						that.pay_type=5
-						that.pay_fuc()
+						timestr=setTimeout(()=>{
+							that.share_type=1
+							console.log('1111')
+						},2000)
 				  },
 				  fail(){
 				    // 分享失败
@@ -403,6 +420,10 @@
 							console.log(datas)
 							provider='wxpay'
 							
+						}
+						if(!datas){
+							that.gook_fuc(code)
+							return
 						}
 						uni.requestPayment({
 							provider: provider,

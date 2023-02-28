@@ -152,15 +152,19 @@
 				tabs:[
 					{
 						title:'人工查状态',
+						idx:'2'
 					},
 					{
 						title:'急速年检',
+						idx:'3'
 					},
 					{
 						title:'车型识别',
+						idx:'5'
 					},
 					{
 						title:'人工查违章',
+						idx:'6'
 					},
 				],
 				options:'',
@@ -172,7 +176,7 @@
 			}
 		},
 		computed: {
-		...mapState(['hasLogin', 'forcedLogin', 'userName', 'userinfo','loginDatas']),
+		...mapState(['hasLogin', 'forcedLogin', 'userName','navdata', 'userinfo','loginDatas']),
 		},
 		
 		onLoad(e) {
