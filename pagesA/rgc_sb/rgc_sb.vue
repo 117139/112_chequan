@@ -46,6 +46,21 @@
 			</view>
 		</view>
 		
+		<u-popup :show="xy_show" mode="center" :round="14">
+			<view class="use_tkbox">
+				<view class="usetk_tip">
+					继续使用本功能，请阅读并同意
+				</view>
+				<text @click.stop="$service.jump" data-url="/pagesA/xieyi/xieyi?id=yhxy">《用户协议》</text>
+				<text @click.stop="$service.jump" data-url="/pagesA/xieyi/xieyi?id=grxx">《个人信息处理单独同意书》</text>
+				<view class="ty_btn" @click="ty_fuc">
+					已阅读并同意
+				</view>
+				<view class="bty_btn" @click="xy_show=false">
+					暂不同意
+				</view>
+			</view>
+		</u-popup>
 		<!-- <keyboard-package :disableDot="true" :type="3"  @input="inputVal" ref="keyboard"></keyboard-package> -->
 		<!-- 阻止滑动 -->
 		<!-- <view @touchmove.stop.prevent='test'></view> -->
@@ -108,6 +123,7 @@
 				car_jc:'',
 				fb_add:['北京市','市辖区','东城区'],
 				active:false,
+				xy_show:false,
 				img:'',
 				vin:''
 			}
@@ -198,8 +214,21 @@
 			dzchange(e){
 				console.log(e)
 			},
+			ty_fuc(){
+				that.active=true
+				this.xy_show=false
+				this.go_fuc()
+			},
 			go_fuc(){
-				
+				if(!that.active){
+					// uni.showToast({
+					// 	icon:'none',
+					// 	title:"请先阅读并同意用户协议和隐私协议",
+					// 	duration:3000
+					// })
+					this.xy_show=true
+					return
+				}
 				if(!this.vin){
 					uni.showToast({
 						icon:'none',

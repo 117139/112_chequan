@@ -174,6 +174,27 @@
 							datas = JSON.parse(datas)
 						}
 						console.log(res)
+						var p_config=res.data
+						if(p_config.onoff==2){
+							uni.setTabBarItem({
+								index: 2,
+								visible: false
+							})
+							uni.setTabBarItem({
+								index: 3,
+								visible: false
+							})
+						}else{
+							uni.setTabBarItem({
+								index: 2,
+								visible: true
+							})
+							uni.setTabBarItem({
+								index: 3,
+								visible: true
+							})
+							
+						}
 						that.$store.commit('setconfig',res.data)
 						// that.getdata_tz()
 						// if(datas.title){
@@ -491,5 +512,46 @@
 	.my_status_bar {
 			height: var(--status-bar-height);
 			width: 100%;
+	}
+	.use_tkbox{
+		width: 500rpx;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 30rpx 10rpx 20rpx;
+		font-size: 22rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #666666;
+		.usetk_tip{
+			color: #666;
+			margin-bottom: 10rpx;
+		}
+		text{
+			color: #4680e6;
+			margin-bottom: 10rpx;
+		}
+		.ty_btn{
+			width: 300rpx;
+			height: 70rpx;
+			border-radius: 70rpx;
+			background: #4680e6;
+			color: #fff;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-bottom: 10rpx;
+			margin-top: 30rpx;
+		}
+		.bty_btn{
+			width: 300rpx;
+			height: 70rpx;
+			border-radius: 70rpx;
+			background: #fff;
+			color: #666;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
 	}
 </style>

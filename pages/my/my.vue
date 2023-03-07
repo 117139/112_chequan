@@ -19,16 +19,16 @@
 				登录
 			</view>
 		</view>
-		<view class="shop_vip_box" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=1"  :data-login="true">
+		<view  v-if="p_config.onoff==1" class="shop_vip_box" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=1"  :data-login="true">
 			<image class="shop_vip_bg" src="/static/images/shopvurl.png" mode="aspectFill"></image>
 			<view class="shop_vip_btn">立即开通</view>
 		</view>
-		<view class="shop_vip_box" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=0"  :data-login="true">
+		<view  v-if="p_config.onoff==1" class="shop_vip_box" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=0"  :data-login="true">
 			<image class="shop_vip_bg" src="/static/images/uservurl.png" mode="aspectFill"></image>
 			<view class="shop_vip_btn">立即开通</view>
 		</view>
 		<!-- 订单 -->
-		<view class="order_box" v-if="hasLogin">
+		<view class="order_box" v-if="hasLogin&&p_config.onoff==1">
 			<view class="order_top dis_flex aic ju_b">
 				<view>我的订单</view>
 				<view class="go_more dis_flex aic"  @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+0">

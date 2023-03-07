@@ -89,7 +89,8 @@
 				</view> -->
 			</view>
 		</view>
-		<view class="indext3_ul dis_flex fww">
+		<!-- onoff 1显示 2隐藏 -->
+		<view v-if="p_config.onoff==1" class="indext3_ul dis_flex fww">
 			<!-- <view class="indext3_li" @click="go_vip(2)"> -->
 			<view class="indext3_li" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=0"  :data-login="true">
 				<image v-if="p_config.vip_img" class="indext3_libg" :src="$service.getimg(p_config.vip_img)" mode="aspectFill"></image>
@@ -215,10 +216,10 @@
 			</block>
 			<uni-load-more v-if="list_status" :status="list_status" :contentText="contentText"></uni-load-more>
 		</view>
-		<view class="index_main_tit dis_flex aic">
-			<view class="i_tit_li active" ><text>二手车</text></view>
+		<view  class="index_main_tit dis_flex aic">
+			<view  v-if="p_config.onoff==1" class="i_tit_li active" ><text>二手车</text></view>
 		</view>
-		<view class="car_list dis_flex fww">
+		<view  v-if="p_config.onoff==1" class="car_list dis_flex fww">
 			<view class="car_li" v-for="(item,index) in datas_car"  @click="$service.jump" :data-url="'/pages/details_car/details_car?id='+item.id">
 				<view class="car_li_box">
 					<image class="car_li_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
