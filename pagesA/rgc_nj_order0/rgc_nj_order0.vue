@@ -85,6 +85,7 @@
 					<text class="iconfont icon-duigou2"></text>
 				</view>
 			</view>
+			<!-- #ifdef APP -->
 			<view class="fw_li">
 				<image class="fw_img" src="/static/images/icon_Alipay.png" mode="aspectFit"></image>
 				<view class="fw_r1">支付宝</view>
@@ -93,6 +94,7 @@
 					<text class="iconfont icon-duigou2"></text>
 				</view>
 			</view>
+			<!-- #endif -->
 			<!-- <view class="fw_li">
 				<image class="fw_img" src="/static/images/icon_vippay.png" mode="aspectFit"></image>
 				<view class="fw_r1">会员支付</view>

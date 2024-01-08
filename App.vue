@@ -182,6 +182,10 @@
 							})
 							uni.setTabBarItem({
 								index: 3,
+								// "pagePath": "pages/kefu/kefu",
+								"iconPath": "static/images/tab/tab4.png",
+								"selectedIconPath": "static/images/tab/tab42.png",
+								"text": "客服",
 								visible: false
 							})
 						}else{
@@ -191,6 +195,10 @@
 							})
 							uni.setTabBarItem({
 								index: 3,
+								"pagePath": "pages/vip/vip",
+								"iconPath": "static/images/tab/tab4.png",
+								"selectedIconPath": "static/images/tab/tab42.png",
+								"text": "会员",
 								visible: true
 							})
 							
@@ -553,5 +561,14 @@
 			align-items: center;
 			justify-content: center;
 		}
+	}
+	.weixin_rbox{
+		width: 200rpx;
+	}
+	.weixin_rbox1{
+		width: 500rpx;
+	}
+	.bus_title1{
+		// padding-right: 200rpx;
 	}
 </style>

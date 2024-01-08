@@ -65,6 +65,7 @@
 						<text class="iconfont icon-duigou2"></text>
 					</view>
 				</view>
+				<!-- #ifdef APP -->
 				<view class="fw_li">
 					<image class="fw_img" src="/static/images/icon_Alipay.png" mode="aspectFit"></image>
 					<view class="fw_r1">支付宝</view>
@@ -73,6 +74,7 @@
 						<text class="iconfont icon-duigou2"></text>
 					</view>
 				</view>
+				<!-- #endif -->
 				<view class="fw_li"  v-if="pp_datas.is_pay==1&&loginDatas.u_day_num>0">
 					<image class="fw_img" src="/static/images/icon_vippay.png" mode="aspectFit"></image>
 					<view class="fw_r1">会员支付</view>
@@ -98,9 +100,17 @@
 						<view class="b_btn1_tip" @click.stop="test">每日3次，免费支付</view>
 						看广告
 					</view>
+					<!-- #ifdef APP -->
 					<view v-else-if="loginDatas.u_fx>0" class="b_btn1" @click="share_fuc">
 						分享
 					</view>
+					<!-- #endif -->
+					<!-- #ifdef MP-WEIXIN -->
+					<view v-else-if="loginDatas.u_fx>0" class="b_btn1" style="position: relative;">
+						<button type="default" open-type="share" style="position: absolute;opacity: 0; top: 0;left: 0;right: 0;bottom: 0;" :data-id="1"></button>
+						分享
+					</view>
+					<!-- #endif -->
 					</block>
 					<view class="b_btn flex_1" @click="mk_fuc">确认支付￥{{fw_type==0?bj_price:or_price}}</view>
 				</view>
@@ -131,7 +141,8 @@
 				datas_cs:'',
 				bj_price:'',
 				or_price:'',
-				pp_datas:''
+				pp_datas:'',
+				btnkg:0
 			}
 		},
 		computed: {
@@ -163,6 +174,17 @@
 			}
 		},
 		
+		onShareAppMessage() {
+			var userid=uni.getStorageSync('userid')||''
+			that.share_type=1
+			return {
+				path: '/pages/index/index?id=' + userid,
+				success: function(res) {
+					console.log('成功', res)
+					// that.share_ok()
+				}
+			}
+		},
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
@@ -337,6 +359,10 @@
 				if(that.options.type==4){
 					jkurl='/car/violation'
 				}
+				if(that.btnkg==1){
+					return
+				}
+				that.btnkg=1
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
 					console.log(res)

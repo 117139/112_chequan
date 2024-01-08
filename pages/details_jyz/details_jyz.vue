@@ -1,5 +1,6 @@
 <template>
 	<view class="wrap_box">
+		<!-- 此页面已弃用 -->
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
 		<view class="details_tbox">
 			<u-swiper
@@ -44,7 +45,7 @@
 				</view> -->
 			</view>
 			<view class="carmsg_ms">
-				<image src="/static/images/jyzxq.jpg" style="width: 100%;" mode="widthFix"></image>
+				<!-- <image src="/static/images/jyzxq.jpg" style="width: 100%;" mode="widthFix"></image> -->
 			</view>
 		</view>
 		<view class="main_box">

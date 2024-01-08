@@ -1,6 +1,7 @@
 <template>
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
+		<!-- 页面--已废弃 -->
 		<view class="xq_box">
 			<view class="xq_li">
 				<view class="xq_l">车辆类型</view>

@@ -3,7 +3,7 @@
 		
 		<view class="main_box">
 			<image v-if="navdata[3].banner" class="main_bg" :src="$service.getimg(navdata[3].banner)" mode="widthFix"></image>
-			<image v-else class="main_bg" src="/static/images/rgcnj_bg.png" mode="widthFix"></image>
+			<image v-else class="main_bg" :src="$service.getimg('/static_wx/images/rgcnj_bg.png')" mode="widthFix"></image>
 			<view class="cz_box">
 				<view class="cz_tip"><text class="iconfont icon-yanzhengma"></text>以下信息仅供交管局查询使用，我们将严格保密</view>
 				
@@ -590,7 +590,6 @@ page{
 .main_box{
 	width: 100%;
 	// background: #f8f8f8;
-	// background-image: url(/static/images/bg_pinggu.png);
 	// background-repeat: no-repeat;
 	// background-size: 100% auto;
 	// background-position: 0 -130rpx;

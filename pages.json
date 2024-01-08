@@ -91,7 +91,16 @@
 			}
 
 		}
-	],
+	    ,{
+            "path" : "pages/kefu/kefu",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"subPackages": [{
 		"root": "pagesA",
 		"pages": [{
@@ -387,7 +396,16 @@
 				"enablePullDownRefresh": false
 			}
 
-		}]
+		}    ,{
+                    "path" : "v_box/v_box",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 	}],
 	"tabBar": {
 		"color": "#BBBBBB",

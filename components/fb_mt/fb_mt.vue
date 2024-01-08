@@ -165,6 +165,7 @@
 				mtxq_img:[],
 				
 				dz_type:false,
+				// #ifdef APP
 				pay_array:[
 					{
 						title:'微信支付',
@@ -175,6 +176,15 @@
 						id:2
 					},
 				],
+				// #endif
+				// #ifdef MP-WEIXIN
+				pay_array:[
+					{
+						title:'微信支付',
+						id:1
+					},
+				],
+				// #endif
 				pay_index:0,
 			};
 		},

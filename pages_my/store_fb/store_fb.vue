@@ -118,17 +118,20 @@
 			</view>
 			</picker>
 		</view>
-		<!-- 摩托车 -->
-		<!-- 二手车 -->
-		<!-- 加油站 -->
+		
+		
+		
 		
 		<view class="b_box" v-if="active==0">
 			<view class="b_box1">
 				<view class="b_btn" @click="sub_fuc">确认发布</view>
 			</view>
 		</view>
+		<!-- 摩托车 -->
 		<fbMt v-if="active==1" :type1="options.type1" :options="options"></fbMt>
+		<!-- 二手车 -->
 		<fbCar v-if="active==2" :type1="options.type1" :options="options"></fbCar>
+		<!-- 加油站 -->
 		<fbJyz  v-if="active==3" :type1="options.type1" :options="options"></fbJyz>
 		<!-- 阻止滑动 -->
 		<!-- <view @touchmove.stop.prevent='test'></view> -->
@@ -189,7 +192,7 @@
 				mtxq_img:[],
 				type1:4,
 				btnkg:0,
-				
+				// #ifdef APP
 				pay_array:[
 					{
 						title:'微信支付',
@@ -200,6 +203,15 @@
 						id:2
 					},
 				],
+				// #endif
+				// #ifdef MP-WEIXIN
+				pay_array:[
+					{
+						title:'微信支付',
+						id:1
+					},
+				],
+				// #endif
 				pay_index:0,
 			}
 		},

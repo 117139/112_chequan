@@ -5,7 +5,7 @@ const USERS_KEY = 'USERS_KEY';
 const STATE_KEY = 'STATE_KEY';
 const map_key = "7FEBZ-WLWK2-PMGUE-C4BFT-EKXB6-BFFNR"
 const appVN=1
-let baseurl = "http://chequan.a.800123456.vip/"
+let baseurl = "https://chequan.a.800123456.vip/"
 // const baseurl = "http://192.168.0.119:8000/"
 // var jkurl_type=uni.getStorageSync('jkurl_type')
 var ck_url=uni.getStorageSync('jkurl')
@@ -957,6 +957,11 @@ const http = ({
 							icon: 'none',
 							title: res.data.msg
 						})
+						if(res.data.msg=='服务已下架'){
+							setTimeout(()=>{
+								uni.navigateBack()
+							},2000)
+						}
 					} else {
 				
 						uni.showToast({
@@ -2162,9 +2167,7 @@ const see_tip=function(str,type){
 	})
 }
 const back=function(str,type){
-	uni.navigateBack({
-		delta:1
-	})
+	uni.navigateBack()
 }
 const set_num=function(str,type){
 	if(type=='k'){
@@ -2249,6 +2252,43 @@ const getnum = function(num,tonum) {
 	}
 	return num
 }
+/** 获取地理信息
+ * @param {Object} lat  纬度
+ * @param {Object} long  经度
+ */
+const getaddinfo=function(lat,long){
+	//https://apis.map.qq.com/ws/geocoder/v1/?location=37.85929,112.51562&key=CXIBZ-YASCJ-PBFFT-KFC4J-755KV-C2FUH
+	var jkurl='https://apis.map.qq.com/ws/geocoder/v1/?location='+lat+','+long+'&key=CXIBZ-YASCJ-PBFFT-KFC4J-755KV-C2FUH'
+	var datas={}
+	P_get(jkurl, datas).then(res => {
+		// that.btnkg = 0
+		// console.log(res)
+		if (res.status == 0) {
+			// that.htmlReset = 0
+			var datas = res.data
+			console.log(typeof datas)
+	
+			if (typeof datas == 'string') {
+				datas = JSON.parse(datas)
+			}
+			console.log('res.result.ad_info----------------------')
+			var ad_info=res.result.ad_info
+			console.log(ad_info)
+			var addmsg=store.state.addmsg
+			addmsg.address=ad_info
+			store.commit('setaddmsg',addmsg)
+		}
+	}).catch(e => {
+		// that.htmlReset = 1
+		// that.btnkg = 0
+		// that.$refs.htmlLoading.htmlReset_fuc(1)
+		console.log(e)
+		uni.showToast({
+			icon: 'none',
+			title: '获取数据失败，请检查您的网络连接'
+		})
+	})
+}
 export default {
 	getUsers,
 	addUser,
@@ -2286,5 +2326,6 @@ export default {
 	set_num,
 	LNum,
 	limit,
-	getnum
+	getnum,
+	getaddinfo
 }

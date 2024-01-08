@@ -85,6 +85,7 @@
 					<text class="iconfont icon-duigou2"></text>
 				</view>
 			</view>
+			<!-- #ifdef APP -->
 			<view class="fw_li">
 				<image class="fw_img" src="/static/images/icon_Alipay.png" mode="aspectFit"></image>
 				<view class="fw_r1">支付宝</view>
@@ -93,6 +94,7 @@
 					<text class="iconfont icon-duigou2"></text>
 				</view>
 			</view>
+			<!-- #endif -->
 			<!-- <view class="fw_li">
 				<image class="fw_img" src="/static/images/icon_vippay.png" mode="aspectFit"></image>
 				<view class="fw_r1">会员支付</view>
@@ -165,7 +167,9 @@
 				datas_cs:'',
 				
 				
-				txm:''
+				txm:'',
+				
+				btnkg:0
 			}
 		},
 		computed: {
@@ -292,7 +296,10 @@
 					pay_status:pay_status
 				}
 				var jkurl='/car/yearly'
-				
+				if(that.btnkg==1){
+					return
+				}
+				that.btnkg=1
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
 					console.log(res)

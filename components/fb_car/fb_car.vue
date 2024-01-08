@@ -204,7 +204,14 @@
 					<view class="imgs_li"  v-for="(item,index) in mt_video">
 						<view class="imgs_li_box">
 							<!-- <image class="imgs_li_img" :src="$service.getimg(item)" mode="aspectFill"></image> -->
-							<image class="imgs_li_img" src="/static/images/banner.png" mode="aspectFill"></image>
+							<!-- <image class="imgs_li_img" src="/static/images/banner.png" mode="aspectFill"></image> -->
+							<video  class="imgs_li_img" :src="$service.getimg(item)" 
+								:controls="false"
+								:show-play-btn="false"  
+								:show-fullscreen-btn="false"
+								:show-center-play-btn="false"
+								@click="$service.jump" :data-url="'/pages_my/v_box/v_box?url='+item"
+								></video>
 							<view class="imgs_li_del dis_flex aic ju_c"  @click="delimg_fuc1"  data-type="v1" :data-idx="index">
 								<image src="/static/images/del_img.png" mode="aspectFit"></image>
 							</view>
@@ -363,6 +370,7 @@
 				ks_list:[],
 				ks_index:0,
 				ks_msg:'',
+				// #ifdef APP
 				pay_array:[
 					{
 						title:'微信支付',
@@ -372,7 +380,17 @@
 						title:'支付宝',
 						id:2
 					},
+					
 				],
+				// #endif
+				// #ifdef MP-WEIXIN
+				pay_array:[
+					{
+						title:'微信支付',
+						id:1
+					},
+				],
+				// #endif
 				pay_index:0,
 				datas:''
 			};

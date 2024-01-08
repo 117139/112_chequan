@@ -12,8 +12,10 @@
 			
 			<!-- 开通会员 -->
 			<view class="header_user_wrap area">
-				<image v-if="cur==0" class="image_bg" src="/static/images/kthy.png" mode="widthFix"></image>
-				<image v-else class="image_bg" src="/static/images/bg_vip_business.png" mode="widthFix"></image>
+				<!-- <image v-if="cur==0" class="image_bg" src="/static/images/kthy.png" mode="widthFix"></image>
+				<image v-else class="image_bg" src="/static/images/bg_vip_business.png" mode="widthFix"></image> -->
+				<image v-if="cur==0" class="image_bg" :src="$service.getimg('/static_wx/images/kthy.png')" mode="widthFix"></image>
+				<image v-else class="image_bg" :src="$service.getimg('/static_wx/images/bg_vip_business.png')" mode="widthFix"></image>
 				<view v-if="hasLogin" class="header_user_content area dis_flex aic">
 					<view class="header_img_wrap flex_cen">
 						<view class="header_img_box">
@@ -143,6 +145,7 @@
 							<text class="iconfont icon-duigou2"></text>
 						</view>
 					</view>
+					<!-- #ifndef MP-WEIXIN -->
 					<view class="fw_li">
 						<image class="fw_img" src="/static/images/icon_Alipay.png" mode="aspectFit"></image>
 						<view class="fw_r1">支付宝</view>
@@ -151,6 +154,7 @@
 							<text class="iconfont icon-duigou2"></text>
 						</view>
 					</view>
+					<!-- #endif -->
 					<!-- <view class="fw_li">
 						<image class="fw_img" src="/static/images/icon_vippay.png" mode="aspectFit"></image>
 						<view class="fw_r1">会员支付</view>
@@ -167,9 +171,9 @@
 					</view>
 					阅读并同意 
 					<text @click.stop="$service.jump" data-url="/pagesA/xieyi/xieyi?id=hyfwxy">《会员服务协议》</text>
-					<text @click.stop="$service.jump" data-url="/pagesA/xieyi/xieyi?id=ysxy">《隐私协议》</text>
+					<text @click.stop="$service.jump" data-url="/pagesA/xieyi/xieyi?id=yszc">《隐私协议》</text>
 				</view>
-				<view class="btn_wrap" :class="{btn_wrap1:cur==1}" v-if="isShow">
+				<view class="btn_wrap" :class="{btn_wrap1:cur==1}" v-if="isShow" @tap="get_fuc">
 					立即续费
 				</view>
 				<!-- <view class="btn_wrap" :class="{btn_wrap1:cur==1}" v-else @tap="isShow=!isShow"> -->

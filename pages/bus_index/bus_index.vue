@@ -1,7 +1,8 @@
 <template>
-	<view class="wrap_box">
+	<view class="wrap_box" :style="'background-image: url('+$service.getimg('static_wx/images/bg_shangjiaruzhu.png')+');'">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
-		<topbar bg_img="/static/images/bg_shangjiaruzhu.png">
+		<!-- <topbar bg_img="/static/images/bg_shangjiaruzhu.png"> -->
+		<topbar :bg_img="$service.getimg('static_wx/images/bg_shangjiaruzhu.png')">
 			<view class="bus_head dis_flex aic">
 				<text class="iconfont icon-back" @click="$service.back"></text>
 			</view>
@@ -63,9 +64,9 @@
 						<!-- <image class="car_li_img" src="/static/images/car1.png" mode="aspectFit"></image> -->
 						<image class="car_li_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 						<view class="car_li_msg">
-							<view class="car_li_tit oh2">{{item.title}}</view>
-							<view class="car_li_jl oh1">{{item.sub_title}}</view>
-							<view class="car_li_num">{{item.price}}元</view>
+							<view class="car_li_tit oh2">{{item.title||''}}</view>
+							<view class="car_li_jl oh1">{{item.sub_title||''}}</view>
+							<view class="car_li_num">{{item.price||''}}元</view>
 						</view>
 					</view>
 				</view>
@@ -76,7 +77,7 @@
 						<!-- <image class="car_li_img" src="/static/images/motor1.png" mode="aspectFit"></image> -->
 						<image class="car_li_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 						<view class="car_li_msg">
-							<view class="car_li_tit oh2">{{item.title}}</view>
+							<view class="car_li_tit oh2">{{item.title||''}}</view>
 							<view class="car_li_jl oh1">官方指导价：{{$service.getnum(item.y_price)||''}}</view>
 							<view class="car_li_num">{{$service.getnum(item.price)||''}}</view>
 						</view>
@@ -89,9 +90,9 @@
 						<!-- <image class="car_li_img" src="/static/images/car1.png" mode="aspectFit"></image> -->
 						<image class="car_li_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 						<view class="car_li_msg">
-							<view class="car_li_tit oh2">{{item.title}}</view>
-							<view class="car_li_jl oh1">{{item.brand_time||''}}年/{{item.km}}万公里</view>
-							<view class="car_li_num">{{item.price}}万</view>
+							<view class="car_li_tit oh2">{{item.title||''}}</view>
+							<view class="car_li_jl oh1">{{item.brand_time||''}}年/{{item.km||''}}万公里</view>
+							<view class="car_li_num">{{item.price||''}}万</view>
 						</view>
 					</view>
 				</view>
@@ -108,24 +109,14 @@
 						</view>
 					</view>
 				</view> -->
-				<view class="data_sli dis_flex aic">
+				<view class="data_sli dis_flex aic" v-for="(item,index) in jyz_child">
 					<text class="data_sli_l"></text>
-					<view class="flex_1 data_sli_c">92#汽油</view>
-					<view class="data_sli_r">￥<text>7.18</text></view>
-				</view>
-				<view class="data_sli dis_flex aic">
-					<text class="data_sli_l"></text>
-					<view class="flex_1 data_sli_c">95#汽油</view>
-					<view class="data_sli_r">￥<text>7.28</text></view>
-				</view>
-				<view class="data_sli dis_flex aic">
-					<text class="data_sli_l"></text>
-					<view class="flex_1 data_sli_c">98#汽油</view>
-					<view class="data_sli_r">￥<text>8.18</text></view>
+					<view class="flex_1 data_sli_c">{{item.title||''}}</view>
+					<view class="data_sli_r">￥<text>{{item.price||''}}</text></view>
 				</view>
 			</view>
 			
-			<uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more>
+			<!-- <uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more> -->
 		</view>
 		<view class="b_box">
 			<view class="b_box_btn" @click="$service.call" :data-tel="datas.phone">联系商家</view>
@@ -179,6 +170,7 @@
 				datas_list:[],
 				listc_status:'loading',
 				contentText:{contentdown: "上拉显示更多",contentrefresh: "正在加载...",contentnomore: "暂无数据"},
+				jyz_child:[]
 			}
 		},
 		computed: {
@@ -294,6 +286,9 @@
 								},
 							]
 							that.active=2
+							if(datas.child){
+								that.jyz_child=datas.child
+							}
 						}else{
 							that.columns=[
 								// {

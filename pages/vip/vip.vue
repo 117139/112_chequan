@@ -1,6 +1,11 @@
 <template>
 	<view>
-		<vip :curtype="cur" :key="'ivip'+cur"></vip>
+		<vip v-if="p_config.onoff==1" :curtype="cur" :key="'ivip'+cur"></vip>
+		<!-- 、pages/kefu/kefu -->
+		<view  v-else class="kf_box">
+			<kfewm></kfewm>
+		</view>
+		
 	</view>
 </template>
 
@@ -60,7 +65,7 @@
 			}
 		},
 		computed: {
-			...mapState(['hasLogin', 'loginDatas','vipDatas'])
+			...mapState(['hasLogin', 'loginDatas','vipDatas','p_config'])
 		},
 		onLoad(options) {
 			_that=this
@@ -439,5 +444,14 @@
 	}
 	.viptq_box{
 		box-shadow: 0px 0px 30px 0px rgba(187,187,187,0.2);
+	}
+	
+	
+	.kf_box{
+		width: 100%;
+		height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 </style>

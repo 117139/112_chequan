@@ -7,6 +7,9 @@
 				<view v-else class="flex_1 h_add_text"  @click="getadd">--</view>
 				<image  @tap="$service.jump" data-url="/pagesA/search/search" class="h_iconr" src="/static/images/icon_find.png" mode="aspectFit"></image>
 				<image @click="$service.call" :data-tel="p_config.kf_phone" class="h_iconr" src="/static/images/icon_kefu.png" mode="aspectFit"></image>
+				<!-- #ifdef MP-WEIXIN -->
+				<view class="weixin_rbox" ></view>
+				<!-- #endif -->
 			</view>
 		</topbar>
 		<view  v-if="list1.length>0" class="mbanner">
@@ -19,7 +22,7 @@
 			<swiper class="card-swiper1" :indicator-dots="false" :circular="true" :vertical="true" :autoplay="true" interval="6000"
 				duration="500" indicator-color="#8799a3" indicator-active-color="#0081ff">
 				<swiper-item class="dis_flex aic" v-for="(item,index) in notify">
-					<view>{{item.title}}</view>
+					<view>{{item.title||''}}</view>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -51,7 +54,7 @@
 			<view class="mt_cboxtit dis_flex aic">
 				<view class="mt_cboxtit_l">附近经销商</view>
 				<view class="flex_1">/  甄选优质经销商 省心又省钱</view>
-				<view @click="$service.jump" data-url="/pagesA/mt_list/mt_list">更多<text class="icon icon-next"></text></view>
+				<view class="dis_flex aic" @click="$service.jump" data-url="/pagesA/mt_list/mt_list">更多<text class="icon icon-next"></text></view>
 			</view>
 			<block v-for="(item,index) in datas">
 			<view class="mt_msg dis_flex aic" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=1&id='+item.id">
@@ -77,7 +80,7 @@
 				<view class="car_li_box">
 					<image class="car_li_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 					<view class="car_li_msg">
-						<view class="car_li_tit oh2">{{item.title}}</view>
+						<view class="car_li_tit oh2">{{item.title||''}}</view>
 						<view class="car_li_jl oh1">官方指导价：{{$service.getnum(item.y_price)||''}}</view>
 						<view class="car_li_num">{{$service.getnum(item.price)||''}}</view>
 					</view>
@@ -89,7 +92,7 @@
 				<view class="car_li_box">
 					<image class="car_li_img"  :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 					<view class="car_li_msg">
-						<view class="car_li_tit oh2">{{item.title}}</view>
+						<view class="car_li_tit oh2">{{item.title||''}}</view>
 						
 						<view v-if="item.is_zan==1" class="car_li_sc car_li_sc1 dis_flex aic" >
 							<text class="icon icon-xihuan1"></text>
@@ -167,6 +170,9 @@
 						console.log('当前位置的纬度：' + res.latitude);
 						that.$store.commit('setaddmsg',res)
 						// that.getdata()
+						// #ifdef MP-WEIXIN
+						that.$service.getaddinfo(res.latitude,res.longitude)
+						// #endiff
 					},
 					fail: function (res) {
 						console.log(res)
@@ -191,7 +197,7 @@
 				that.datas=[]
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
-					console.log(res)
+					// console.log(res)
 					if (res.code == 1) {
 						that.htmlReset = 0
 						var datas = res.data
@@ -200,7 +206,7 @@
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
-						console.log(res)
+						// console.log(res)
 						that.datas=datas.data
 						// if(datas.total==0){
 						// 	that.list_status='noMore'

@@ -194,7 +194,7 @@
 					<view class="imgs_li"  v-for="(item,index) in mt_video">
 						<view class="imgs_li_box">
 							<!-- <image class="imgs_li_img" :src="$service.getimg(item)" mode="aspectFill"></image> -->
-							<image class="imgs_li_img" src="/static/images/banner.png" mode="aspectFill"></image>
+							<!-- <image class="imgs_li_img" src="/static/images/banner.png" mode="aspectFill"></image> -->
 							<view class="imgs_li_del dis_flex aic ju_c"  @click="delimg_fuc1"  data-type="v1" :data-idx="index">
 								<image src="/static/images/del_img.png" mode="aspectFit"></image>
 							</view>

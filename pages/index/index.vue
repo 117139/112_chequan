@@ -8,57 +8,57 @@
 			<view  v-if="navdata[0].is_show==1" class="index_tui_li" @click="$service.jump" data-url="/pagesA/jyz_list/jyz_list">
 				<view class="index_tui_li_img">
 					<image v-if="navdata[0].img" :src="$service.getimg(navdata[0].img)" mode="aspectFill"></image>
-					<image v-else src="/static/images/iti1.png" mode="aspectFill"></image>
+					<image v-else :src="$service.getimg('/static_wx/images/iti1.png')" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">{{navdata[0].title||'加油站'}}</view>
 			</view>
 			<view v-if="navdata[1].is_show==1" class="index_tui_li" @click="$service.jump" data-url="/pagesA/qcmr_list/qcmr_list">
 				<view class="index_tui_li_img">
 					<image v-if="navdata[1].img" :src="$service.getimg(navdata[1].img)" mode="aspectFill"></image>
-					<image v-else src="/static/images/iti2.png" mode="aspectFill"></image>
+					<image v-else :src="$service.getimg('/static_wx/images/iti2.png')" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">{{navdata[1].title||'汽车美容'}}</view>
 			</view>
 			<view  v-if="navdata[2].is_show==1" class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_zt/rgc_zt" :data-login="true">
 				<view class="index_tui_li_img">
 					<image v-if="navdata[2].img" :src="$service.getimg(navdata[2].img)" mode="aspectFill"></image>
-					<image v-else src="/static/images/iti3.png" mode="aspectFill"></image>
+					<image v-else :src="$service.getimg('/static_wx/images/iti3.png')" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">{{navdata[2].title||'人工查状态'}}</view>
 			</view>
 			<view  v-if="navdata[3].is_show==1" class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_nj/rgc_nj" :data-login="true">
 				<view class="index_tui_li_img">
 					<image v-if="navdata[3].img" :src="$service.getimg(navdata[3].img)" mode="aspectFill"></image>
-					<image v-else src="/static/images/iti4.png" mode="aspectFill"></image>
+					<image v-else :src="$service.getimg('/static_wx/images/iti4.png')" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">{{navdata[3].title||'急速年检'}}</view>
 			</view>
 			<view  v-if="navdata[4].is_show==1" class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_mfpg/rgc_mfpg" :data-login="true">
 				<view class="index_tui_li_img">
 					<image v-if="navdata[4].img" :src="$service.getimg(navdata[4].img)" mode="aspectFill"></image>
-					<image v-else src="/static/images/iti5.png" mode="aspectFill"></image>
+					<image v-else :src="$service.getimg('/static_wx/images/iti5.png')" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">{{navdata[4].title||'免费评估'}}</view>
 			</view>
 			<view  v-if="navdata[5].is_show==1" class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_sb/rgc_sb" :data-login="true">
 				<view class="index_tui_li_img">
 					<image v-if="navdata[5].img" :src="$service.getimg(navdata[5].img)" mode="aspectFill"></image>
-					<image v-else src="/static/images/iti6.png" mode="aspectFill"></image>
+					<image v-else :src="$service.getimg('/static_wx/images/iti6.png')" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">{{navdata[5].title||'车型识别'}}</view>
 			</view>
 			<view  v-if="navdata[6].is_show==1" class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_wz/rgc_wz" :data-login="true">
 				<view class="index_tui_li_img">
 					<image v-if="navdata[6].img" :src="$service.getimg(navdata[6].img)" mode="aspectFill"></image>
-					<image v-else src="/static/images/iti7.png" mode="aspectFill"></image>
-					<view class="index_tui_jz">精准</view>
+					<image v-else :src="$service.getimg('/static_wx/images/iti7.png')" mode="aspectFill"></image>
+					<view class="index_tui_jz">{{navdata[6].label||'精准'}}</view>
 				</view>
 				<view class="index_tui_li_text">{{navdata[6].title||'人工查违章'}}</view>
 			</view>
 			<view  v-if="navdata[7].is_show==1" class="index_tui_li" @click="$service.jump" data-url="/pages/car/car" data-type="2">
 				<view class="index_tui_li_img">
 					<image v-if="navdata[7].img" :src="$service.getimg(navdata[7].img)" mode="aspectFill"></image>
-					<image v-else src="/static/images/iti8.png" mode="aspectFill"></image>
+					<image v-else :src="$service.getimg('/static_wx/images/iti8.png')" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">{{navdata[7].title||'靠谱二手车'}}</view>
 			</view>
@@ -66,7 +66,7 @@
 		<view  class="indext2_ul dis_flex fww">
 			<view v-if="navdata[5].is_show==1" class="indext2_li" @click="$service.jump" data-url="/pagesA/rgc_sb/rgc_sb" :data-login="true">
 				<image v-if="p_config.img1" class="indext2_libg" :src="$service.getimg(p_config.img1)" mode="aspectFill"></image>
-				<image v-else class="indext2_libg" src="/static/images/it2i1.png" mode="aspectFill"></image>
+				<image v-else class="indext2_libg" :src="$service.getimg('/static_wx/images/it2i1.png')" mode="aspectFill"></image>
 				<!-- <view class="indext2_liinr">
 					<view>车型识别</view>
 					<text>识别高低配</text>
@@ -74,7 +74,7 @@
 			</view>
 			<view  v-if="navdata[6].is_show==1" class="indext2_li" @click="$service.jump" data-url="/pagesA/rgc_zt/rgc_zt" :data-login="true">
 				<image v-if="p_config.img2" class="indext2_libg" :src="$service.getimg(p_config.img2)" mode="aspectFill"></image>
-				<image v-else class="indext2_libg" src="/static/images/it2i2.png" mode="aspectFill"></image>
+				<image v-else class="indext2_libg" :src="$service.getimg('/static_wx/images/it2i2.png')" mode="aspectFill"></image>
 				<!-- <view class="indext2_liinr">
 					<view>人工查违章</view>
 					<text>1对1快速</text>
@@ -82,7 +82,7 @@
 			</view>
 			<view v-if="navdata[4].is_show==1" class="indext2_li" @click="$service.jump" data-url="/pagesA/rgc_mfpg/rgc_mfpg" :data-login="true">
 				<image v-if="p_config.img3" class="indext2_libg" :src="$service.getimg(p_config.img3)" mode="aspectFill"></image>
-				<image v-else class="indext2_libg" src="/static/images/it2i3.png" mode="aspectFill"></image>
+				<image v-else class="indext2_libg" :src="$service.getimg('/static_wx/images/it2i3.png')" mode="aspectFill"></image>
 				<!-- <view class="indext2_liinr" style="color: #305380;">
 					<view>一键评估</view>
 					<text>免费快捷</text>
@@ -94,7 +94,7 @@
 			<!-- <view class="indext3_li" @click="go_vip(2)"> -->
 			<view class="indext3_li" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=0"  :data-login="true">
 				<image v-if="p_config.vip_img" class="indext3_libg" :src="$service.getimg(p_config.vip_img)" mode="aspectFill"></image>
-				<image v-else class="indext3_libg" src="/static/images/it3bg1.png" mode="aspectFill"></image>
+				<image v-else class="indext3_libg" :src="$service.getimg('/static_wx/images/it3bg1.png')" mode="aspectFill"></image>
 				<!-- <view class="indext3_liinr">
 					<image src="/static/images/it3i1.png" mode="aspectFit"></image>
 					<view class="flex_1">开通用户会员</view>
@@ -104,7 +104,7 @@
 			<!-- <view class="indext3_li" @click="go_vip(1)"> -->
 			<view class="indext3_li" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=1"  :data-login="true">
 				<image v-if="p_config.vip_img1" class="indext3_libg" :src="$service.getimg(p_config.vip_img1)" mode="aspectFill"></image>
-				<image v-else class="indext3_libg" src="/static/images/it3bg2.png" mode="aspectFill"></image>
+				<image v-else class="indext3_libg" :src="$service.getimg('/static_wx/images/it3bg2.png')" mode="aspectFill"></image>
 				<!-- <view class="indext3_liinr">
 					<image src="/static/images/it3i2.png" mode="aspectFit"></image>
 					<view class="flex_1">开通商户会员</view>
@@ -112,7 +112,7 @@
 				</view> -->
 			</view>
 		</view>
-		<scroll-view v-if="my_order.length>0" class="scroll_x order_list" scroll-x="true" >
+		<scroll-view v-if="p_config.onoff==1&&my_order.length>0" class="scroll_x order_list" scroll-x="true" >
 			<view>
 				<view class="order_li" v-for="(item,index) in my_order">
 					<image class="order_libg" src="/static/images/order_libg.png" mode="aspectFill"></image>
@@ -133,7 +133,7 @@
 							
 							<block v-if="item.type==1&&item.status==2">
 								<image class="order_img_type" src="/static/images/order_wait.png" mode="aspectFit"></image>
-								<view class="order_tip order_tip1">{{p_config.order_tips}}</view>
+								<view class="order_tip order_tip1">{{p_config.order_tips||''}}</view>
 							</block>
 							<view  v-if="item.type==1&&item.status==3" class="order_tip">信息有误</view>
 							<view v-if="item.type==1&&item.status==4" class="order_tip order_tip1">状态查询成功</view>
@@ -141,7 +141,7 @@
 							<view  v-if="item.type==3&&item.status==2" class="order_tip">信息有误</view>
 							<block v-if=" item.type==3&&item.status==3">
 								<image class="order_img_type" src="/static/images/order_wait.png" mode="aspectFit"></image>
-								<view class="order_tip order_tip1">{{p_config.order_tips}}</view>
+								<view class="order_tip order_tip1">{{p_config.order_tips||''}}</view>
 							</block>
 							<block v-if="item.type==3&&item.status==4">
 								<image class="order_img_type" src="/static/images/order_ok.png" mode="aspectFit"></image>
@@ -149,7 +149,7 @@
 							</block>
 							<view  v-if="item.type==3&&item.status==5" class="order_tip">该车有违章</view>
 							<view v-if="item.result&&item.result.length>0" class="order_btn" @click="down_fuc(1,item.result)">一键下载</view>
-							<view class="order_code">订单编号：{{item.code}}</view>
+							<view class="order_code">订单编号：{{item.code||''}}</view>
 						</view>
 					</view>
 				</view>
@@ -232,6 +232,10 @@
 			</view>
 		</view>
 		<uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more>
+		
+		<!-- #ifdef MP-WEIXIN -->
+		<ws-wx-privacy id="privacy-popup"></ws-wx-privacy>
+		<!-- #endif -->
 	</view>
 </template>
 
@@ -262,8 +266,15 @@
 		},
 		onLoad() {
 			that =this
-			that.getnav()
+			// #ifdef MP-WEIXIN
+			this.doRequire()
+			// #endif
+			
+			// #ifndef MP-WEIXIN
 			that.getadd()
+			// #endif
+			that.getnav()
+			
 			that.getbanner()
 			that.getlist(1)
 			that.onRetry()
@@ -295,6 +306,39 @@
 			}
 		},
 		methods: {
+			doRequire(){
+				uni.requirePrivacyAuthorize({
+					success: () => {
+						console.log('同意');
+						// 用户同意授权
+						that.getadd()
+						// 继续小程序逻辑
+						// wx.login({
+						// 	success: function(res_login) {
+						// 		console.log(res_login)
+						// 		var userInfo={
+						// 			nickName:'微信用户',
+						// 			avatarUrl:'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132',
+						// 		}
+						// 		uni.setStorageSync('userInfo', userInfo);
+						// 		uni.setStorageSync('res_code', res_login.code);
+						// 		// res_login=res_login
+						// 		that.getopenid(res_login.code)
+						// 	}
+						// })
+					},
+					fail: () => {
+						console.log('拒绝');
+					}, // 用户拒绝授权
+					complete: () => {}
+				})
+			},
+			handleDisagree() {
+			  // 处理用户不同意隐私协议的逻辑
+			},
+			handleAgree() {
+			  // 处理用户同意隐私协议的逻辑
+			},
 			/**
 			 * 首页订单
 			 */
@@ -304,7 +348,7 @@
 				
 				that.$service.P_get(jkurl, datas).then(res => {
 					that.btnkg = 0
-					console.log(res)
+					// console.log(res)
 					if (res.code == 1) {
 						that.htmlReset = 0
 						var datas = res.data
@@ -313,7 +357,7 @@
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
-						console.log(res)
+						// console.log(res)
 						that.my_order=datas
 						// that.getdata_tz()
 						// if(datas.title){
@@ -356,7 +400,7 @@
 				
 				that.$service.P_get(jkurl, datas).then(res => {
 					that.btnkg = 0
-					console.log(res)
+					// console.log(res)
 					if (res.code == 1) {
 						that.htmlReset = 0
 						var datas = res.data
@@ -365,7 +409,7 @@
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
-						console.log(res)
+						// console.log(res)
 						that.$store.commit('setnavdata',res.data)
 						// that.getdata_tz()
 						// if(datas.title){
@@ -414,6 +458,9 @@
 						console.log('当前位置的纬度：' + res.latitude);
 						that.$store.commit('setaddmsg',res)
 						// that.getdata()
+						// #ifdef MP-WEIXIN
+						that.$service.getaddinfo(res.latitude,res.longitude)
+						// #endiff
 					},
 					fail: function (res) {
 						console.log(res)
@@ -432,16 +479,16 @@
 				
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
-					console.log(res)
+					// console.log(res)
 					if (res.code == 1) {
 						that.htmlReset = 0
 						var datas = res.data
-						console.log(typeof datas)
+						// console.log(typeof datas)
 				
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
-						console.log(res)
+						// console.log(res)
 						that.list1=datas.map(function(item){
 							return {
 								id: item.id,
@@ -559,16 +606,16 @@
 				that.datas=[]
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
-					console.log(res)
+					// console.log(res)
 					if (res.code == 1) {
 						that.htmlReset = 0
 						var datas = res.data
-						console.log(typeof datas)
+						// console.log(typeof datas)
 				
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
-						console.log(res)
+						// console.log(res)
 						that.datas=datas.data
 						if(datas.total==0){
 							that.list_status='noMore'
@@ -632,16 +679,16 @@
 				var nowpage=that.page
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
-					console.log(res)
+					// console.log(res)
 					if (res.code == 1) {
 						that.htmlReset = 0
 						var datas = res.data
-						console.log(typeof datas)
+						// console.log(typeof datas)
 				
 						if (typeof datas == 'string') {
 							datas = JSON.parse(datas)
 						}
-						console.log(res)
+						// console.log(res)
 						
 						if(nowpage==1){
 							that.datas_car=[]

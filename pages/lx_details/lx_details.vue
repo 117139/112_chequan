@@ -20,25 +20,25 @@
 		<view v-if="datas.userInfo" class="xq_tmsg dis_flex aic">
 			<image class="xq_ttx" :src="$service.getimg(datas.userInfo.img)" mode="aspectFill"></image>
 			<view class="flex_1">
-				<view class="xq_tname">{{datas.userInfo.nick}}</view>
+				<view class="xq_tname">{{datas.userInfo.nick||''}}</view>
 				<view class="xq_ttime">{{datas.create_time||''}}发布</view>
 			</view>
 			<view v-if="datas.is_zan==1" class="car_li_sc car_li_sc1 dis_flex aic"  @click="sc_fuc">
 				<text class="icon icon-xihuan1"></text>
-				{{datas.zan}}
+				{{datas.zan||0}}
 			</view>
 			<view v-else class="car_li_sc dis_flex aic"  @click="sc_fuc">
 				<text class="icon icon-xihuan"></text>
-				{{datas.zan}}
+				{{datas.zan||0}}
 			</view>
 			<text class="iconfont icon-zhuanfa3" @click="share_fuc"></text>
 		</view>
 		<view class="xq_tmsg">
 			<view class="xq_add">
-				<image class="xq_add_i" src="/static/images/icon_address.png" mode="aspectFit"></image>{{datas.address}}
+				<image class="xq_add_i" src="/static/images/icon_address.png" mode="aspectFit"></image>{{datas.address||''}}
 			</view>
 			<view class="xq_tit">
-				{{datas.title}}
+				{{datas.title||''}}
 			</view>
 			<view class="xq_tags dis_flex aic">
 				<!-- <view class="xq_tag">
@@ -49,7 +49,7 @@
 				</view>
 			</view>
 			<view class="xq_text">
-				<text>{{datas.content}}</text>
+				<text>{{datas.content||''}}</text>
 				<!-- 20年刷爆网络的南京“天空之镜”石臼湖，到了最佳观赏期，每年11到1月中旬的秋冬色是一-年中最美的时期 
 				<br>推荐这几个观赏地 
 				<br>

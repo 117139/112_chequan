@@ -143,7 +143,7 @@
 			<view class="xieyi_k" :class="{active:xy_active}">
 				<text class="iconfont icon-duigou"></text>
 			</view>
-			我已阅读并同意<text style="color: #FDC113;" @click.stop="$service.jump" data-url="/pagesA/xieyi/xieyi?id=yhxy">《用户协议》</text>和<text style="color: #FDC113;" @click.stop="$service.jump" data-url="/pagesA/xieyi/xieyi?id=ysxy">《隐私政策》</text>
+			我已阅读并同意<text style="color: #FDC113;" @click.stop="$service.jump" data-url="/pagesA/xieyi/xieyi?id=yhxy">《用户协议》</text>和<text style="color: #FDC113;" @click.stop="$service.jump" data-url="/pagesA/xieyi/xieyi?id=yszc">《隐私政策》</text>
 		</view>
 		<!-- 阻止滑动 -->
 		<!-- <view @touchmove.stop.prevent='test'></view> -->

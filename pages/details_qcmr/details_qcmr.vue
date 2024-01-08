@@ -38,17 +38,17 @@
 			<view class="details_top">
 				<view class="flex_1">
 					<view class="details_top_l1">
-						{{datas.price}}<text>元</text> 
+						{{datas.price||'0'}}<text>元</text> 
 						<!-- <view class="ghf_tag">包含过户费</view> -->
 					</view>
-					<view class="details_top_l2">{{datas.title}}</view>
+					<view class="details_top_l2">{{datas.title||''}}</view>
 				</view>
 				<view v-if="datas.store" class="xq_xzdj" @click="$service.call" :data-tel="datas.store.phone">联系商家</view>
 			</view>
 			<view class="details_top_f">
-				<view class="xq_name">{{datas.title}}</view>
+				<view class="xq_name">{{datas.title||''}}</view>
 				<view class="xq_tpri dis_flex aic">
-					{{datas.sub_title}}
+					{{datas.sub_title||''}}
 				</view>
 			</view>
 		</view>
@@ -108,10 +108,19 @@
 					<text class="iconfont icon-shoucang1" style="color: #E2382F;"></text>
 					<text style="color: #E2382F;">已收藏</text>
 				</view>
+				<!-- #ifdef APP -->
 				<view class="xq_bli" @click="share_fuc">
 					<text class="iconfont icon-zhuanfa3"></text>
 					<text>转发</text>
 				</view>
+				<!-- #endif -->
+				<!-- #ifdef MP-WEIXIN -->
+				<view class="xq_bli" style="position: relative;">
+					<button type="default" open-type="share" style="position: absolute;opacity: 0; top: 0;left: 0;right: 0;bottom: 0;" :data-id="1"></button>
+					<text class="iconfont icon-zhuanfa3"></text>
+					<text>转发</text>
+				</view>
+				<!-- #endif -->
 				<view v-if="datas.store" class="xq_b_btn"  @click="$service.call" :data-tel="datas.store.phone">
 					联系商家
 				</view>
@@ -160,7 +169,7 @@
 		onShow() {
 			// that.onRetry()
 		},
-		
+		onShareAppMessage() {},
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},

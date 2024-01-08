@@ -4,18 +4,21 @@
 		<topbar >
 			<view class="bus_head dis_flex aic ju_b">
 				<text class="iconfont icon-back" @click="$service.back"></text>
-				<text class="bus_title">加油站</text>
+				<text class="bus_title bus_title1">加油站</text>
 				<picker @change="confirm" :value="index" :range="columns" range-key="title">
 					<!-- <view class="bus_jl"  @click="showpick">{{columns[index].title}} <image src="/static/images/icon_dropdown.png" mode="aspectFit"></image></view> -->
 					<view v-if="index==-1" class="bus_jl"  >请选择 <image src="/static/images/icon_dropdown.png" mode="aspectFit"></image></view>
 					<view v-else class="bus_jl"  >{{columns[index].title}} <image src="/static/images/icon_dropdown.png" mode="aspectFit"></image></view>
 				</picker>
+				<!-- #ifdef MP-WEIXIN -->
+				<view class="weixin_rbox1" ></view>
+				<!-- #endif -->
 			</view>
 		</topbar>
 		<u-picker :show="show_sx" :columns="columns" @confirm="confirm_sx" @cancel="cancel_sx" />
 		<view class="main_box">
 			<image v-if="navdata[0].banner" class="main_bg" :src="$service.getimg(navdata[0].banner)" mode="widthFix"></image>
-			<image v-else class="main_bg" src="/static/images/bg_addoil.png" mode="widthFix"></image>
+			<image v-else class="main_bg" :src="$service.getimg('/static/images/bg_addoil.png')" mode="widthFix"></image>
 			<view class="data_list">
 				<!-- <view class="data_li" v-for="(item,index) in datas"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=3&id='+1">
 					<view class="datali_top">
@@ -60,8 +63,8 @@
 					</view>
 					<view class="data_sli dis_flex aic" v-for="(item1,index1) in item.child">
 						<text class="data_sli_l"></text>
-						<view class="flex_1 data_sli_c">{{item1.title}}</view>
-						<view class="data_sli_r">￥<text>{{item1.price}}</text></view>
+						<view class="flex_1 data_sli_c">{{item1.title||''}}</view>
+						<view class="data_sli_r">￥<text>{{item1.price||''}}</text></view>
 					</view>
 					<view class="datasli_more">查看全部<text class="icon icon-next"></text></view>
 				</view>
@@ -355,7 +358,6 @@ page{
 .main_box{
 	width: 100%;
 	// background: #f8f8f8;
-	// background-image: url(/static/images/bg_addoil.png);
 	// background-repeat: no-repeat;
 	// background-size: 100% 421rpx;
 	// background-position: top;

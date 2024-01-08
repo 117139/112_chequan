@@ -1,5 +1,6 @@
 <template>
-	<view class="wrap_box">
+	<!-- <view class="wrap_box" :style="'background-image: url('+$service.imgurl+'/static_wx/images/bg_mine.png);'"> -->
+	<view class="wrap_box" :style="'background-image: url('+$service.getimg('static_wx/images/bg_mine.png')+');'">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
 		
 		<view v-if="hasLogin" class="my_top dis_flex aic ">
@@ -20,6 +21,7 @@
 			</view>
 		</view>
 		<view  v-if="p_config.onoff==1" class="shop_vip_box" @click="$service.jump" data-url="/pagesA/openVIp/openVIp?type=1"  :data-login="true">
+			<!-- <image class="shop_vip_bg" src="/static/images/shopvurl.png" mode="aspectFill"></image> -->
 			<image class="shop_vip_bg" src="/static/images/shopvurl.png" mode="aspectFill"></image>
 			<view class="shop_vip_btn">立即开通</view>
 		</view>
@@ -98,12 +100,21 @@
 					<image src="/static/images/icon_mykefu.png" mode="aspectFit"></image>
 					<text>我的客服</text>
 				</view>
+				<!-- #ifdef APP -->
 				<view class="fuwu_li dis_flex_c aic ju_c" @click="share_fuc" data-url="/pages_my/vip_home/vip_home" >
 					<!-- <image  src="/static/images/iti3.png" mode="aspectFit"></image> -->
 					<image src="/static/images/icon_share.png" mode="aspectFit"></image>
 					<text>分享转发</text>
 				</view>
-				
+				<!-- #endif -->
+				<!-- #ifdef MP-WEIXIN -->
+				<view class="fuwu_li dis_flex_c aic ju_c"  >
+					
+						<button type="default" open-type="share" style="position: absolute;opacity: 0; top: 0;left: 0;right: 0;bottom: 0;" :data-id="1"></button>
+					<image src="/static/images/icon_share.png" mode="aspectFit"></image>
+					<text>分享转发</text>
+				</view>
+				<!-- #endif -->
 				<!-- <view v-if="hasLogin" class="fuwu_li dis_flex_c aic ju_c" @tap="logout_fuc" data-url="/pagesA/about/about?type=ysxy">
 					<image src="/static/images/logout.png" mode="aspectFit"></image>
 					<text>退出登录</text>
@@ -151,6 +162,15 @@
 			
 			// that.getdata()
 		},
+		onShareAppMessage() {
+			var userid=uni.getStorageSync('userid')||''
+			return {
+				path: '/pages/index/index?id=' + userid,
+				success: function(res) {
+					console.log('成功', res)
+				}
+			}
+		},
 		onShow() {
 			// that.onRetry()
 		},
@@ -158,6 +178,8 @@
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
 			share_fuc(){
+				// #ifndef MP-WEIXIN
+				
 				var code='111'
 				uni.shareWithSystem({
 					summary: '车圈',
@@ -169,6 +191,10 @@
 						// 分享失败
 					}
 				})
+				
+				// #endif
+				
+			
 			},
 			kf_open() { //筛选 弹窗
 				this.$refs.popup.open('center')
@@ -463,6 +489,7 @@ page{
 		height: 180upx;
 		font-size: 26upx;
 		color: #333;
+		position: relative;
 	}
 	.fuwu_li image{
 		width: 80upx;

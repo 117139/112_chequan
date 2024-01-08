@@ -3,7 +3,7 @@
 		
 		<view class="main_box">
 			<image v-if="navdata[4].banner" class="main_bg" :src="$service.getimg(navdata[4].banner)" mode="widthFix"></image>
-			<image v-else class="main_bg" src="/static/images/bg_pinggu.png" mode="widthFix"></image>
+			<image v-else class="main_bg" :src="$service.getimg('/static_wx/images/bg_pinggu.png')" mode="widthFix"></image>
 			<view class="cz_box">
 				<view class="cz_tip"><text class="iconfont icon-yanzhengma"></text>为全网95%二手车交易提供估值服务</view>
 				
@@ -18,7 +18,7 @@
 					<view class="pz_jg dis_flex aic ju_c">
 						<view class="pz_jgbox">
 							<view class="pz_jgbox1">
-								<image class="pz_jgbox_img" src="/static/images/banner.png" mode="aspectFill"></image>
+								<image class="pz_jgbox_img" :src="$service.getimg('/static_wx/images/banner.png')" mode="aspectFill"></image>
 								<view class="pz_jgbox_msg">
 									<view class="pz_i">
 										<text class="iconfont icon-paizhao-xianxing"></text>
@@ -493,7 +493,6 @@ page{
 .main_box{
 	width: 100%;
 	// background: #f8f8f8;
-	// background-image: url(/static/images/bg_pinggu.png);
 	// background-repeat: no-repeat;
 	// background-size: 100% auto;
 	// background-position: 0 -130rpx;

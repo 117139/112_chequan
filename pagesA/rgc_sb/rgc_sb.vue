@@ -3,7 +3,7 @@
 		
 		<view class="main_box">
 			<image v-if="navdata[5].banner" class="main_bg" :src="$service.getimg(navdata[5].banner)" mode="widthFix"></image>
-			<image v-else class="main_bg" src="/static/images/rgcsb_bg.png" mode="widthFix"></image>
+			<image v-else class="main_bg" :src="$service.getimg('/static_wx/images/rgcsb_bg.png')" mode="widthFix"></image>
 			<view class="cz_box">
 				<view class="xq_li fww">
 					<input class="car_id" type="text" placeholder="请输入车架号或扫描行驶证" v-model="vin">
@@ -42,7 +42,7 @@
 			</view>
 			<view class="ls_box">
 				<view class="ls_tit">经典案例</view>
-				<image class="ls_img" src="/static/images/ls_img.png" mode="widthFix"></image>
+				<image class="ls_img" :src="$service.getimg('/static_wx/images/ls_img.png')" mode="widthFix"></image>
 			</view>
 		</view>
 		
@@ -584,7 +584,6 @@ page{
 .main_box{
 	width: 100%;
 	// background: #f8f8f8;
-	// background-image: url(/static/images/bg_pinggu.png);
 	// background-repeat: no-repeat;
 	// background-size: 100% auto;
 	// background-position: 0 -130rpx;

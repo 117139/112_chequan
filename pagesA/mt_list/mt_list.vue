@@ -1,14 +1,15 @@
 <template>
 	<view class="wrap_box">
 		<!-- <uParse v-if="datas" :content="datas"></uParse> -->
-		<topbar bg_img="/static/images/motor_tbg.jpg">
+		<!-- <topbar bg_img="/static/images/motor_tbg.jpg"> -->
+		<topbar :bg_img="$service.getimg('static_wx/images/motor_tbg.jpg')">
 			<view class="bus_head dis_flex aic">
-				<text class="iconfont icon-back" @click="$service.back"></text>
 				<text class="bus_title">附近经销商</text>
+				<text class="iconfont icon-back" @click="goback"></text>
 			</view>
 		</topbar>
 		<!-- <u-picker :show="show_sx" :columns="columns" @confirm="confirm_sx" @cancel="cancel_sx" /> -->
-		<view class="main_box">
+		<view class="main_box" :style="'background-image: url('+$service.getimg('static_wx/images/motor_tbg.jpg')+');'">
 			<view class="data_list">
 				<view class="data_li" v-for="(item,index) in datas">
 					<view class="datali_top" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+item.id">
@@ -24,7 +25,7 @@
 					</view>
 					<view class="data_sli dis_flex aic"  v-for="(item1,index1) in item.child" @click.stop="$service.jump" :data-url="'/pages/details_motor/details_motor?id='+item1.id">
 						<text class="data_sli_l"></text>
-						<view class="flex_1 data_sli_c">{{item1.title}}</view>
+						<view class="flex_1 data_sli_c">{{item1.title||''}}</view>
 						<view class="data_sli_r"><text>{{$service.getnum(item1.price)}}</text></view>
 					</view>
 					<!-- <view class="data_sli dis_flex aic" @click.stop="$service.jump" data-url="/pages/details_motor/details_motor">
@@ -37,7 +38,7 @@
 						<view class="flex_1 data_sli_c">闪爆摩界 闪300s国潮</view>
 						<view class="data_sli_r"><text>2.38</text>万</view>
 					</view> -->
-					<view class="datasli_more"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+1">查看全部<text class="icon icon-next"></text></view>
+					<view class="datasli_more"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+item.id">查看全部<text class="icon icon-next"></text></view>
 				</view>
 				<!-- <view class="go_more">查看更多洗车店<text class="icon icon-next"></text></view> -->
 				<uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more>
@@ -260,7 +261,15 @@
 			},
 			
 			goback(){
-			  uni.navigateBack()
+				console.log(111)
+			  uni.navigateBack({
+					fail:(e)=> {
+						console.log(e)
+						uni.switchTab({
+							url:'/pages/motor/motor'
+						})
+					}
+				})
 			},
 			func(){
 				// that.$store.commit('setSystem',datas.system)
@@ -283,7 +292,7 @@ page{
 		font-size: 30rpx;
 		color: #fff;
 		position: relative;
-		z-index: 999;
+		z-index: 993;
 	}
 	.bus_title{
 		position: absolute;
@@ -294,7 +303,7 @@ page{
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		z-index: 998;
+		z-index: 992;
 		font-size: 30rpx;
 		color: #fff;
 	}
@@ -307,7 +316,8 @@ page{
 .main_box{
 	width: 100%;
 	// background: #f8f8f8;
-	background-image: url(/static/images/motor_tbg.jpg);
+	// background-image: url(/static/images/motor_tbg.jpg);
+	
 	background-repeat: no-repeat;
 	background-size: 100% 321rpx;
 	background-position: top;

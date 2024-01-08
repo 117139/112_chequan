@@ -64,7 +64,7 @@
 				datas:'',
 				page:1,
 				list1: [
-						'/static/images/lx1.jpg',
+						// '/static/images/lx1.jpg',
 				],
 				cur:0,
 				store_type:1

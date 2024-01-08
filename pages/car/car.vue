@@ -2,45 +2,46 @@
 	<view class="content">
 		<topbar>
 			<view class="my_header dis_flex aic">
-				<image class="h_add" src="/static/images/icon_address.png" mode="aspectFit"></image>
-				<view class=" h_add_text">北京</view>
-				
+				<!-- <image class="h_add" src="/static/images/icon_address.png" mode="aspectFit"></image>
+				<view class=" h_add_text">{{addmsg.address.city||'--'}}</view> -->
+				<image class="h_add" src="/static/images/icon_address.png" mode="aspectFit" @click="getadd"></image>
+				<view v-if="addmsg.address" class=" h_add_text"  @click="getadd">{{addmsg.address.city||'--'}}</view>
+				<view v-else class=" h_add_text"  @click="getadd">--</view>
 				<view class="top_search flex_1" @tap="$service.jump" data-url="/pagesA/search/search">
 					<text class="icon icon-sousuo"></text>
-					<view class="flex_1">请输入你要搜索的内容</view>
-					<view class="top_search_btn">搜素</view>
+					<view class="flex_1 oh1">请输入你要搜索的内容</view>
+					<view class="top_search_btn">搜索</view>
 				</view>
+				<!-- #ifdef MP-WEIXIN -->
+				<view class="weixin_rbox" ></view>
+				<!-- #endif -->
 			</view>
 		</topbar>
 		<!-- 金刚区 -->
 		<view class="index_tui_list dis_flex fww">
 			<view class="index_tui_li" @tap="$service.jump" data-url="/pages_my/store_fb/store_fb?type1=1&type=2" :data-login="true">
 				<view class="index_tui_li_img">
-					<image src="/static/images/ici1.png" mode="aspectFill"></image>
+					<image :src="$service.getimg('/static_wx/images/ici1.png')" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">我要发布</view>
 			</view>
 			<view class="index_tui_li" @tap="$service.jump" data-url="/pages_my/store_fb/store_fb?type1=1&type=2" :data-login="true">
 				<view class="index_tui_li_img">
-					<image src="/static/images/ici2.png" mode="aspectFill"></image>
+					<image :src="$service.getimg('/static_wx/images/ici2.png')" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">我要卖车</view>
 			</view>
 			<view v-if="navdata[5].is_show==1" class="index_tui_li" @click="$service.jump" data-url="/pagesA/rgc_sb/rgc_sb" :data-login="true">
 				<view class="index_tui_li_img">
 					<image v-if="navdata[5].img" :src="$service.getimg(navdata[5].img)" mode="aspectFill"></image>
-					<image v-else src="/static/images/iti6.png" mode="aspectFill"></image>
+					<image v-else :src="$service.getimg('/static_wx/images/iti6.png')" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">{{navdata[5].title||'车型识别'}}</view>
 			</view>
 			<view v-if="navdata[4].is_show==1" class="index_tui_li"  @click="$service.jump" data-url="/pagesA/rgc_mfpg/rgc_mfpg" :data-login="true">
-				<!-- <view class="index_tui_li_img">
-					<image src="/static/images/iti5.png" mode="aspectFill"></image>
-				</view>
-				<view class="index_tui_li_text">免费评估</view> -->
 				<view class="index_tui_li_img">
 					<image v-if="navdata[4].img" :src="$service.getimg(navdata[4].img)" mode="aspectFill"></image>
-					<image v-else src="/static/images/iti5.png" mode="aspectFill"></image>
+					<image v-else :src="$service.getimg('/static_wx/images/iti5.png')" mode="aspectFill"></image>
 				</view>
 				<view class="index_tui_li_text">{{navdata[4].title||'免费评估'}}</view>
 			</view>
@@ -54,7 +55,7 @@
 			<block v-for="(item,index) in car_info_hot">
 				<view class="cart_li"  @tap="$service.jump" :data-url="'/pagesA/search/search?type=2&key='+item.name">
 					<image class="cart_img" :src="$service.getimg(item.img)" mode="aspectFit"></image>
-					<view class="cart_text">{{item.name}}</view>
+					<view class="cart_text">{{item.name||''}}</view>
 				</view>
 			</block>
 			<view class="cart_li" @tap="$service.jump" data-url="/pagesA/ctpe_list/ctpe_list?type=2">
@@ -63,7 +64,7 @@
 			</view>
 		</view>
 		
-		<view v-if="datas_tj.length>0" class="mt_cbox">
+		<view v-if="datas_tj.length>0" class="mt_cbox" :style="'background-image: url('+$service.getimg('static_wx/images/caribg.png')+');'">
 			<view class="mt_cboxtit dis_flex aic">
 				<view class="mt_cboxtit_l">安全认证</view>
 				<view class="flex_1">/  专业检测 车况透明</view>
@@ -73,9 +74,9 @@
 					<view class="car_li_box">
 						<image class="car_li_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 						<view class="car_li_msg">
-							<view class="car_li_tit oh1">{{item.title}}</view>
+							<view class="car_li_tit oh1">{{item.title||''}}</view>
 							<view class="car_li_num">{{item.price}}万</view>
-							<view class="car_li_ntext">{{item.brand_time||''}}年/{{item.km}}万公里</view>
+							<view class="car_li_ntext">{{item.brand_time||''}}年/{{item.km||''}}万公里</view>
 						</view>
 					</view>
 				</view>
@@ -91,8 +92,8 @@
 					<image class="car_li_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
 					<view class="car_li_msg">
 						<view class="car_li_tit oh2">{{item.title}}</view>
-						<view class="car_li_jl oh1">{{item.brand_time||''}}年/{{item.km}}万公里</view>
-						<view class="car_li_num">{{item.price}}万</view>
+						<view class="car_li_jl oh1">{{item.brand_time||''}}年/{{item.km||''}}万公里</view>
+						<view class="car_li_num">{{item.price||''}}万</view>
 					</view>
 				</view>
 			</view>
@@ -143,6 +144,30 @@
 			that.getlist_car()
 		},
 		methods: {
+			/**
+			 * @Description 获取地理位置信息
+			 * 
+			 */
+			getadd(){
+				uni.getLocation({
+					type: 'gcj02',
+					// #ifdef APP
+					geocode:true,
+					// #endif
+					success: function (res) {
+						console.log('当前位置的经度：' + res.longitude);
+						console.log('当前位置的纬度：' + res.latitude);
+						that.$store.commit('setaddmsg',res)
+						// that.getdata()
+						// #ifdef MP-WEIXIN
+						that.$service.getaddinfo(res.latitude,res.longitude)
+						// #endif
+					},
+					fail: function (res) {
+						console.log(res)
+					}
+				});
+			},
 			getcar_datas() {
 			
 				var datas = {}
@@ -439,7 +464,7 @@
 	.my_header{
 		width: 100%;
 		// justify-content: space-between;
-		padding: 0 15rpx;
+		padding: 0 15rpx 5rpx;
 		.h_add{
 			width: 30rpx;
 			height: 30rpx;
@@ -456,7 +481,7 @@
 		.top_search{
 			display: flex;
 			align-items: center;
-			height: 68rpx;
+			height: 60rpx;
 			border: 1px solid #FDC113;
 			border-radius: 34rpx;
 			font-size: 24rpx;
@@ -469,9 +494,13 @@
 				color: #999999;
 				margin-right: 15rpx;
 			}
+			.oh1{
+				line-height: 60rpx;
+				height: 60rpx;
+			}
 			.top_search_btn{
 				width: 134rpx;
-				height: 66rpx;
+				height: 58rpx;
 				background: #FDC113;
 				border-radius: 0px 34px 34px 0px;
 				display: flex;

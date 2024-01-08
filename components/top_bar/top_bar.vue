@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="dh_top" :class="bg_img?'cf':''" :style="'height: '+CustomBar+'px;background-color:'+bg_color">
+		<view class="dh_top" :class="bg_img?'cf':''" :style="'padding-top:'+StatusBar+'px;height: '+CustomBar+'px;background-color:'+bg_color">
 			<image v-if="bg_img" class="nav_bar_img" :src="bg_img" mode="widthFix"></image>
 			<!-- <text class=""></text>
 			<text>个人中心</text>

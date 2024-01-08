@@ -33,6 +33,9 @@
 					</view>
 					<view class="reset_btn" @click="$service.back">取消</view>
 				</view>
+				<!-- #ifdef MP-WEIXIN -->
+				<view class="" style="width:200rpx"></view>
+				<!-- #endif -->
 			</view>
 			<view class="tab_list">
 				<view class="tab_li" :class="{active:active==index}" @click="setcur(index)" v-for="(item,index) in tabs">

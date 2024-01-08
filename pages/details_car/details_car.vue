@@ -38,15 +38,15 @@
 			<view class="details_top">
 				<view class="flex_1">
 					<view class="details_top_l1">
-						{{datas.price}}<text>万</text> <view v-if="datas.is_gh==1" class="ghf_tag">包含过户费</view>
+						{{datas.price||''}}<text>万</text> <view v-if="datas.is_gh==1" class="ghf_tag">包含过户费</view>
 					</view>
 					<view v-if="datas.car_params" class="details_top_l2">新车价:{{datas.car_params.price||'--'}}</view>
 				</view>
 				<view v-if="datas.store" class="xq_xzdj" @click="$service.call" :data-tel="datas.store.phone">咨询底价</view>
 			</view>
 			<view class="details_top_f">
-				<view class="xq_name">{{datas.title}}</view>
-				<view class="xq_tpri">首付<text>{{datas.first_price}}</text>万</view>
+				<view class="xq_name">{{datas.title||''}}</view>
+				<view class="xq_tpri">首付<text>{{datas.first_price||''}}</text>万</view>
 			</view>
 		</view>
 		<view v-if="datas.car_params" class="main_box">
@@ -59,7 +59,7 @@
 					<view class="carmsg1_li_d2">上牌时间</view>
 				</view>
 				<view class="carmsg1_li">
-					<view class="carmsg1_li_d1">{{datas.km}}万公里</view>
+					<view class="carmsg1_li_d1">{{datas.km||''}}万公里</view>
 					<view class="carmsg1_li_d2">行驶里程</view>
 				</view>
 				<view class="carmsg1_li">
@@ -107,52 +107,52 @@
 					<text class="carmsg3_li_text">全景摄像头</text>
 				</view> -->
 				<view v-if="car_params.drivingauxiliary.automaticparkingintoplace&&car_params.drivingauxiliary.automaticparkingintoplace!='无'" class="carmsg3_li">
-					<image class="carmsg3_li_img" src="/static/images/car_i31.png" mode="aspectFill"></image>
+					<image class="carmsg3_li_img" :src="$service.getimg('/static_wx/images/car_i31.png')" mode="aspectFill"></image>
 					<text class="carmsg3_li_text">自动泊车</text>
 				</view>
 				<view v-if="car_params.drivingauxiliary.nightvisionsystem&&car_params.drivingauxiliary.nightvisionsystem!='无'" class="carmsg3_li">
-					<image class="carmsg3_li_img" src="/static/images/car_i32.png" mode="aspectFill"></image>
+					<image class="carmsg3_li_img" :src="$service.getimg('/static_wx/images/car_i32.png')" mode="aspectFill"></image>
 					<text class="carmsg3_li_text">夜视系统</text>
 				</view>
 				<view v-if="car_params.drivingauxiliary.automaticparking&&car_params.drivingauxiliary.automaticparking!='无'" class="carmsg3_li">
-					<image class="carmsg3_li_img" src="/static/images/car_i33.png" mode="aspectFill"></image>
+					<image class="carmsg3_li_img" :src="$service.getimg('/static_wx/images/car_i33.png')" mode="aspectFill"></image>
 					<text class="carmsg3_li_text">自动驻车</text>
 				</view>
 				<view v-if="car_params.entcom.cartv&&car_params.entcom.cartv!='无'" class="carmsg3_li">
-					<image class="carmsg3_li_img" src="/static/images/car_i34.png" mode="aspectFill"></image>
+					<image class="carmsg3_li_img" :src="$service.getimg('/static_wx/images/car_i34.png')" mode="aspectFill"></image>
 					<text class="carmsg3_li_text">车载电视</text>
 				</view>
 				<view v-if="car_params.aircondrefrigerator.carrefrigerator&&car_params.aircondrefrigerator.carrefrigerator!='无'" class="carmsg3_li">
-					<image class="carmsg3_li_img" src="/static/images/car_i35.png" mode="aspectFill"></image>
+					<image class="carmsg3_li_img" :src="$service.getimg('/static_wx/images/car_i35.png')" mode="aspectFill"></image>
 					<text class="carmsg3_li_text">车载冰箱</text>
 				</view>
 				<view v-if="car_params.entcom.bluetooth&&car_params.entcom.bluetooth!='无'" class="carmsg3_li">
-					<image class="carmsg3_li_img" src="/static/images/car_i36.png" mode="aspectFill"></image>
+					<image class="carmsg3_li_img" :src="$service.getimg('/static_wx/images/car_i36.png')" mode="aspectFill"></image>
 					<text class="carmsg3_li_text">蓝牙系统</text>
 				</view>
 				<view v-if="car_params.internalconfig.steeringwheelheating&&car_params.internalconfig.steeringwheelheating!='无'" class="carmsg3_li">
-					<image class="carmsg3_li_img" src="/static/images/car_i37.png" mode="aspectFill"></image>
+					<image class="carmsg3_li_img" :src="$service.getimg('/static_wx/images/car_i37.png')" mode="aspectFill"></image>
 					<text class="carmsg3_li_text">方向盘加热</text>
 				</view>
 				<view v-if="car_params.drivingauxiliary.abs&&car_params.drivingauxiliary.abs!='无'" class="carmsg3_li">
-					<image class="carmsg3_li_img" src="/static/images/car_i38.png" mode="aspectFill"></image>
+					<image class="carmsg3_li_img" :src="$service.getimg('/static_wx/images/car_i38.png')" mode="aspectFill"></image>
 					<text class="carmsg3_li_text">刹车防抱死</text>
 				</view>
 				
 				<view v-if="car_params.drivingauxiliary.cruisecontrol&&car_params.drivingauxiliary.cruisecontrol!='无'" class="carmsg3_li">
-					<image class="carmsg3_li_img" src="/static/images/car_i2.png" mode="aspectFill"></image>
+					<image class="carmsg3_li_img" :src="$service.getimg('/static_wx/images/car_i2.png')" mode="aspectFill"></image>
 					<text class="carmsg3_li_text">定速巡航</text>
 				</view>
 				<view v-if="car_params.drivingauxiliary.adaptivecruise&&car_params.drivingauxiliary.adaptivecruise!='无'" class="carmsg3_li">
-					<image class="carmsg3_li_img" src="/static/images/car_i2.png" mode="aspectFill"></image>
+					<image class="carmsg3_li_img" :src="$service.getimg('/static_wx/images/car_i2.png')" mode="aspectFill"></image>
 					<text class="carmsg3_li_text">自适应巡航</text>
 				</view>
 				<view v-if="car_params.seat.seatventilation&&car_params.seat.seatventilation!='无'" class="carmsg3_li">
-					<image class="carmsg3_li_img" src="/static/images/car_i3.png" mode="aspectFill"></image>
+					<image class="carmsg3_li_img" :src="$service.getimg('/static_wx/images/car_i3.png')" mode="aspectFill"></image>
 					<text class="carmsg3_li_text">座椅通风</text>
 				</view>
 				<view v-if="car_params.seat.seatheating&&car_params.seat.seatheating!='无'" class="carmsg3_li">
-					<image class="carmsg3_li_img" src="/static/images/car_i3.png" mode="aspectFill"></image>
+					<image class="carmsg3_li_img" :src="$service.getimg('/static_wx/images/car_i3.png')" mode="aspectFill"></image>
 					<text class="carmsg3_li_text">座椅加热</text>
 				</view>
 				<!-- <view class="carmsg3_li">
@@ -195,7 +195,7 @@
 			<view class="main_box_tit">
 				<view class="main_tl">商家信息</view>
 			</view>
-			<view class="dp_msg"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=2'">
+			<view class="dp_msg"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?type=2&id='+datas.store.id">
 				<image class="dp_msgbg" src="/static/images/bg_shop.png" mode="aspectFill"></image>
 				<view class="dp_msg_box dis_flex">
 					<image v-if="datas.store.is_vip==1" class="dp_msg_tl" src="/static/images/shop_vip.png" mode="aspectFill"></image>
@@ -232,10 +232,19 @@
 					<text class="iconfont icon-shoucang1" style="color: #E2382F;"></text>
 					<text style="color: #E2382F;">已收藏</text>
 				</view>
+				<!-- #ifdef APP -->
 				<view class="xq_bli" @click="share_fuc">
 					<text class="iconfont icon-zhuanfa3"></text>
 					<text>转发</text>
 				</view>
+				<!-- #endif -->
+				<!-- #ifdef MP-WEIXIN -->
+				<view class="xq_bli" style="position: relative;">
+					<button type="default" open-type="share" style="position: absolute;opacity: 0; top: 0;left: 0;right: 0;bottom: 0;" :data-id="1"></button>
+					<text class="iconfont icon-zhuanfa3"></text>
+					<text>转发</text>
+				</view>
+				<!-- #endif -->
 				<view class="xq_b_btn" @click="$service.call"  :data-tel="datas.store.phone">
 					联系商家
 				</view>
@@ -287,6 +296,7 @@
 			// that.onRetry()
 		},
 		
+		onShareAppMessage() {},
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},

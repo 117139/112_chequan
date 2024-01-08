@@ -4,18 +4,21 @@
 		<topbar >
 			<view class="bus_head dis_flex aic ju_b">
 				<text class="iconfont icon-back" @click="$service.back"></text>
-				<text class="bus_title">洗车店</text>
+				<text class="bus_title bus_title1">洗车店</text>
 				<picker @change="confirm" :value="index" :range="columns" range-key="title">
 					<!-- <view class="bus_jl"  @click="showpick">{{columns[index].title}} <image src="/static/images/icon_dropdown.png" mode="aspectFit"></image></view> -->
 					<view v-if="index==-1" class="bus_jl"  >请选择 <image src="/static/images/icon_dropdown.png" mode="aspectFit"></image></view>
 					<view v-else class="bus_jl"  >{{columns[index].title}} <image src="/static/images/icon_dropdown.png" mode="aspectFit"></image></view>
 				</picker>
+				<!-- #ifdef MP-WEIXIN -->
+				<view class="weixin_rbox1 " ></view>
+				<!-- #endif -->
 			</view>
 		</topbar>
 		<u-picker :show="show_sx" :columns="columns" @confirm="confirm_sx" @cancel="cancel_sx" />
 		<view class="main_box">
-			<image v-if="navdata[1].banner" class="main_bg" :src="$service.getimg(navdata[1].banner)" mode="aspectFill"></image>
-			<image v-else class="main_bg" src="/static/images/bg_carwash.png" mode="widthFix"></image>
+			<image v-if="navdata[1].banner" class="main_bg" :src="$service.getimg(navdata[1].banner)" mode="widthFix"></image>
+			<image v-else class="main_bg" :src="$service.getimg('/static_wx/images/bg_carwash.png')" mode="widthFix"></image>
 			<view class="data_list">
 				<view  class="data_li" v-for="(item,index) in datas">
 					<view class="datali_top" @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+item.id">
@@ -31,10 +34,10 @@
 					</view>
 					<view class="data_sli dis_flex aic" v-for="(item1,index1) in item.child" @click.stop="$service.jump" :data-url="'/pages/details_qcmr/details_qcmr?id='+item1.id">
 						<text class="data_sli_l"></text>
-						<view class="flex_1 data_sli_c">{{item1.title}}</view>
-						<view class="data_sli_r">￥<text>{{item1.price}}</text></view>
+						<view class="flex_1 data_sli_c">{{item1.title||''}}</view>
+						<view class="data_sli_r">￥<text>{{item1.price||''}}</text></view>
 					</view>
-					<view class="datasli_more"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+1">查看全部<text class="icon icon-next"></text></view>
+					<view class="datasli_more"  @click="$service.jump" :data-url="'/pages/bus_index/bus_index?id='+item.id">查看全部<text class="icon icon-next"></text></view>
 				</view>
 				<!-- <view class="go_more">查看更多洗车店<text class="icon icon-next"></text></view> -->
 				<uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more>
@@ -326,7 +329,6 @@ page{
 .main_box{
 	width: 100%;
 	// background: #f8f8f8;
-	// background-image: url(/static/images/bg_carwash.png);
 	// background-repeat: no-repeat;
 	// background-size: 100% 421rpx;
 	// background-position: top;
