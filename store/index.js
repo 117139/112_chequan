@@ -61,7 +61,8 @@ const store = new Vuex.Store({
 		},
 		// 金刚区数据
 		setnavdata(state, navdata){
-			state.navdata = navdata||{}
+			console.log(navdata)
+			state.navdata = navdata||[]
 		},
 		// 公共数据
 		setconfig(state, p_config){

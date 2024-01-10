@@ -126,13 +126,13 @@
 			that=this
 			that.options=e||{}
 			console.log(e)
-			uni.$on('setimg_fuc', (data) => {
-					console.log('标题：' + data.title)
-					console.log('内容：' + data.content)
-					// that.getbasedata()
-					that.img=data.content
-			})
-			// that.getdata()
+			// uni.$on('setimg_fuc', (data) => {
+			// 		console.log('标题：' + data.title)
+			// 		console.log('内容：' + data.content)
+			// 		// that.getbasedata()
+			// 		that.img=data.content
+			// })
+			that.getdata()
 		},
 		onShow() {
 			// that.onRetry()
@@ -284,7 +284,7 @@
 				that.datas=[]
 				that.getdata()
 			},
-			getdata(){
+			getdata1(){
 				
 				var datas={
 					// day:that.date,
@@ -346,12 +346,12 @@
 				})
 			},
 			// 单条数据
-			getdata1(){
+			getdata(){
 				
 				var datas={
 					id: that.options.id
 				}
-				var jkurl='/news_detail'
+				var jkurl='/Publics/assessDetails'
 				
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
@@ -365,7 +365,7 @@
 							datas = JSON.parse(datas)
 						}
 						console.log(res)
-						that.datas=datas.content
+						that.datas=datas
 						// if(datas.title){
 						// 	uni.setNavigationBarTitle({
 						// 		title:datas.title

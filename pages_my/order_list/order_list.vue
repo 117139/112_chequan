@@ -133,6 +133,43 @@
 			
 			<uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more>
 		</view>
+		<view v-if="active==4" class="datas_list">
+			<!-- 订单状态 1、待支付 2、信息有误 3、待处理 4、无违章 5、有违章 -->
+			<view class="datas_li" v-for="(item,index) in datas" @click="$service.jump"  :data-url="'/pagesA/rgc_mfpg_jg/rgc_mfpg_jg?type=4&code='+item.code">
+				<!-- <image v-if="index==1" class="datas_li_st" src="/static/images/o_type1.png" mode="aspectFill"></image> -->
+				<!-- <image v-if="index==2" class="datas_li_st" src="/static/images/o_type2.png" mode="aspectFill"></image> -->
+				<image v-if="item.status==1" class="datas_li_st" src="/static/images/o_type.png" mode="aspectFill"></image>
+				<image v-if="item.status==2" class="datas_li_st" src="/static/images/o_type4.png" mode="aspectFill"></image>
+				<image v-if="item.status==3" class="datas_li_st" src="/static/images/o_type0.png" mode="aspectFill"></image>
+				<image v-if="item.status==4" class="datas_li_st" src="/static/images/o_type3.png" mode="aspectFill"></image>
+				<image v-if="item.status==5" class="datas_li_st" src="/static/images/o_type5.png" mode="aspectFill"></image>
+				<view class="datas_li_cname">
+					{{item.car_version||''}}{{item.car_code||''}}
+				</view>
+				<!-- <view class="datas_li_msg">
+					支付金额：￥{{item.price||'0'}}
+				</view>
+				<view class="datas_li_msg">
+					<text  v-if="item.status==4">违章信息：恭喜您该车无违章</text>
+					<text v-else-if="item.status==5">违章信息：该车有违章</text>
+					<text v-else>违章信息：-</text>
+				</view> -->
+				<view class="datas_li_msg">
+					订单编号：{{item.code||''}}
+				</view>
+				<view class="datas_li_msg">
+					下单时间：{{item.create_time||''}}
+				</view>
+				<!-- <view class="down_btn" v-if="item.status==5&&item.result&&item.result.length>0" @click.stop="down_fuc(1,item.result)">
+					一键下载图片
+				</view>
+				<view class="down_btn" v-if="item.status==2" @click.stop="reset_fuc(item,4)">
+					重新提交
+				</view> -->
+			</view>
+			
+			<uni-load-more v-if="listc_status" :status="listc_status" :contentText="contentText"></uni-load-more>
+		</view>
 		
 		<!-- 阻止滑动 -->
 		<!-- <view @touchmove.stop.prevent='test'></view> -->
@@ -164,6 +201,10 @@
 					},
 					{
 						title:'人工查违章',
+						idx:'6'
+					},
+					{
+						title:'免费评估',
 						idx:'6'
 					},
 				],
@@ -263,6 +304,9 @@
 				}
 				if(that.active==3){
 					jkurl='/order/violation'
+				}
+				if(that.active==4){
+					jkurl='/Publics/assessList'
 				}
 				that.listc_status='loading'
 				
@@ -492,6 +536,7 @@ page{
 	height: 100rpx;
 	padding: 0 28rpx;
 	background: #f8f8f8;
+	box-sizing: border-box;
 	.tab_li{
 		display: inline-flex;
 		height: 100rpx;

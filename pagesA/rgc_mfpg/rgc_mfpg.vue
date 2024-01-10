@@ -15,10 +15,10 @@
 					<view class="pz_btn" @click="$service.jump" data-url="/pagesA/pzsb/pzsb?type=5">
 						<text class="iconfont icon-saoyisao"></text>拍照识别
 					</view>
-					<view class="pz_jg dis_flex aic ju_c">
+					<view v-if="img" class="pz_jg dis_flex aic ju_c">
 						<view class="pz_jgbox">
 							<view class="pz_jgbox1">
-								<image class="pz_jgbox_img" :src="$service.getimg('/static_wx/images/banner.png')" mode="aspectFill"></image>
+								<image class="pz_jgbox_img" :src="$service.getimg(img)" mode="aspectFill"></image>
 								<view class="pz_jgbox_msg">
 									<view class="pz_i">
 										<text class="iconfont icon-paizhao-xianxing"></text>
@@ -28,17 +28,25 @@
 							</view>
 						</view>
 					</view>
-					<view class="pz_tip">
+					<view v-if="img" class="pz_tip">
 						<text class="iconfont icon-jinggao"></text>请核对识别的信息，如有误请修改
 					</view>
 				</view>
 				
-				<picker @change="bindPickerChange_c" :value="cc_index" :range="cc_array" range-key="title">
+				<!-- <picker @change="bindPickerChange_c" :value="cc_index" :range="cc_array" range-key="title">
 					<view class="xq_li">
 						<view class="xq_l">车辆型号</view>
 						<view class="xq_r">{{cc_array[cc_index].title||'请选择车辆型号'}} <text class="iconfont icon-next"></text></view>
 					</view>				
-				</picker>
+				</picker> -->
+				<view class="xq_li"  @tap="$service.jump" data-url="/pagesA/ctpe_list/ctpe_list?type=1">
+					<view class="xq_l">车辆型号</view>
+					<view class="xq_r">
+						<!-- {{cc_array[cc_index].title||'请选择车辆型号'}} -->
+						{{pp_msg.name||'请选择车辆型号'}}
+						<text class="iconfont icon-next"></text>
+					</view>
+				</view>	
 				<region-picker @change="region_change" :value="fb_add">
 					<view class="xq_li">
 						<view class="xq_l">所在城市</view>
@@ -124,7 +132,26 @@
 				dz_type:false,
 				car_cz:'',
 				car_jc:'',
-				fb_add:['北京市','市辖区','东城区']
+				fb_add:['北京市','市辖区','东城区'],
+				
+				
+				
+				img:'',
+				
+				
+				
+				pp_msg:'',
+				
+				ct_array:[],
+				ct_index:0,
+				ct_msg:'',
+				cx_list:[],
+				cx_index:0,
+				cx_msg:'',
+				
+				ks_list:[],
+				ks_index:0,
+				ks_msg:'',
 			}
 		},
 		computed: {
@@ -168,6 +195,20 @@
 					}
 					// that.imgmsg()
 			})
+			
+			
+			uni.$on('carpp_fuc', (data) => {
+					console.log('标题：' + data.title)
+					console.log('内容：' )
+					console.log(data.content)
+					that.pp_msg=data.content
+					that.ct_msg = ''
+					that.cx_msg = ''
+					that.ks_msg=''
+					that.getdata1()
+					// that.getbasedata()
+					// that.$service.wxlogin('token')
+			})
 			// that.getdata()
 		},
 		onShow() {
@@ -177,6 +218,102 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			getdata1(){
+				// var that=this
+				var datas={
+					id: that.pp_msg.id
+				}
+				var jkurl='/publics/carbrand'
+				
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						that.ct_array=datas
+						// car_status:that.ct_msg.id||'',
+						// car_lx:that.cx_msg.id||'',
+						// car_info:that.ks_msg.id||'',
+						for (var i = 0; i < datas.length; i++) {
+							if(datas[i].id==that.datas.car_status){
+								that.ct_msg={
+									id:datas[i].id,
+									name:datas[i].name
+								}
+								that.cx_list=datas[i].carlist
+								var cx_list=that.cx_list
+								for (var c = 0; c < cx_list.length; c++) {
+									if(cx_list[c].id==that.datas.car_lx){
+										that.cx_msg = {
+											id:cx_list[c].id,
+											name:cx_list[c].name,
+										}
+										that.ks_list=cx_list[c].list
+										var ks_list=cx_list[c].list
+										if(ks_list.length>0){
+											for (var k = 0; k < ks_list.length; k++) {
+												if(ks_list[k].id==that.datas.car_info){
+													that.ks_msg = {
+														id:ks_list[k].id,
+														name:ks_list[k].name,
+													}
+												}
+											}
+										}
+										
+									}
+								}
+							}
+						}
+						// that.ct_msg = ''
+						// that.cx_msg = ''
+						// that.ks_msg=''
+						// if(datas[0].carlist.length>0){
+						// 	that.cx_list=datas[0].carlist
+							
+						// 	that.cx_msg=that.cx_list[0]
+						// 	if(that.cx_list[0].list.length>0){
+						// 		that.ks_list=that.cx_list[0].list
+						// 		that.ks_msg=that.ks_list[0]
+						// 	}
+						// }
+						// if(datas.title){
+						// 	uni.setNavigationBarTitle({
+						// 		title:datas.title
+						// 	})
+						// }
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+			},
 			region_change(e){
 				console.log(e)
 				that.fb_add=e.detail.value
@@ -217,22 +354,76 @@
 				// 	})
 				// 	return
 				// }
-				// if(!this.car_jc){
-				// 	uni.showToast({
-				// 		icon:'none',
-				// 		title:'请选择首次上牌时间'
-				// 	})
-				// 	return
-				// }
+				if(!this.car_jc){
+					uni.showToast({
+						icon:'none',
+						title:'请选择首次上牌时间'
+					})
+					return
+				}
 				
 				
-				// if(!this.pow_num){
-				// 	uni.showToast({
-				// 		icon:'none',
-				// 		title:'请输入行驶里程'
-				// 	})
-				// 	return
-				// }
+				if(!this.pow_num){
+					uni.showToast({
+						icon:'none',
+						title:'请输入行驶里程'
+					})
+					return
+				}
+				
+				var jkurl='/Publics/submitAssess'
+				var  datas={
+					car_version:that.pp_msg.name,
+					province:that.fb_add[0],
+					city:that.fb_add[1],
+					county:that.fb_add[2],
+					registration_time:this.car_jc,
+					travel_mileage:this.pow_num
+				}
+				that.$service.P_post(jkurl, datas).then(res => {
+					that.btnkg = 0
+					console.log(res)
+					if (res.code == 1) {
+						that.htmlReset = 0
+						var datas = res.data
+						console.log(typeof datas)
+				
+						if (typeof datas == 'string') {
+							datas = JSON.parse(datas)
+						}
+						console.log(res)
+						uni.showToast({
+							icon: 'none',
+							title: '提交成功'
+						})
+						setTimeout(function(){
+							uni.navigateBack()
+						},1000)
+					} else {
+					
+						if (res.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: res.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '获取数据失败'
+							})
+						}
+					}
+				}).catch(e => {
+					that.htmlReset = 1
+					that.btnkg = 0
+					// that.$refs.htmlLoading.htmlReset_fuc(1)
+					console.log(e)
+					uni.showToast({
+						icon: 'none',
+						title: '获取数据失败，请检查您的网络连接'
+					})
+				})
+				return
 				uni.redirectTo({
 					url:'/pagesA/rgc_mfpg_jg/rgc_mfpg_jg'
 				})
@@ -382,7 +573,7 @@
 				})
 			},
 			// 单条数据
-			getdata1(){
+			getdata1111(){
 				
 				var datas={
 					id: that.options.id

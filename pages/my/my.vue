@@ -30,33 +30,47 @@
 			<view class="shop_vip_btn">立即开通</view>
 		</view>
 		<!-- 订单 -->
-		<view class="order_box" v-if="hasLogin&&p_config.onoff==1">
+		<view class="order_box" v-if="hasLogin&&p_config.onoff==2">
 			<view class="order_top dis_flex aic ju_b">
 				<view>我的订单</view>
 				<view class="go_more dis_flex aic"  @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+0">
 					全部订单<text class="iconfont icon-next"></text>
 				</view>
 			</view>
-			<view v-if="navdata.length>0" class="order_urls dis_flex aic ju_a">
+			<!--  v-if="navdata.length>0" -->
+			<view class="order_urls dis_flex aic fww">
 					 <!-- v-if="navdata[2].is_show==1" -->
 				<view  class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+0">
-					<image src="/static/images/iti3.png" mode="aspectFit"></image>
+					<image v-if="navdata[2].img" :src="$service.getimg(navdata[2].img)" mode="aspectFill"></image>
+					<image v-else :src="$service.getimg('/static_wx/images/iti3.png')" mode="aspectFill"></image>
 					<text>人工查状态</text>
 				</view>
 				 <!-- v-if="navdata[3].is_show==1" -->
 				<view class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+1">
-					<image  src="/static/images/iti4.png" mode="aspectFit"></image>
+					<!-- <image  src="/static/images/iti4.png" mode="aspectFit"></image> -->
+					<image v-if="navdata[3].img" :src="$service.getimg(navdata[3].img)" mode="aspectFill"></image>
+					<image v-else :src="$service.getimg('/static_wx/images/iti4.png')" mode="aspectFill"></image>
 					<text>急速年检</text>
 				</view>
 					 <!-- v-if="navdata[5].is_show==1" -->
 				<view  class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+2">
-					<image  src="/static/images/iti6.png" mode="aspectFit"></image>
+					<!-- <image  src="/static/images/iti6.png" mode="aspectFit"></image> -->
+					<image v-if="navdata[5].img" :src="$service.getimg(navdata[5].img)" mode="aspectFill"></image>
+					<image v-else :src="$service.getimg('/static_wx/images/iti6.png')" mode="aspectFill"></image>
 					<text>车型识别</text>
 				</view>
 					 <!-- v-if="navdata[6].is_show==1" -->
 				<view  class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+3">
-					<image  src="/static/images/iti7.png" mode="aspectFit"></image>
+					<!-- <image  src="/static/images/iti7.png" mode="aspectFit"></image> -->
+					<image v-if="navdata[6].img" :src="$service.getimg(navdata[6].img)" mode="aspectFill"></image>
+					<image v-else :src="$service.getimg('/static_wx/images/iti7.png')" mode="aspectFill"></image>
 					<text>人工查违章</text>
+				</view>
+				<view  class="order_url dis_flex_c aic ju_c" @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+4">
+					<!-- <image  src="/static/images/iti7.png" mode="aspectFit"></image> -->
+					<image v-if="navdata[4].img" :src="$service.getimg(navdata[4].img)" mode="aspectFill"></image>
+					<image v-else :src="$service.getimg('/static_wx/images/iti5.png')" mode="aspectFill"></image>
+					<text>免费评估</text>
 				</view>
 			</view>
 		</view>
@@ -445,10 +459,12 @@ page{
 
 	.order_urls {
 		width: 100%;
-		height: 196upx;
+		min-height: 196upx;
 		.order_url {
+			width: 25%;
 			font-size: 26upx;
 			color: #333;
+			padding-bottom: 40rpx;
 			image {
 				width: 80upx;
 				height: 80upx;
