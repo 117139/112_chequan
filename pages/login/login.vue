@@ -895,11 +895,14 @@
 					}
 					//弃用 1、手机号 2、微信 3、手机号密码 4、token 5、apple
 					// 1：小程序授权登录   2：手机号验证码登录    3：账号密码登录   4:token登录  5:微信授权登录  6:苹果登录
+					
 					datas={
 						type:3,
 						phone:that.tel,
 						pass:that.pwd,
 					}
+					
+					
 				}
 				if(that.v_type==2){
 					if (that.tel == '' || !(/^1\d{10}$/.test(that.tel))) {
@@ -932,59 +935,83 @@
 				// setTimeout(function(){
 				// 	uni.navigateBack()
 				// },1000)
-				var jkurl='/login/login'
 				
-				that.$service.P_post(jkurl, datas).then(res => {
-					that.btnkg = 0
-					console.log(res)
-					if (res.code == 1) {
-						that.htmlReset = 0
-						var datas = res.data
-						console.log(typeof datas)
+				// #ifndef MP-WEIXIN
+					that.login_req_fuc(datas)
+				// #endif
+				// #ifdef MP-WEIXIN
+					wx.login({
+						success: function(res) {
+							console.log(res.code)
+							datas={
+								code:res.code,
+								...datas
+							}
+							that.login_req_fuc(datas)
+							// uni.setStorageSync('res_code', res_login.code);
+							// that.res_code=res_login.code
+						},
+						fail:function(err){
+							console.log(err)
+						}
+					})
+				// #endif
 				
-						// if (typeof datas == 'string') {
-						// 	datas = JSON.parse(datas)
-						// }
+			},
+			login_req_fuc(datas){
+					var jkurl='/login/login'
+					
+					that.$service.P_post(jkurl, datas).then(res => {
+						that.btnkg = 0
 						console.log(res)
+						if (res.code == 1) {
+							that.htmlReset = 0
+							var datas = res.data
+							console.log(typeof datas)
+					
+							// if (typeof datas == 'string') {
+							// 	datas = JSON.parse(datas)
+							// }
+							console.log(res)
+							uni.showToast({
+								icon: 'none',
+								title: '登录成功'
+							})
+							uni.setStorageSync('token',res.data)
+							uni.$emit('login_fuc', {
+								title: ' 刷新信息 ',
+								content: 'item.id'
+							});
+							// that.$store.commit('login',datas)
+							setTimeout(()=>{
+								uni.navigateBack({
+									delta:1
+								})
+							},1000)
+						} else {
+						
+							if (res.msg) {
+								uni.showToast({
+									icon: 'none',
+									title: res.msg
+								})
+							} else {
+								uni.showToast({
+									icon: 'none',
+									title: '获取数据失败'
+								})
+							}
+						}
+					}).catch(e => {
+						that.htmlReset = 1
+						that.btnkg = 0
+						// that.$refs.htmlLoading.htmlReset_fuc(1)
+						console.log(e)
 						uni.showToast({
 							icon: 'none',
-							title: '登录成功'
+							title: '获取数据失败，请检查您的网络连接'
 						})
-						uni.setStorageSync('token',res.data)
-						uni.$emit('login_fuc', {
-							title: ' 刷新信息 ',
-							content: 'item.id'
-						});
-						// that.$store.commit('login',datas)
-						setTimeout(()=>{
-							uni.navigateBack({
-								delta:1
-							})
-						},1000)
-					} else {
-					
-						if (res.msg) {
-							uni.showToast({
-								icon: 'none',
-								title: res.msg
-							})
-						} else {
-							uni.showToast({
-								icon: 'none',
-								title: '获取数据失败'
-							})
-						}
-					}
-				}).catch(e => {
-					that.htmlReset = 1
-					that.btnkg = 0
-					// that.$refs.htmlLoading.htmlReset_fuc(1)
-					console.log(e)
-					uni.showToast({
-						icon: 'none',
-						title: '获取数据失败，请检查您的网络连接'
 					})
-				})
 			},
 			// 修改密码
 			reset_fuc(){
