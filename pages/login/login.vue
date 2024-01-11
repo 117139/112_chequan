@@ -943,10 +943,10 @@
 					wx.login({
 						success: function(res) {
 							console.log(res.code)
-							// datas={
-							// 	code:res.code,
-							// 	...datas
-							// }
+							datas={
+								code:res.code,
+								...datas
+							}
 							that.login_req_fuc(datas)
 							// uni.setStorageSync('res_code', res_login.code);
 							// that.res_code=res_login.code
