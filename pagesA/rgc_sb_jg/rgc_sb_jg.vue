@@ -32,7 +32,7 @@
 		<view class="jg_list">
 			<view class="jg_li">
 				<view class="jg_l">发动机</view>
-				<view class="jg_r">{{params.displacement}} {{params.maxhorsepower}}马力 <text v-if="params.cylindernum">L{{params.cylindernum}}</text></view>
+				<view class="jg_r">{{params.displacement||""}} <text v-if="params.maxhorsepower">{{params.maxhorsepower||"0"}}马力</text> <text v-if="params.cylindernum">L{{params.cylindernum}}</text></view>
 			</view>
 			<view class="jg_li">
 				<view class="jg_l">排量</view>
@@ -74,15 +74,15 @@
 			</view>
 			<view class="jg_li">
 				<view class="jg_l">驱动方式</view>
-				<view class="jg_r">{{params.drivemode}}</view>
+				<view class="jg_r">{{params.drivemode||""}}</view>
 			</view>
 			<view class="jg_li">
 				<view class="jg_l">前轮胎规格</view>
-				<view class="jg_r">{{params.fronttiresize}}</view>
+				<view class="jg_r">{{params.fronttiresize||""}}</view>
 			</view>
 			<view class="jg_li">
 				<view class="jg_l">后轮胎规格</view>
-				<view class="jg_r">{{params.reartiresize}}</view>
+				<view class="jg_r">{{params.reartiresize||""}}</view>
 			</view>
 		</view>
 		<view v-if="datas.status==3" class="xq_btn" @click="go_fuc">重新查询</view>

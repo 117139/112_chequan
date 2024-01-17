@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<vip v-if="p_config.onoff==1" :curtype="cur" :key="'ivip'+cur"></vip>
+		<vip v-if="p_config.onoff !==1" :curtype="cur" :key="'ivip'+cur"></vip>
 		<!-- 、pages/kefu/kefu -->
 		<view  v-else class="kf_box">
 			<kfewm></kfewm>

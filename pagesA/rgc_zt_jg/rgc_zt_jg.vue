@@ -218,6 +218,26 @@
 					})
 				})
 			},
+			pay_mp_fuc(data,code){
+				console.log(data)
+				// return
+				that.$service.wxpay(data).then(res => {
+					
+					that.gook_fuc(code)
+					
+					// setTimeout(()=>{
+					// 	uni.navigateBack({
+					// 		delta:1
+					// 	})
+					// },1000)
+				}).catch(e => {
+					that.btn_kg=0
+					uni.showToast({
+						icon: 'none',
+						title: '微信支付失败'
+					})
+				})
+			},
 			pay_fuc(){
 				var that =this
 				var jkurl='/operate/pay'
@@ -225,6 +245,12 @@
 					code :that.options.code,
 					type:that.pay_type
 				}
+				// #ifdef MP-WEIXIN
+				datas={
+					code :code,
+					type:3
+				}
+				// #endif
 				if(that.btnkg==1){
 					return
 				}
@@ -236,6 +262,10 @@
 						that.htmlReset = 0
 						var datas = res.data
 						console.log(typeof datas)
+						// #ifdef MP-WEIXIN
+						that.pay_mp_fuc(datas,code)
+						return
+						// #endif
 						var provider=''
 						// 支付宝
 						if (that.pay_type == 2) {

@@ -66,6 +66,11 @@
 					<input type="text" class="xq_r" v-model="pow_num" placeholder="请输入行驶里程">
 					<view class="xq_r_dw">万公里</view>
 				</view>
+				<view class="xq_li">
+					<view class="xq_l">排放标准</view>
+					<input type="text" class="xq_r" v-model="paifang" placeholder="请输入排放标准">
+					<!-- <view class="xq_r_dw">万公里</view> -->
+				</view>
 				
 				<view class="xq_btn" @click="go_fuc">一键评估</view>
 				<!-- <view class="xq_yx">点击立即查询表示同意<text @click="$service.jump" data-url="/pagesA/xieyi/xieyi?type=0">用户协议</text>和<text @click="$service.jump" data-url="/pagesA/xieyi/xieyi?type=1">隐私协议</text></view> -->
@@ -152,6 +157,11 @@
 				ks_list:[],
 				ks_index:0,
 				ks_msg:'',
+				
+				
+				
+				
+				paifang:''
 			}
 		},
 		computed: {
@@ -371,6 +381,14 @@
 					return
 				}
 				
+				if(!this.paifang){
+					uni.showToast({
+						icon:'none',
+						title:'请输入排放标准'
+					})
+					return
+				}
+				
 				var jkurl='/Publics/submitAssess'
 				var  datas={
 					car_version:that.pp_msg.name,
@@ -378,8 +396,13 @@
 					city:that.fb_add[1],
 					county:that.fb_add[2],
 					registration_time:this.car_jc,
-					travel_mileage:this.pow_num
+					travel_mileage:this.pow_num,
+					paifang:that.paifang
 				}
+				if(that.btnkg==1){
+					return
+				}
+				that.btnkg=1
 				that.$service.P_post(jkurl, datas).then(res => {
 					that.btnkg = 0
 					console.log(res)
@@ -400,7 +423,7 @@
 							uni.navigateBack()
 						},1000)
 					} else {
-					
+						that.btnkg = 0
 						if (res.msg) {
 							uni.showToast({
 								icon: 'none',

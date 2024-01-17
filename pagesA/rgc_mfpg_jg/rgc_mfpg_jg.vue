@@ -9,33 +9,33 @@
 				<view class="jg_top">
 					<view class="jgt_tit">奔驰A级 2022款 A 180L</view>
 					<view class="jgt_msg">
-						估值价：<view class="msg_pri"><text>13.99 </text>万</view>	<text class="msg_tip"> (仅供参考)</text>
+						估值价：<view class="msg_pri"><text>{{datas.appraisement_price||'--'}}</text>万</view>	<text class="msg_tip"> (仅供参考)</text>
 					</view>
 				</view>
 				<view class="jg_msg">
 					<view class="jg_mli">
-						<view class="jg_m_v">北京</view>
+						<view class="jg_m_v oh1">{{datas.province}}</view>
 						<view class="jg_m_n">所在城市</view>
 					</view>
 					<view class="jg_mli">
-						<view class="jg_m_v">2021-02</view>
+						<view class="jg_m_v">{{getftime(datas.registration_time)||'--'}}</view>
 						<view class="jg_m_n">上牌日期</view>
 					</view>
 					<view class="jg_mli">
-						<view class="jg_m_v">1.0万公里</view>
+						<view class="jg_m_v">{{datas.travel_mileage||'--'}}万公里</view>
 						<view class="jg_m_n">行驶里程</view>
 					</view>
 					<view class="jg_mli">
-						<view class="jg_m_v">国6</view>
+						<view class="jg_m_v">{{datas.paifang||'--'}}</view>
 						<view class="jg_m_n">排放标准</view>
 					</view>
 				</view>
 				<view class="jgbz_box">
 					<view class="jgbz_tit">当前价格车况参考标准</view>
 					<view class="jgbz_a">
-						<view><text>外观：</text>几乎无色差，喷漆不超过2个面；车窗玻璃完好</view>
-						<view><text>内饰：</text>方向盘见见轻微磨损；座椅及内饰轻微磨损；车内轻微异味</view>
-						<view><text>工况：</text>发动机运行正常且无维修；变速箱、底盘及电气系统运行正常；保养记录较为完整</view>
+						<view><text>外观：</text>{{datas.waiguan||""}}</view>
+						<view><text>内饰：</text>{{datas.neishi||""}}</view>
+						<view><text>工况：</text>{{datas.gongkuang||""}}</view>
 					</view>
 				</view>
 				
@@ -141,6 +141,14 @@
 		methods: {
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
+			getftime(str){
+				if(!str){
+					return '--'
+				}
+				str=str.split('-')
+				str=str[0]+'-'+str[1]
+				return str
+			},
 			region_change(e){
 				console.log(e)
 				that.fb_add=e.detail.value
@@ -555,6 +563,8 @@ page{
 				font-weight: 400;
 				color: #333333;
 				margin-bottom: 20rpx;
+				line-height: 30px;
+				height: 30px;
 			}
 			.jg_m_n{
 				font-size: 26rpx;

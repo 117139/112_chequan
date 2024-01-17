@@ -359,6 +359,7 @@
 					pay_status:that.pay_type
 				}
 				var jkurl='/vip/buy'
+				
 				if(that.btnkg==1){
 					return
 				}
@@ -376,6 +377,7 @@
 						// }
 						console.log(res)
 						that.pay_fuc(datas)
+						
 						
 					} else {
 						that.btnkg = 0
@@ -403,6 +405,32 @@
 				})
 				
 			},
+			pay_mp_fuc(data){
+				console.log(data)
+				// return
+				that.$service.wxpay(data).then(res => {
+					
+					uni.showToast({
+						icon:'none',
+						title:'支付成功'
+					})
+					uni.$emit('login_fuc', {
+						title: ' 刷新信息 ',
+						content: 'item.id'
+					});
+					// setTimeout(()=>{
+					// 	uni.navigateBack({
+					// 		delta:1
+					// 	})
+					// },1000)
+				}).catch(e => {
+					that.btn_kg=0
+					uni.showToast({
+						icon: 'none',
+						title: '微信支付失败'
+					})
+				})
+			},
 			pay_fuc(code){
 				// var that =this
 				// that.gook_fuc(code)
@@ -412,6 +440,12 @@
 					code :code,
 					type:that.pay_type
 				}
+				// #ifdef MP-WEIXIN
+				datas={
+					code :code,
+					type:3
+				}
+				// #endif
 				// if(that.btnkg==1){
 				// 	return
 				// }
@@ -424,6 +458,10 @@
 						var datas = res.data
 						console.log(typeof datas)
 						var provider=''
+						// #ifdef MP-WEIXIN
+						that.pay_mp_fuc(datas)
+						return
+						// #endif
 						// 支付宝
 						if (that.pay_type == 2) {
 							provider='alipay'

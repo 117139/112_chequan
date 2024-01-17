@@ -138,11 +138,11 @@
 			<view class="datas_li" v-for="(item,index) in datas" @click="$service.jump"  :data-url="'/pagesA/rgc_mfpg_jg/rgc_mfpg_jg?type=4&code='+item.code+'&id='+item.id">
 				<!-- <image v-if="index==1" class="datas_li_st" src="/static/images/o_type1.png" mode="aspectFill"></image> -->
 				<!-- <image v-if="index==2" class="datas_li_st" src="/static/images/o_type2.png" mode="aspectFill"></image> -->
-				<image v-if="item.status==1" class="datas_li_st" src="/static/images/o_type.png" mode="aspectFill"></image>
+				<!-- <image v-if="item.status==1" class="datas_li_st" src="/static/images/o_type.png" mode="aspectFill"></image>
 				<image v-if="item.status==2" class="datas_li_st" src="/static/images/o_type4.png" mode="aspectFill"></image>
 				<image v-if="item.status==3" class="datas_li_st" src="/static/images/o_type0.png" mode="aspectFill"></image>
 				<image v-if="item.status==4" class="datas_li_st" src="/static/images/o_type3.png" mode="aspectFill"></image>
-				<image v-if="item.status==5" class="datas_li_st" src="/static/images/o_type5.png" mode="aspectFill"></image>
+				<image v-if="item.status==5" class="datas_li_st" src="/static/images/o_type5.png" mode="aspectFill"></image> -->
 				<view class="datas_li_cname">
 					{{item.car_version||''}}{{item.car_code||''}}
 				</view>

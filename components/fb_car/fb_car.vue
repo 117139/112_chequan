@@ -938,6 +938,26 @@
 				})
 				
 			},
+			pay_mp_fuc(data){
+				console.log(data)
+				// return
+				that.$service.wxpay(data).then(res => {
+					
+					that.gook_fuc()
+					
+					// setTimeout(()=>{
+					// 	uni.navigateBack({
+					// 		delta:1
+					// 	})
+					// },1000)
+				}).catch(e => {
+					that.btn_kg=0
+					uni.showToast({
+						icon: 'none',
+						title: '微信支付失败'
+					})
+				})
+			},
 			pay_fuc(code){
 				var that =this
 				var jkurl='/operate/pay'
@@ -945,6 +965,12 @@
 					code :code,
 					type:that.pay_array[that.pay_index].id
 				}
+				// #ifdef MP-WEIXIN
+				datas={
+					code :code,
+					type:3
+				}
+				// #endif
 				if(that.btnkg==1){
 					return
 				}
@@ -956,6 +982,10 @@
 						that.htmlReset = 0
 						var datas = res.data
 						console.log(typeof datas)
+						// #ifdef MP-WEIXIN
+						that.pay_mp_fuc(datas)
+						return
+						// #endif
 						var provider=''
 						// 支付宝
 						if (that.pay_type == 2) {
@@ -1020,6 +1050,10 @@
 				})
 				setTimeout(function(){
 					that.btnkg=0
+					uni.$emit('login_fuc', {
+						title: ' 刷新信息 ',
+						content: 'item.id'
+					});
 					uni.redirectTo({
 						// url:'/pages_my/my_fabu/my_fabu'
 						url:'/pages_my/store_fb_ok/store_fb_ok?type=2&type1='+that.type1
