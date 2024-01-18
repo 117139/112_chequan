@@ -66,7 +66,7 @@
 				</view>
 			</view>
 		</view>
-		<u-popup :show="xy_show" mode="center" :round="14">
+		<u-popup :show="xy_show" mode="center" :round="14" :safeAreaInsetBottom="false">
 			<view class="use_tkbox">
 				<view class="usetk_tip">
 					继续使用本功能，请阅读并同意

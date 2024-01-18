@@ -432,6 +432,11 @@
 						icon: 'none',
 						title: '微信支付失败'
 					})
+					setTimeout(()=>{
+						uni.redirectTo({
+							url:'/pagesA/rgc_zt_jg/rgc_zt_jg?type='+that.options.type+'&code='+code
+						})
+					},1000)
 				})
 			},
 			pay_fuc(code){

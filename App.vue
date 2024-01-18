@@ -175,7 +175,7 @@
 						}
 						console.log(res)
 						var p_config=res.data
-						if(p_config.onoff !==2){
+						if(p_config.onoff ==2){
 							uni.setTabBarItem({
 								index: 2,
 								visible: false

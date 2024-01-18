@@ -355,6 +355,11 @@
 						icon: 'none',
 						title: '微信支付失败'
 					})
+					setTimeout(()=>{
+						uni.redirectTo({
+							url:'/pages_my/order_list/order_list?type='+1
+						})
+					},1000)
 				})
 			},
 			pay_fuc(code){

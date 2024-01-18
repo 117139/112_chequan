@@ -73,6 +73,7 @@
 						<text class="iconfont icon-duigou2"></text>
 					</view>
 				</view>
+				<!-- #ifndef MP-WEIXIN -->
 				<view class="fw_li">
 					<image class="fw_img" src="/static/images/icon_Alipay.png" mode="aspectFit"></image>
 					<view class="fw_r1">支付宝</view>
@@ -81,6 +82,7 @@
 						<text class="iconfont icon-duigou2"></text>
 					</view>
 				</view>
+				<!-- #endif -->
 			</view>
 		</block>
 		<block v-if="options.type==1">
@@ -223,7 +225,7 @@
 				// return
 				that.$service.wxpay(data).then(res => {
 					
-					that.gook_fuc(code)
+					that.gook_fuc()
 					
 					// setTimeout(()=>{
 					// 	uni.navigateBack({
@@ -247,7 +249,7 @@
 				}
 				// #ifdef MP-WEIXIN
 				datas={
-					code :code,
+					code :that.options.code,
 					type:3
 				}
 				// #endif
@@ -263,7 +265,7 @@
 						var datas = res.data
 						console.log(typeof datas)
 						// #ifdef MP-WEIXIN
-						that.pay_mp_fuc(datas,code)
+						that.pay_mp_fuc(datas)
 						return
 						// #endif
 						var provider=''
@@ -285,7 +287,7 @@
 							orderInfo: datas, //微信、支付宝订单数据
 							success: function(res) {
 								console.log('success:' + JSON.stringify(res));
-								that.gook_fuc(code)
+								that.gook_fuc()
 							},
 							fail: function(err) {
 								that.btnkg = 0

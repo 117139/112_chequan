@@ -64,7 +64,7 @@
 					<text @click.stop="$service.jump" data-url="/pagesA/xieyi/xieyi?id=yhxy">《用户协议》</text>和
 					<text @click.stop="$service.jump" data-url="/pagesA/xieyi/xieyi?id=grxx">《个人信息处理单独同意书》</text>
 				</view>
-				<u-popup :show="xy_show" mode="center" :round="14">
+				<u-popup :show="xy_show" mode="center" :round="14" :safeAreaInsetBottom="false">
 					<view class="use_tkbox">
 						<view class="usetk_tip">
 							继续使用本功能，请阅读并同意
