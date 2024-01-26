@@ -7,7 +7,7 @@
 			<view class="cz_box">
 				<view class="cz_tip"><text class="iconfont icon-yanzhengma"></text>为全网95%二手车交易提供估值服务</view>
 				<view class="jg_top">
-					<view class="jgt_tit">奔驰A级 2022款 A 180L</view>
+					<view class="jgt_tit">{{datas.car_version||""}}</view>
 					<view class="jgt_msg">
 						估值价：<view class="msg_pri"><text>{{datas.appraisement_price||'--'}}</text>万</view>	<text class="msg_tip"> (仅供参考)</text>
 					</view>

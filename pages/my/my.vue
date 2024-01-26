@@ -30,7 +30,7 @@
 			<view class="shop_vip_btn">立即开通</view>
 		</view>
 		<!-- 订单 -->
-		<view class="order_box" v-if="hasLogin&&p_config.onoff==1">
+		<view class="order_box" v-if="hasLogin&&p_config.onoff==2">
 			<view class="order_top dis_flex aic ju_b">
 				<view>我的订单</view>
 				<view class="go_more dis_flex aic"  @tap="$service.jump" :data-url="'/pages_my/order_list/order_list?type='+0">

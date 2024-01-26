@@ -128,6 +128,7 @@
 		mapMutations
 	} from 'vuex'
 	var that 
+	var rewardedVideoAd
 	var timestr=null
 	export default {
 		data() {
@@ -142,7 +143,8 @@
 				bj_price:'',
 				or_price:'',
 				pp_datas:'',
-				btnkg:0
+				btnkg:0,
+				share_type:0
 			}
 		},
 		computed: {
@@ -159,6 +161,7 @@
 			var cs=JSON.parse(e.cs)
 			that.datas_cs=cs
 			that.getdata_pri()
+			that.adGet()
 		},
 		onShow() {
 			// that.onRetry()
@@ -170,6 +173,7 @@
 			}
 			clearTimeout(timestr)
 			if(that.share_type==1){
+				that.share_type=0
 				that.share_ok()
 			}
 		},
@@ -189,9 +193,60 @@
 			// ...mapMutations(['wxshouquan','login']),
 			test(){},
 			ad_fuc(){
-				that.pay_type=4
-				that.mk_fuc()
+				if(that.p_config.ad_id){
+					// uni.showToast({
+					// 	icon:'none',
+					// 	title:that.p_config.ad_id
+					// })
+					// 调用
+					rewardedVideoAd.show()
+						 .catch(() => {
+							 rewardedVideoAd.load()
+								 .then(() => rewardedVideoAd.show())
+								 .catch(err => {
+								 })
+						 })
+				}else{
+					uni.showToast({
+						icon:'none',
+						title:'暂未开启广告'
+					})
+				}
+				
+				
 			},
+			//加载激励广告
+			adGet: function () {
+				if(that.p_config.ad_id){
+					if (wx.createRewardedVideoAd) {
+						// 加载激励视频广告
+						rewardedVideoAd = wx.createRewardedVideoAd({
+							adUnitId: that.p_config.ad_id//你的广告key
+						})
+						rewardedVideoAd.onLoad(() => {})
+						rewardedVideoAd.onError((err) => { 
+							console.log(err)
+						})
+						rewardedVideoAd.onClose((res) => {
+							// 用户点击了【关闭广告】按钮
+							if (res && res.isEnded) {
+								// 正常播放结束，可以下发游戏奖励
+								that.pay_type=4
+								that.mk_fuc()
+							} else {
+								// 播放中途退出，不下发游戏奖励
+								wx.showToast({
+									title: "广告未观看完，无法获得奖励",
+									icon: "none",
+									duration: 2000
+								});
+							}
+						})
+					}
+				}
+				
+			},
+
 			share_ok(){
 				that.pay_type=5
 				that.mk_fuc()

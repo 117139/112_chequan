@@ -22,7 +22,7 @@
 		</scroll-view>
 		</u-sticky> -->
 		<view class="header_pof">
-			<view class="my_status_bar"></view>
+			<view class="my_status_bar" :style="'height:'+StatusBar+'px;'"></view>
 			<view class="dh_top">
 				<view class="search_box dis_flex aic">
 					<text class="iconfont icon-back" @click="$service.back"></text>
@@ -34,7 +34,7 @@
 					<view class="reset_btn" @click="$service.back">取消</view>
 				</view>
 				<!-- #ifdef MP-WEIXIN -->
-				<view class="" style="width:200rpx"></view>
+				<view class="" style="width:220rpx"></view>
 				<!-- #endif -->
 			</view>
 			<view class="tab_list">
@@ -43,7 +43,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="my_status_bar"></view>
+		<view class="my_status_bar" :style="'height:'+StatusBar+'px;'"></view>
 		<view class="zan_list">
 			<view class="zan_li" v-for="(item,index) in datas" @click.stop="jump_fuc(item)" data-url="/pages/details_jyz/details_jyz">
 				<image class="zan_img" :src="$service.getimg(item.banner)" mode="aspectFill"></image>
@@ -98,6 +98,7 @@
 				keyword:'',
 				listc_status:'noMore',
 				contentText:{contentdown: "上拉显示更多",contentrefresh: "正在加载...",contentnomore: "暂无数据"},
+				StatusBar: this.StatusBar,
 			}
 		},
 		computed: {
