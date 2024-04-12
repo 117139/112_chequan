@@ -96,7 +96,7 @@
 			<view class="b_box">
 				<view class="b_box1">
 					<block  v-if="pp_datas.is_gg==1">
-					<view v-if="loginDatas.u_gg>0" class="b_btn1" @click="ad_fuc">
+					<view v-if="loginDatas.u_gg>0&&p_config.ad_id" class="b_btn1" @click="ad_fuc">
 						<view class="b_btn1_tip" @click.stop="test">每日3次，免费支付</view>
 						看广告
 					</view>
